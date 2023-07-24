@@ -19,6 +19,8 @@ namespace Entity
         [SerializeField] protected EntityCustomize entityCustomize;
         [SerializeField] protected float raycastDistance = 0.62f;
         [SerializeField] protected float attackDuraction;
+        [SerializeField] protected float rotateSpeed;
+        [SerializeField] protected Transform model;
 
         protected float maxHealth;
         protected float movementSpeed;
@@ -26,6 +28,7 @@ namespace Entity
         protected float currentLockedTime;
         protected bool isLockedState;
         protected Vector3 moveVec;
+        protected Vector3 rotateVec;
         protected EntityState currentEntityState;
         //property
         public float CurrentHealth
@@ -57,8 +60,9 @@ namespace Entity
 
         }
 
-        protected void Update()
+        protected virtual void Update()
         {
+            // handle lock state
             if (isLockedState)
             {
                 if (currentLockedTime > 0)
@@ -70,11 +74,14 @@ namespace Entity
 
                 return;
             }
+            // get entity input
             GetInput();
-            DetectAttack();
 
-            if (IsNonMovableState()) return;
-            Move(moveVec);
+            if (IsNonMovableState())
+                return;
+
+            Move();
+            Rotate();
         }
 
         private bool IsNonMovableState()
@@ -82,7 +89,7 @@ namespace Entity
             return currentEntityState != EntityState.Entity_Idle && currentEntityState != EntityState.Entity_Move;
         }
 
-        protected void Move(Vector3 moveVec)
+        protected virtual void Move()
         {
             if (Physics.Raycast(transform.position, Vector3.forward * moveVec.z, raycastDistance))// check back and forth
             {
@@ -96,7 +103,13 @@ namespace Entity
             transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
         }
 
-        protected void CheckLockedState(EntityState entityState, float lockedTime = 0f)
+        protected virtual void Rotate()
+        {
+            rotateVec = Vector3.Lerp(rotateVec, moveVec, rotateSpeed * Time.deltaTime);
+            model.rotation = Quaternion.LookRotation(model.forward + rotateVec, Vector3.up);
+        }
+
+        protected virtual void CheckLockedState(EntityState entityState, float lockedTime = 0f)
         {
             isLockedState = entityState == EntityState.Entity_Attack;
             if (isLockedState)
@@ -105,30 +118,11 @@ namespace Entity
             }
         }
 
-        private void GetInput()
+        protected virtual void GetInput()
         {
-            moveVec.x = Input.GetAxisRaw("Horizontal");
-            moveVec.z = Input.GetAxisRaw("Vertical");
-            if (moveVec != Vector3.zero)
-            {
-                ChangeEntityState(EntityState.Entity_Move);
-            }
-            else
-            {
-                ChangeEntityState(EntityState.Entity_Idle);
-            }
         }
 
-        protected void DetectAttack()
-        {
-            if (GetAttackInput())
-            {
-                ChangeEntityState(EntityState.Entity_Attack, attackDuraction);
-                Attack();
-            }
-        }
-
-        private bool GetAttackInput()
+        protected virtual bool GetAttackInput()
         {
             return Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space);
         }
@@ -138,9 +132,9 @@ namespace Entity
             entityCustomize.PlayAnim(EntityAnimation.Character_Attack);
         }
 
-        protected void ChangeEntityState(EntityState newState, float lockedTime = 0f)
+        protected virtual void ChangeEntityState(EntityState newState, float lockedTime = 0f)
         {
-            if(newState == currentEntityState)
+            if (newState == currentEntityState)
                 return;
 
             currentEntityState = newState;
