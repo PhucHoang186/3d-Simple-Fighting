@@ -5,12 +5,14 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
     [SerializeField] private Transform lookAtTarget;
+    private Vector3 lookDir;
 
 
     void LateUpdate()
     {
-        if(lookAtTarget == null)
+        if (lookAtTarget == null)
             return;
-        transform.LookAt(transform.position - lookAtTarget.position);
+        lookDir = lookAtTarget.position;
+        transform.LookAt(lookDir);
     }
 }

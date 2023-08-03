@@ -8,18 +8,27 @@ namespace Entity
     {
         [Header("Player Settings")]
         [SerializeField] float checkLocktargetRadius = 3f;
+        [SerializeField] float lookSensitive;
         [SerializeField] string lockTargetObjLayerName;
+        [Header("Player References")]
         [SerializeField] EntityWorldUI playerWorldUI;
+        [SerializeField] Transform playerCamera;
         private bool isLockingToTarget;
         private Transform lockingTarget;
+        private Vector3 lookRotation;
+        private float xRotation;
+        private float yRotation;
 
         protected override void GetInput()
         {
             // movement
             base.GetInput();
-            moveVec.x = Input.GetAxisRaw("Horizontal");
-            moveVec.z = Input.GetAxisRaw("Vertical");
+            moveVec = transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical");
             ChangeEntityState(moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle);
+            // rotation
+            lookRotation.x = Input.GetAxis("Mouse X");
+            lookRotation.y = Input.GetAxis("Mouse Y");
+            lookRotation = lookRotation.normalized;
 
             // attack
             if (GetAttackInput())
@@ -44,7 +53,10 @@ namespace Entity
             }
             else
             {
-                base.Rotate();
+                // xRotation = Mathf.Lerp(playerCamera.eulerAngles.x, playerCamera.eulerAngles.x + lookRotation.x, Time.deltaTime *  lookSensitive);
+                yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + lookRotation.x, Time.deltaTime *  lookSensitive);
+                // playerCamera.eulerAngles = new Vector3(xRotation, playerCamera.eulerAngles.y, playerCamera.eulerAngles.z);
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
             }
         }
 
