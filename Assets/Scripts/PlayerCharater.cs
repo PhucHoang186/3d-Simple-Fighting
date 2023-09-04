@@ -53,9 +53,10 @@ namespace Entity
             }
             else
             {
-                // xRotation = Mathf.Lerp(playerCamera.eulerAngles.x, playerCamera.eulerAngles.x + lookRotation.x, Time.deltaTime *  lookSensitive);
+                xRotation = Mathf.Lerp(playerCamera.eulerAngles.x, playerCamera.eulerAngles.x - lookRotation.y, Time.deltaTime *  lookSensitive);
                 yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + lookRotation.x, Time.deltaTime *  lookSensitive);
-                // playerCamera.eulerAngles = new Vector3(xRotation, playerCamera.eulerAngles.y, playerCamera.eulerAngles.z);
+                
+                playerCamera.eulerAngles = new Vector3(xRotation, playerCamera.eulerAngles.y, playerCamera.eulerAngles.z);
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
             }
         }

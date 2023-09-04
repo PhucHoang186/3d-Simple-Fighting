@@ -7,30 +7,37 @@ using NaughtyAttributes;
 
 public class SimpleRandomWalkDugeonGenerator : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] MapSpawner mapSpawner;
+    [Header("params")]
+    [SerializeField] SimpleRandomWalkData simpleRandomWalkData;
     [SerializeField] protected Vector3Int startPosition = Vector3Int.zero;
-    [SerializeField] private int interations = 10;
-    [SerializeField] private int walkLength = 10;
     [SerializeField] private bool startRandomlyEachInteraction = true;
 
-    [Button]    
+    [Button]
     public void RunProceduralGeneration()
     {
         HashSet<Vector3Int> floorPositions = RunRandomWalk();
-        foreach (var position in floorPositions)
-        {
-            Debug.Log(position);
-        }
+        mapSpawner.DestroyTiles();
+        mapSpawner.SpawnFloorTiles(floorPositions);
+        WallGenerator.CreateWalls(floorPositions, mapSpawner, simpleRandomWalkData.stepOffset, simpleRandomWalkData.wallLayer);
+    }
+
+    [Button]
+    public void ClearMap()
+    {
+        mapSpawner.DestroyTiles();
     }
 
     protected HashSet<Vector3Int> RunRandomWalk()
     {
         var currentPosition = startPosition;
         HashSet<Vector3Int> floorPositions = new HashSet<Vector3Int>();
-        for (int i = 0; i < interations; i++)
+        for (int i = 0; i < simpleRandomWalkData.interations; i++)
         {
-            var path = ProceduralGenrationAlgorithms.SimpleRandomWalk(currentPosition, walkLength);
+            var path = ProceduralGenrationAlgorithms.SimpleRandomWalk(currentPosition, simpleRandomWalkData.walkLength, simpleRandomWalkData.stepOffset);
             floorPositions.UnionWith(path);
-            if(startRandomlyEachInteraction)
+            if (startRandomlyEachInteraction)
             {
                 currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
             }
