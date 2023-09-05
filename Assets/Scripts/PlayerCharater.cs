@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Entity
@@ -13,11 +14,21 @@ namespace Entity
         [Header("Player References")]
         [SerializeField] EntityWorldUI playerWorldUI;
         [SerializeField] Transform playerCamera;
+        [SerializeField] float clampXRotationMin;
+        [SerializeField] float clampXRotationMax;
         private bool isLockingToTarget;
         private Transform lockingTarget;
         private Vector3 lookRotation;
         private float xRotation;
         private float yRotation;
+
+        protected override void Start()
+        {
+            base.Start();
+            // Locks the cursor
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         protected override void GetInput()
         {
@@ -53,9 +64,8 @@ namespace Entity
             }
             else
             {
-                xRotation = Mathf.Lerp(playerCamera.eulerAngles.x, playerCamera.eulerAngles.x - lookRotation.y, Time.deltaTime *  lookSensitive);
-                yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + lookRotation.x, Time.deltaTime *  lookSensitive);
-                
+                xRotation = Mathf.Lerp(playerCamera.eulerAngles.x, playerCamera.eulerAngles.x - lookRotation.y, Time.deltaTime * lookSensitive);
+                yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + lookRotation.x, Time.deltaTime * lookSensitive);
                 playerCamera.eulerAngles = new Vector3(xRotation, playerCamera.eulerAngles.y, playerCamera.eulerAngles.z);
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
             }

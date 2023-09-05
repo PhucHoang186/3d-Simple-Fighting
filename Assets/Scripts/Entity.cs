@@ -22,7 +22,6 @@ namespace Entity
         [SerializeField] protected float rotateSpeed;
         [SerializeField] protected Transform model;
 
-        protected float maxHealth;
         protected float movementSpeed;
         protected float currentHealth;
         protected float currentLockedTime;
@@ -46,8 +45,7 @@ namespace Entity
 
         protected virtual void Start()
         {
-            maxHealth = entityData.maxHealth;
-            CurrentHealth = maxHealth;
+            CurrentHealth = entityData.maxHealth;
         }
 
         protected virtual void TakeDamage(float damageAmount)

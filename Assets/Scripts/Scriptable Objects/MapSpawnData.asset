@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99943b8af0c92344ba335e65954e1eee, type: 3}
+  m_Name: MapSpawnData
+  m_EditorClassIdentifier: 
+  spawnFloorVariantsPercent: 0.2
+  spawnWallVariantsPercent: 0
+  spawnCeilingVariantsPercent: 0
+  mainFloorPrefab: {fileID: 4830732008106366683, guid: f63de53738929b145aeb968a63b074c8, type: 3}
+  floorVariants:
+  - {fileID: 4830732008106366683, guid: dd1d6c9c6ba10a946bb7e186dd881ea3, type: 3}
+  - {fileID: 4830732008106366683, guid: 0ca2203414b0c5d4a81687e9aabeb0d5, type: 3}
+  mainWallPrefab: {fileID: 0}
+  wallVariants: []
+  mainCeilingPrefab: {fileID: 4830732008106366683, guid: 92bfbc24bcc05884ba162110812b128e, type: 3}
+  ceilingVariants: []

@@ -6,17 +6,20 @@ using UnityEngine;
 
 public class MapSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject floorTilePrefab;
+    [SerializeField] MapSpawnData mapdata;
     [SerializeField] List<GameObject> wallTilePrefabs;
     [SerializeField] List<GameObject> cornerTilePrefabs;
     [SerializeField] int wallHeight;
     private List<GameObject> tiles = new List<GameObject>();
 
-    public void SpawnFloorTiles(IEnumerable<Vector3Int> floorPositions)
+    public void SpawnFloorTiles(IEnumerable<Vector3Int> floorPositions, int wallLayer = 1)
     {
         foreach (var floorPosition in floorPositions)
         {
-            SpawnTile(floorTilePrefab, floorPosition, Quaternion.identity, this.transform);
+            SpawnTile(mapdata.GetFloorPrefab(), floorPosition, Quaternion.identity, this.transform);
+            var ceilingPosition = floorPosition;
+            ceilingPosition.y += wallHeight * wallLayer;
+            SpawnTile(mapdata.GetCeilingPrefab(), ceilingPosition, quaternion.identity, this.transform);
         }
     }
 
@@ -67,13 +70,16 @@ public class MapSpawner : MonoBehaviour
         return cornerPrefab;
     }
 
-
-
     public void DestroyTiles()
     {
         foreach (var tile in tiles)
         {
-            DestroyImmediate(tile);
+            DestroyImmediate(tile.gameObject);
+        }
+
+        for (int i = 0; i < this.transform.childCount; i++)
+        {
+            DestroyImmediate(transform.GetChild(i).gameObject);
         }
         tiles.Clear();
     }
