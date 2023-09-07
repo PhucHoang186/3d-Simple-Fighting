@@ -48,6 +48,11 @@ namespace Entity
                 Attack();
             }
 
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                entityCustomize.PlayAnim(EntityAnimation.Character_StartCasting);
+            }
+
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 LockTarget();

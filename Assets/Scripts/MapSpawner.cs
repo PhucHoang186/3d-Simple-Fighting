@@ -18,8 +18,8 @@ public class MapSpawner : MonoBehaviour
         {
             SpawnTile(mapdata.GetFloorPrefab(), floorPosition, Quaternion.identity, this.transform);
             var ceilingPosition = floorPosition;
-            ceilingPosition.y += wallHeight * wallLayer;
-            SpawnTile(mapdata.GetCeilingPrefab(), ceilingPosition, quaternion.identity, this.transform);
+            // ceilingPosition.y += wallHeight * wallLayer;
+            // SpawnTile(mapdata.GetCeilingPrefab(), ceilingPosition, quaternion.identity, this.transform);
         }
     }
 

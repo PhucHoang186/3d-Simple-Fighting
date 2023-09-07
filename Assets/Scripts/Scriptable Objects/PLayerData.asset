@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PLayerData
   m_EditorClassIdentifier: 
   maxHealth: 10
-  movementSpeed: 3
+  movementSpeed: 2

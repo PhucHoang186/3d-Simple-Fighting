@@ -10,6 +10,8 @@ namespace Entity
         Character_Roll,
         Character_Run,
         Character_Attack,
+        Character_StartCasting,
+        Character_Casting
     }
 
     public class EntityCustomize : MonoBehaviour
