@@ -7,19 +7,22 @@ using UnityEngine;
 public class MapSpawner : MonoBehaviour
 {
     [SerializeField] MapSpawnData mapdata;
-    [SerializeField] List<GameObject> wallTilePrefabs;
-    [SerializeField] List<GameObject> cornerTilePrefabs;
+
     [SerializeField] int wallHeight;
+    [SerializeField] bool spawnCeiling;
     private List<GameObject> tiles = new List<GameObject>();
 
     public void SpawnFloorTiles(IEnumerable<Vector3Int> floorPositions, int wallLayer = 1)
     {
         foreach (var floorPosition in floorPositions)
         {
-            SpawnTile(mapdata.GetFloorPrefab(), floorPosition, Quaternion.identity, this.transform);
+            SpawnTile(mapdata.GetRandomFloorPrefab(), floorPosition, Quaternion.identity, this.transform);
             var ceilingPosition = floorPosition;
-            // ceilingPosition.y += wallHeight * wallLayer;
-            // SpawnTile(mapdata.GetCeilingPrefab(), ceilingPosition, quaternion.identity, this.transform);
+            if (spawnCeiling)
+            {
+                ceilingPosition.y += wallHeight * wallLayer;
+                SpawnTile(mapdata.GetRandomCeilingPrefab(), ceilingPosition, quaternion.identity, this.transform);
+            }
         }
     }
 
@@ -60,13 +63,13 @@ public class MapSpawner : MonoBehaviour
 
     private GameObject GetWallPrefab(WallType wallType)
     {
-        var wallPrefab = wallTilePrefabs[(int)wallType];
+        var wallPrefab = mapdata.wallTilePrefabs[(int)wallType];
         return wallPrefab;
     }
 
     private GameObject GetCornerPrefab(CornerType cornerType)
     {
-        var cornerPrefab = cornerTilePrefabs[(int)cornerType];
+        var cornerPrefab = mapdata.cornerTilePrefabs[(int)cornerType];
         return cornerPrefab;
     }
 

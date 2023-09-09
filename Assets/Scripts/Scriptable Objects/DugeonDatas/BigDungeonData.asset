@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4edd11cad62eab146ac7bf792cf780ca, type: 3}
   m_Name: BigDungeonData
   m_EditorClassIdentifier: 
-  interations: 100
-  walkLength: 20
-  stepOffset: 4
+  interations: 50
+  walkLength: 10
   startRandomlyEachInteraction: 1

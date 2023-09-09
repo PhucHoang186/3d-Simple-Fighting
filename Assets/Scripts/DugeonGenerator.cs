@@ -15,7 +15,6 @@ public class DugeonGenerator : MonoBehaviour
     [SerializeField] MapSpawner mapSpawner;
     [SerializeField] SimpleRandomWalkData simpleRandomWalkData;
     [SerializeField] protected Vector3Int startPosition = Vector3Int.zero;
-    [SerializeField] private bool startRandomlyEachInteraction = true;
     [SerializeField] int corridorLength;
     [SerializeField] int corridorInteration;
     [Range(0f, 1)]
@@ -26,7 +25,7 @@ public class DugeonGenerator : MonoBehaviour
     [SerializeField] int minWidth;
     [SerializeField] int minHeight;
     [SerializeField] int offset;
-    [SerializeField] bool randomWalk;
+    [SerializeField] bool randomWalkRoom;
 
     [Button]
     public void RunRandomWalkGeneration()
@@ -35,7 +34,6 @@ public class DugeonGenerator : MonoBehaviour
         mapSpawner.DestroyTiles();
         mapSpawner.SpawnFloorTiles(floorPositions, wallLayer);
         WallGenerator.CreateWalls(floorPositions, mapSpawner, stepOffset, wallLayer);
-
     }
 
     [Button]
@@ -44,7 +42,7 @@ public class DugeonGenerator : MonoBehaviour
         var roomList = ProceduralGenrationAlgorithms.BinaryPartitioning(new BoundsInt(startPosition, new Vector3Int(dungeonWidth * stepOffset, 0, dungeonHeight * stepOffset)), minWidth * stepOffset, minHeight * stepOffset, stepOffset);
         HashSet<Vector3Int> corridorPositions = CreateCorridorsConnectRooms(roomList);
         HashSet<Vector3Int> floorPositions = new HashSet<Vector3Int>();
-        if (randomWalk)
+        if (randomWalkRoom)
         {
             floorPositions = CreateRoomsRandomly(roomList);
         }
@@ -92,25 +90,29 @@ public class DugeonGenerator : MonoBehaviour
         var position = currentRoomCenter;
         position = ConvertPositionTo_Gcd_OfStepOffset(position);
         closestRoomCenter = ConvertPositionTo_Gcd_OfStepOffset(closestRoomCenter);
-        corridor.Add(position);
 
         while (position.z != closestRoomCenter.z)
+        // while (position.z > closestRoomCenter.z + stepOffset && position.z < closestRoomCenter.z - offset)
         {
             if (position.z > closestRoomCenter.z)
                 position += Vector3Int.back * stepOffset;
             else if (position.z < closestRoomCenter.z)
                 position += Vector3Int.forward * stepOffset;
-            corridor.Add(position);
+
+            // if (position.z % stepOffset == 0)
+                corridor.Add(position);
         }
 
 
         while (position.x != closestRoomCenter.x)
+        // while (position.x > closestRoomCenter.x + stepOffset && position.x < closestRoomCenter.x - offset)
         {
             if (position.x > closestRoomCenter.x)
                 position += Vector3Int.left * stepOffset;
             else if (position.x < closestRoomCenter.x)
                 position += Vector3Int.right * stepOffset;
-            corridor.Add(position);
+            // if (position.x % stepOffset == 0)
+                corridor.Add(position);
         }
 
         return corridor;
@@ -171,7 +173,7 @@ public class DugeonGenerator : MonoBehaviour
         {
             var path = ProceduralGenrationAlgorithms.SimpleRandomWalk(currentPosition, simpleRandomWalkData.walkLength, stepOffset);
             floorPositions.UnionWith(path);
-            if (startRandomlyEachInteraction)
+            if (simpleRandomWalkData.startRandomlyEachInteraction)
             {
                 currentPosition = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
             }
@@ -198,7 +200,8 @@ public class DugeonGenerator : MonoBehaviour
         foreach (var room in roomList)
         {
             var roomBound = room;
-            var roomCenter = new Vector3Int(Mathf.RoundToInt(roomBound.center.x), Mathf.RoundToInt(roomBound.center.y), Mathf.RoundToInt(roomBound.center.z));
+            var roomCenter = new Vector3Int(Mathf.RoundToInt(roomBound.center.x), 0, Mathf.RoundToInt(roomBound.center.z));
+            roomCenter = ConvertPositionTo_Gcd_OfStepOffset(roomCenter);
             var roomFloor = CreateRoomFromPosition(roomCenter);
 
             foreach (var roomPosition in roomFloor)
@@ -224,7 +227,7 @@ public class DugeonGenerator : MonoBehaviour
                 for (int j = offset; j < room.size.z - offset; j += stepOffset)
                 {
                     var floorPosition = room.min + new Vector3Int(i, 0, j);
-                    floorPosition = ConvertPositionTo_Gcd_OfStepOffset(floorPosition);
+                    // floorPosition = ConvertPositionTo_Gcd_OfStepOffset(floorPosition);
                     floorPositions.Add(floorPosition);
                 }
             }

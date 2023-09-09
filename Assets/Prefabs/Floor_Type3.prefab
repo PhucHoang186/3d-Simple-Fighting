@@ -91,6 +91,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7a8fbb92fdcc602498bdc5401734e21c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb189a62939dbeb4faf9912d0d5a616b, type: 2}
     - target: {fileID: 919132149155446097, guid: 7a8fbb92fdcc602498bdc5401734e21c, type: 3}
       propertyPath: m_Name
       value: floor_tile_small_broken_A

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99943b8af0c92344ba335e65954e1eee, type: 3}
+  m_Name: MapSpawnData
+  m_EditorClassIdentifier: 
+  spawnFloorVariantsPercent: 0.2
+  spawnWallVariantsPercent: 0
+  spawnCeilingVariantsPercent: 0
+  mainFloorPrefab: {fileID: 4830732008106366683, guid: f63de53738929b145aeb968a63b074c8, type: 3}
+  floorVariants:
+  - {fileID: 4830732008106366683, guid: dd1d6c9c6ba10a946bb7e186dd881ea3, type: 3}
+  - {fileID: 4830732008106366683, guid: 0ca2203414b0c5d4a81687e9aabeb0d5, type: 3}
+  mainCeilingPrefab: {fileID: 4830732008106366683, guid: 92bfbc24bcc05884ba162110812b128e, type: 3}
+  ceilingVariants: []
+  wallTilePrefabs:
+  - {fileID: 5920501368406341734, guid: bee56435bd0a85e4eb73ff6fdabeee4d, type: 3}
+  - {fileID: 5920501368406341734, guid: 9b50bc896de0ae845b9a3ab530e46f7c, type: 3}
+  - {fileID: 5920501368406341734, guid: e124d6d24ffbb88498e9ae395d6231a7, type: 3}
+  - {fileID: 5920501368406341734, guid: 66692e925e0a6fb4fa194ace5642bdc0, type: 3}
+  cornerTilePrefabs:
+  - {fileID: 2170960937129849844, guid: 4ed9ce5ee77a8de4ebcadf9a858be23b, type: 3}
+  - {fileID: 2170960937129849844, guid: ebcd8d514d2851b46a30d42d263cf35a, type: 3}
+  - {fileID: 2170960937129849844, guid: e6b6bda078453914886e0e64725c9ba3, type: 3}
+  - {fileID: 2170960937129849844, guid: a11dc5d64735d26489a98cc884e8b357, type: 3}

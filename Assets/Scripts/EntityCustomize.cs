@@ -11,7 +11,9 @@ namespace Entity
         Character_Run,
         Character_Attack,
         Character_StartCasting,
-        Character_Casting
+        Character_Casting,
+        Character_GetHit,
+        Character_Defeated,
     }
 
     public class EntityCustomize : MonoBehaviour

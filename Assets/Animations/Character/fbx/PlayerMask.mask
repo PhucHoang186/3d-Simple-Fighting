@@ -14,7 +14,7 @@ AvatarMask:
   - m_Path: KayKit Animated Character
     m_Weight: 1
   - m_Path: KayKit Animated Character/Body
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: KayKit Animated Character/Body/armLeft
     m_Weight: 1
   - m_Path: KayKit Animated Character/Body/armLeft/handSlotLeft
@@ -24,6 +24,6 @@ AvatarMask:
   - m_Path: KayKit Animated Character/Body/armRight/handSlotRight
     m_Weight: 1
   - m_Path: KayKit Animated Character/Body/Head
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: PrototypePete
     m_Weight: 0

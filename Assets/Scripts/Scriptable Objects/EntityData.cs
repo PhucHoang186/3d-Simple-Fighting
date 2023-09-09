@@ -9,5 +9,7 @@ namespace Entity
     {
         public float maxHealth;
         public float movementSpeed;
+        public float rotateSpeed;
+
     }
 }

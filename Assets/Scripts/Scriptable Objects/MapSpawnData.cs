@@ -16,26 +16,22 @@ public class MapSpawnData : ScriptableObject
     public List<GameObject> floorVariants;
 
     [Space(10)]
-    [Header("Walls")]
-    public GameObject mainWallPrefab;
-    public List<GameObject> wallVariants;
-
-    [Space(10)]
     [Header("Ceiling")]
     public GameObject mainCeilingPrefab;
     public List<GameObject> ceilingVariants;
 
-    public GameObject GetFloorPrefab()
+    [Space(10)]
+    [Header("Walls")]
+    public List<GameObject> wallTilePrefabs;
+    public List<GameObject> cornerTilePrefabs;
+
+
+    public GameObject GetRandomFloorPrefab()
     {
         return GetRandomPrefab(mainFloorPrefab, floorVariants, spawnFloorVariantsPercent);
     }
 
-    public GameObject GetWallPrefab()
-    {
-        return GetRandomPrefab(mainWallPrefab, wallVariants, spawnWallVariantsPercent);
-    }
-
-    public GameObject GetCeilingPrefab()
+    public GameObject GetRandomCeilingPrefab()
     {
         return GetRandomPrefab(mainCeilingPrefab, ceilingVariants, spawnCeilingVariantsPercent);
     }
@@ -49,4 +45,5 @@ public class MapSpawnData : ScriptableObject
         }
         return mainPrefab;
     }
+    
 }
