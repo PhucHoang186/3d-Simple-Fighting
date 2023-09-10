@@ -5,5 +5,5 @@ using UnityEngine;
 using Entity;
 public class EntityEvents
 {
-    public static Action<EntityState, float> ON_CHANGE_ENTITY_STATE;
+    public static Action<Weapon> OnSetWeapon;
 }

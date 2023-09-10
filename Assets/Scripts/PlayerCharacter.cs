@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Entity
@@ -12,6 +13,7 @@ namespace Entity
         [SerializeField] float lookSensitive;
         [SerializeField] string lockTargetObjLayerName;
         [Header("Player References")]
+        [SerializeField] EntityCustomize entityCustomize;
         [SerializeField] EntityWorldUI playerWorldUI;
         [SerializeField] Transform playerCamera;
         [SerializeField] float clampXRotationMin;
@@ -29,22 +31,6 @@ namespace Entity
             Cursor.visible = false;
         }
 
-        protected override void GetInput()
-        {
-            // movement
-            base.GetInput();
-            entityInput.moveVec = transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical");
-            // rotation
-            entityInput.lookRotation.x = Input.GetAxis("Mouse X");
-            entityInput.lookRotation.y = Input.GetAxis("Mouse Y");
-            entityInput.lookRotation = entityInput.lookRotation.normalized;
-            // attack
-            entityInput.isInstantAttackPressed = GetInstantAttackInput();
-            entityInput.isCastingAttackPressed = GetCastingAttackInput();
-            //lock target
-            entityInput.isLockTarget = Input.GetKeyDown(KeyCode.LeftShift);
-        }
-
         protected override void Update()
         {
             base.Update();
@@ -53,7 +39,7 @@ namespace Entity
 
         protected override void Move(Vector3 moveVec)
         {
-            EntityEvents.ON_CHANGE_ENTITY_STATE?.Invoke(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle, 0.5f);
+            ChangeEntityState(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle, 0.5f);
             base.Move(moveVec);
         }
 

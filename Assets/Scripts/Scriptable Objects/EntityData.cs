@@ -2,14 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Entity
+public class EntityData : MonoBehaviour
 {
-    [CreateAssetMenu(menuName = "Entity Data")]
-    public class EntityData : ScriptableObject
-    {
-        public float maxHealth;
-        public float movementSpeed;
-        public float rotateSpeed;
 
-    }
 }

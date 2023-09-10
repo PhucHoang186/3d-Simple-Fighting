@@ -10,30 +10,15 @@ public enum WeaponType
     Spell,
 }
 
-public class Weapon : MonoBehaviour
+public class Weapon : Equipment
 {
     public System.Action<Collider, Vector3> OnHitTarget;
     public WeaponType weaponType;
-    public Collider hitBoxCollider;
-    public float weaponDamage;
+    public float weaponBaseDamage;
 
-    private void Start()
+    public virtual float WeaponTrueDamage()
     {
-        ToggleHitBox(false);
-    }
-
-    public void ToggleHitBox(bool isActive)
-    {
-        hitBoxCollider.enabled = isActive;
-    }
-
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (collider.CompareTag("Enemy"))
-        {
-
-            OnHitTarget?.Invoke(collider, collider.ClosestPoint(transform.position));
-        }
+        return 0f;
     }
 
     public bool IsCastingTypeWeapon()

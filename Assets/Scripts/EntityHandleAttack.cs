@@ -1,63 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
 using Entity;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class EntityHandleAttack : MonoBehaviour
 {
-    [SerializeField] protected float attackDuraction = 1;
     private Weapon currentWeapon;
     private bool isHoldingAttack;
 
     void Start()
     {
-        currentWeapon = GetComponentInChildren<Weapon>();
-        if (currentWeapon != null)
-            currentWeapon.OnHitTarget += OnHitTarget;
+        EntityEvents.OnSetWeapon += OnSetWeapon;
     }
 
     void OnDestroy()
     {
+        EntityEvents.OnSetWeapon -= OnSetWeapon;
+
         if (currentWeapon != null)
             currentWeapon.OnHitTarget += OnHitTarget;
     }
 
+
+    public void OnSetWeapon(Weapon newWeapon)
+    {
+        currentWeapon = newWeapon;
+        if (currentWeapon != null)
+            currentWeapon.OnHitTarget += OnHitTarget;
+    }
+
+    // for melee weapon
+    // use in animation event
     public void ToggleHitBoxOn()
     {
-        currentWeapon?.ToggleHitBox(true);
+        if (!currentWeapon.IsCastingTypeWeapon())
+        {
+            ((MeleeWeapon)currentWeapon)?.ToggleHitBox(true);
+        }
     }
 
     public void ToggleHitBoxOff()
     {
-        currentWeapon?.ToggleHitBox(false);
+        if (!currentWeapon.IsCastingTypeWeapon())
+        {
+            ((MeleeWeapon)currentWeapon)?.ToggleHitBox(false);
+        }
     }
 
-    public void HandleAttackInput(EntityCustomize customize, bool instantAttackPressed, bool castingAttackPressed)
+    public void HandleAttackInput(Entity.Entity entity, EntityInput entityInput)
     {
+        if (currentWeapon == null)
+            return;
         // melee
-        var isCastingWeapon = currentWeapon.IsCastingTypeWeapon();
-        if (instantAttackPressed && !isCastingWeapon)
+        var isCastingWeaponType = currentWeapon.IsCastingTypeWeapon();
+        if (entityInput.isInstantAttackPressed && !isCastingWeaponType)
         {
-            customize.PlayAnim(EntityAnimation.Character_Attack, attackDuraction);
+            entity.ChangeEntityState(EntityState.Entity_Attack, 1f);
+            entity.PlayAnim(EntityAnimation.Character_Attack);
             return;
         }
 
         // range
-        if (castingAttackPressed)
+        if (entityInput.isCastingAttackPressed)
         {
-            if (isCastingWeapon)
+            if (isCastingWeaponType)
             {
                 isHoldingAttack = true;
-                customize.PlayAnim(EntityAnimation.Character_StartCasting);
+                entity.ChangeEntityState(EntityState.Entity_Attack);
+                entity.PlayAnim(EntityAnimation.Character_StartCasting);
             }
         }
-        else
+
+        if (entityInput.isCastingAttackReleased)
         {
             if (isHoldingAttack)
             {
                 isHoldingAttack = false;
                 Debug.Log("Shoot Spell");
-                // customize.PlayAnim(EntityAnimation.Character_Idle);
+                entity.PlayAnim(EntityAnimation.Character_Idle);
             }
         }
     }
@@ -67,7 +88,7 @@ public class EntityHandleAttack : MonoBehaviour
         var damageable = targetCol.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.TakenDamage(currentWeapon.weaponDamage, hitPoint);
+            damageable.TakenDamage(currentWeapon.WeaponTrueDamage(), hitPoint);
         }
     }
 }

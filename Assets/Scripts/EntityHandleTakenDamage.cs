@@ -1,25 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity;
 
 public class EntityHandleTakenDamage : MonoBehaviour, IDamageable
 {
+    public Action ON_HIT;
+    public Action ON_DESTROY;
     [SerializeField] private ParticleSystem hitParticle;
-    private Entity.Entity entity;
+    private float currentHealth;
+    private bool isDestroyed;
 
-    void Start()
+    public void Init(float maxHealth, Action onHit = null, Action onDestroy = null)
     {
-        entity = GetComponent<Entity.Entity>();
+        currentHealth = maxHealth;
+        this.ON_HIT = onHit;
+        this.ON_DESTROY = onDestroy;
     }
 
     public void TakenDamage(float damageAmount = 1, Vector3 hitPoint = default(Vector3))
     {
-        if (entity == null || entity.CurrentHealth <= 0)
+        if (isDestroyed)
             return;
 
-        entity.CurrentHealth -= damageAmount;
         var particle = Instantiate(hitParticle, hitPoint, Quaternion.identity);
         Destroy(particle.gameObject, 2f);
+
+        currentHealth -= damageAmount;
+        if (currentHealth > 0)
+        {
+            ON_HIT?.Invoke();
+        }
+        else
+        {
+            isDestroyed = true;
+            ON_DESTROY?.Invoke();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        ON_HIT = null;
+        ON_DESTROY = null;
     }
 }

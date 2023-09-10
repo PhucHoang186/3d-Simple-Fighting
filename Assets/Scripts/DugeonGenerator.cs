@@ -5,7 +5,6 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using NaughtyAttributes;
 using TMPro;
-using Unity.Mathematics;
 
 public class DugeonGenerator : MonoBehaviour
 {
