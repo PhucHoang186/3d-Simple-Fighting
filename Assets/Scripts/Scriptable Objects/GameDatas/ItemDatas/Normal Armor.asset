@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Normal Armor
   m_EditorClassIdentifier: 
   itemName: 
-  itemPrefab: {fileID: 7700117300513080242, guid: de4c65308e11f004a961a301284fc23e, type: 3}
+  itemPrefab: {fileID: 969382964253860213, guid: de4c65308e11f004a961a301284fc23e, type: 3}
   itemIcon: {fileID: 0}

@@ -10,10 +10,12 @@ namespace Entity
         [SerializeField] List<GameObject> defaultBodyParts;
         [SerializeField] Transform helmetPoint;
         [SerializeField] Transform armorPoint;
+        [SerializeField] Transform leftArmPoint;
+        [SerializeField] Transform rightArmPoint;
         [SerializeField] Transform weaponPoint;
         [SerializeField] Transform shield;
         private Equipment currentHelmet;
-        private Equipment currentArmor;
+        private Armor currentArmor;
         private Equipment currentWeapon;
         private Equipment currentShield;
         public Weapon Currentweapon => (Weapon)currentWeapon;
@@ -27,8 +29,8 @@ namespace Entity
                     currentHelmet = equipment;
                     break;
                 case EquipmentType.Armor:
-                    equipment.Equip(armorPoint, currentArmor);
-                    currentArmor = equipment;
+                    ((Armor)equipment).EquipMultipleParts(armorPoint, leftArmPoint, rightArmPoint, currentArmor);
+                    currentArmor = (Armor)equipment;
                     DisableDefaultSkin();
                     break;
                 case EquipmentType.Weapon:
@@ -56,7 +58,7 @@ namespace Entity
 
         private void DestroyEquipment(Equipment equipment)
         {
-            if(equipment != null)
+            if (equipment != null)
                 Destroy(equipment.gameObject);
             equipment = null;
         }

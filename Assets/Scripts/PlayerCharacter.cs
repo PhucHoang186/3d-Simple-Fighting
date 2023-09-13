@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -53,10 +54,12 @@ namespace Entity
             }
             else
             {
-                xRotation = Mathf.Lerp(playerCamera.eulerAngles.x, playerCamera.eulerAngles.x - entityInput.lookRotation.y, Time.deltaTime * lookSensitive);
+                xRotation = Mathf.Lerp(xRotation, xRotation - entityInput.lookRotation.y, Time.deltaTime * lookSensitive);
                 yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + entityInput.lookRotation.x, Time.deltaTime * lookSensitive);
-                playerCamera.eulerAngles = new Vector3(xRotation, playerCamera.eulerAngles.y, playerCamera.eulerAngles.z);
+                xRotation = Mathf.Clamp(xRotation, clampXRotationMin, clampXRotationMax);
+                playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
+
             }
         }
 

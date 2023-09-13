@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.CompilerServices;
 using System.Net.Security;
+using Unity.Mathematics;
 
 namespace Entity
 {
@@ -11,34 +12,23 @@ namespace Entity
     {
         Entity_Idle,
         Entity_Move,
-        Entity_Attack,
+        Entity_Attack_Short,
+        Entity_Attack_Long,
+        Entity_Defend,
         Entity_GetHit,
         Entity_Destroy,
     }
 
-
-    public enum EntityAnimation
-    {
-        Character_Idle,
-        Character_Roll,
-        Character_Run,
-        Character_Attack,
-        Character_StartCasting,
-        Character_Casting,
-        Character_GetHit,
-        Character_Defeated,
-    }
-
     public class Entity : MonoBehaviour
     {
+        public EntityHandleAnimation anim;
         [SerializeField] protected EntityStatData entityStatData;
         [SerializeField] protected EntityHandleInput entityHandleInput;
         [SerializeField] protected EntityHandleAttack handleAttack;
         [SerializeField] protected EntityHandleTakenDamage handleDamage;
         [SerializeField] protected Transform model;
-        protected Animator anim;
+        [SerializeField] protected LayerMask collideLayer;
         [SerializeField] protected float raycastDistance = 0.62f;
-
         protected float currentMoveSpeed;
         protected float currentLockedTime;
         protected bool isLockedState;
@@ -50,7 +40,6 @@ namespace Entity
         {
             currentMoveSpeed = entityStatData.movementSpeed;
             handleDamage.Init(entityStatData.maxHealth, OnTakenDamage, OnDestroyed);
-            anim = GetComponent<Animator>();
             entityInput = new EntityInput();
         }
 
@@ -72,7 +61,7 @@ namespace Entity
             // get entity input
             GetInput();
             HandleAttackInput();
-            if (IsNonMovableState())
+            if (!IsMovableState())
                 return;
             Move(entityInput.moveVec);
         }
@@ -82,27 +71,30 @@ namespace Entity
             Rotate();
         }
 
-        private bool IsNonMovableState()
+        private bool IsMovableState()
         {
-            return currentEntityState != EntityState.Entity_Idle && currentEntityState != EntityState.Entity_Move;
+            return currentEntityState == EntityState.Entity_Idle ||
+             currentEntityState == EntityState.Entity_Move;
+            //  currentEntityState == EntityState.Entity_Defend ||
+            //  currentEntityState == EntityState.Entity_Attack_Long;
         }
 
         protected virtual void GetInput()
         {
-            entityHandleInput.GetInput(entityInput);
+            entityInput = entityHandleInput.GetInput();
         }
 
         protected virtual void Move(Vector3 moveVec)
         {
-            if (Physics.Raycast(transform.position, Vector3.forward * moveVec.z, raycastDistance))// check back and forth
+            if (Physics.Raycast(transform.position, Vector3.forward * moveVec.z, raycastDistance, collideLayer))// check back and forth
             {
                 moveVec.z = 0f;
             }
-            if (Physics.Raycast(transform.position, Vector3.right * moveVec.x, raycastDistance))// check left and right
+            if (Physics.Raycast(transform.position, Vector3.right * moveVec.x, raycastDistance, collideLayer))// check left and right
             {
                 moveVec.x = 0f;
             }
-            var newPos = transform.position + moveVec.normalized * entityStatData.movementSpeed;
+            var newPos = transform.position + moveVec.normalized * currentMoveSpeed;
             transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
         }
 
@@ -123,20 +115,14 @@ namespace Entity
 
         private bool IsLockState(EntityState entityState)
         {
-            return entityState == EntityState.Entity_GetHit;
+            return entityState == EntityState.Entity_Attack_Short || entityState == EntityState.Entity_GetHit;
         }
-
-
 
         protected virtual void HandleAttackInput()
         {
             if (handleAttack == null)
                 return;
-
-            if (entityInput.StartAttack)
-            {
-                handleAttack.HandleAttackInput(this, entityInput);
-            }
+            handleAttack.HandleAttackInput(this, entityInput);
         }
 
         public virtual void ChangeEntityState(EntityState newState, float lockedTime = 0f)
@@ -146,18 +132,23 @@ namespace Entity
 
             currentEntityState = newState;
             CheckLockedState(newState, lockedTime);
+            anim.PlayEntityAnimState(currentEntityState);
+
             switch (currentEntityState)
             {
                 case EntityState.Entity_Idle:
-                    PlayAnim(EntityAnimation.Character_Idle);
                     break;
                 case EntityState.Entity_Move:
-                    PlayAnim(EntityAnimation.Character_Run);
                     break;
-                case EntityState.Entity_Attack:
+                case EntityState.Entity_Attack_Short:
+                    break;
+                case EntityState.Entity_Attack_Long:
+                case EntityState.Entity_Defend:
+                    currentMoveSpeed = entityStatData.movementSpeed / 2f;
+                    break;
+                case EntityState.Entity_GetHit:
                     break;
                 case EntityState.Entity_Destroy:
-                    PlayAnim(EntityAnimation.Character_Defeated);
                     break;
                 default:
                     break;
@@ -166,29 +157,12 @@ namespace Entity
 
         public void OnTakenDamage()
         {
-            PlayAnim(EntityAnimation.Character_GetHit);
+            ChangeEntityState(EntityState.Entity_GetHit, 0.5f);
         }
 
         protected virtual void OnDestroyed()
         {
             ChangeEntityState(EntityState.Entity_Destroy);
         }
-
-        public void PlayAnim(EntityAnimation animName, float transitionTime = 0.1f)
-        {
-            anim.CrossFade(animName.ToString(), transitionTime);
-        }
-    }
-
-    [Serializable]
-    public class EntityInput
-    {
-        public Vector3 lookRotation;
-        public Vector3 moveVec;
-        public bool isInstantAttackPressed;
-        public bool isCastingAttackPressed;
-        public bool isCastingAttackReleased;
-        public bool isLockTarget;
-        public bool StartAttack => isInstantAttackPressed || isCastingAttackPressed || isCastingAttackReleased;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Entity;
 using NaughtyAttributes;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class EntityHandleAttack : MonoBehaviour
 {
     private Weapon currentWeapon;
     private bool isHoldingAttack;
+    private bool isBlocking;
 
     void Start()
     {
@@ -52,12 +54,38 @@ public class EntityHandleAttack : MonoBehaviour
     {
         if (currentWeapon == null)
             return;
+        Attack(entity, entityInput);
+        Block(entity, entityInput);
+    }
+
+    private void Block(Entity.Entity entity, EntityInput entityInput)
+    {
+        if (entityInput.isBlockPressed)
+        {
+            if (isBlocking)
+                return;
+            isBlocking = true;
+            entity.ChangeEntityState(EntityState.Entity_Defend);
+        }
+        else
+        {
+            if (!isBlocking)
+                return;
+            isBlocking = false;
+            entity.ChangeEntityState(EntityState.Entity_Idle);
+        }
+    }
+
+    private void Attack(Entity.Entity entity, EntityInput entityInput)
+    {
+        if (!entityInput.StartAttack)
+            return;
+
         // melee
         var isCastingWeaponType = currentWeapon.IsCastingTypeWeapon();
         if (entityInput.isInstantAttackPressed && !isCastingWeaponType)
         {
-            entity.ChangeEntityState(EntityState.Entity_Attack, 1f);
-            entity.PlayAnim(EntityAnimation.Character_Attack);
+            entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f);
             return;
         }
 
@@ -67,18 +95,16 @@ public class EntityHandleAttack : MonoBehaviour
             if (isCastingWeaponType)
             {
                 isHoldingAttack = true;
-                entity.ChangeEntityState(EntityState.Entity_Attack);
-                entity.PlayAnim(EntityAnimation.Character_StartCasting);
+                entity.ChangeEntityState(EntityState.Entity_Attack_Long);
             }
         }
-
         if (entityInput.isCastingAttackReleased)
         {
             if (isHoldingAttack)
             {
                 isHoldingAttack = false;
                 Debug.Log("Shoot Spell");
-                entity.PlayAnim(EntityAnimation.Character_Idle);
+                entity.ChangeEntityState(EntityState.Entity_Idle);
             }
         }
     }

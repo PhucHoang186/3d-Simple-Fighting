@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using Entity;
+using System;
 using UnityEngine;
 
 public class EntityHandleInput : MonoBehaviour
 {
-    public void GetInput(EntityInput entityInput)
+    public virtual EntityInput GetInput()
     {
+        var entityInput = new EntityInput();
         entityInput.moveVec = transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical");
         // rotation
         entityInput.lookRotation.x = Input.GetAxis("Mouse X");
@@ -16,10 +17,10 @@ public class EntityHandleInput : MonoBehaviour
         entityInput.isInstantAttackPressed = GetInstantAttackInput();
         entityInput.isCastingAttackPressed = GetCastingAttackInput();
         entityInput.isCastingAttackReleased = GetCastingAttackReleaseInput();
-        if (GetCastingAttackReleaseInput())
-            Debug.Log(GetCastingAttackReleaseInput());
+        entityInput.isBlockPressed = GetBlockingInput();
         //lock target
         entityInput.isLockTarget = Input.GetKeyDown(KeyCode.LeftShift);
+        return entityInput;
     }
 
     protected virtual bool GetInstantAttackInput()
@@ -34,12 +35,23 @@ public class EntityHandleInput : MonoBehaviour
 
     protected virtual bool GetCastingAttackReleaseInput()
     {
-        if (Input.GetMouseButtonUp(1))
-        {
-            Debug.Log("Holding");
-            return true;
-            //  || !Input.GetKey(KeyCode.R);
-        }
-        return false;
+        return Input.GetMouseButtonUp(1);
     }
+
+    protected virtual bool GetBlockingInput()
+    {
+        return Input.GetKey(KeyCode.Q);
+    }
+}
+
+public struct EntityInput
+{
+    public Vector3 lookRotation;
+    public Vector3 moveVec;
+    public bool isInstantAttackPressed;
+    public bool isCastingAttackPressed;
+    public bool isCastingAttackReleased;
+    public bool isBlockPressed;
+    public bool isLockTarget;
+    public bool StartAttack => isInstantAttackPressed || isCastingAttackPressed || isCastingAttackReleased;
 }
