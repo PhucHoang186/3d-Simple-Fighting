@@ -132,26 +132,34 @@ namespace Entity
 
             currentEntityState = newState;
             CheckLockedState(newState, lockedTime);
-            anim.PlayEntityAnimState(currentEntityState);
 
             switch (currentEntityState)
             {
                 case EntityState.Entity_Idle:
-                    break;
-                case EntityState.Entity_Move:
-                    break;
-                case EntityState.Entity_Attack_Short:
-                    break;
-                case EntityState.Entity_Attack_Long:
-                case EntityState.Entity_Defend:
-                    currentMoveSpeed = entityStatData.movementSpeed / 2f;
-                    break;
-                case EntityState.Entity_GetHit:
-                    break;
-                case EntityState.Entity_Destroy:
-                    break;
-                default:
-                    break;
+                PlayAnim(EntityAnimation.Character_Idle, 0.1f);
+                break;
+            case EntityState.Entity_Move:
+                PlayAnim(EntityAnimation.Character_Run);
+                break;
+            case EntityState.Entity_Attack_Short:
+                PlayAnim(EntityAnimation.Character_Attack);
+                break;
+            case EntityState.Entity_Attack_Long:
+                PlayAnim(EntityAnimation.Character_Idle);
+                PlayAnim(EntityAnimation.Character_StartCasting);
+                break;
+            case EntityState.Entity_Defend:
+                PlayAnim(EntityAnimation.Character_Idle);
+                PlayAnim(EntityAnimation.Character_Block);
+                break;
+            case EntityState.Entity_GetHit:
+                PlayAnim(EntityAnimation.Character_GetHit);
+                break;
+            case EntityState.Entity_Destroy:
+                PlayAnim(EntityAnimation.Character_Defeated);
+                break;
+            default:
+                break;
             }
         }
 
@@ -163,6 +171,11 @@ namespace Entity
         protected virtual void OnDestroyed()
         {
             ChangeEntityState(EntityState.Entity_Destroy);
+        }
+
+        public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
+        {
+            anim.PlayAnim(animName, transitionTime);
         }
     }
 }

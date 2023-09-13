@@ -20,18 +20,18 @@ public enum EntityAnimation
 
 public class EntityHandleAnimation : MonoBehaviour
 {
-    private float animTransitionTime;
-    private float curAnimTransitionTime;
-    private float desAnimLayerWeight;
-    private float curAnimLayerWeight;
-    private bool finishedUpdateAnimWeight;
+    // private float animTransitionTime;
+    // private float curAnimTransitionTime;
+    // private float desAnimLayerWeight;
+    // private float curAnimLayerWeight;
+    // private bool finishedUpdateAnimWeight;
     private Animator anim;
-    private Entity.Entity entity;
+    // private Entity.Entity entity;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
-        entity = GetComponent<Entity.Entity>();
+        // entity = GetComponent<Entity.Entity>();
     }
 
     private void OnDestroy()
@@ -67,38 +67,6 @@ public class EntityHandleAnimation : MonoBehaviour
     //     anim.SetLayerWeight(2, curAnimLayerWeight);
     // }
 
-    public void PlayEntityAnimState(EntityState newState)
-    {
-        switch (newState)
-        {
-            case EntityState.Entity_Idle:
-                PlayAnim(EntityAnimation.Character_Idle, 0.1f);
-                break;
-            case EntityState.Entity_Move:
-                PlayAnim(EntityAnimation.Character_Run);
-                break;
-            case EntityState.Entity_Attack_Short:
-                PlayAnim(EntityAnimation.Character_Attack);
-                break;
-            case EntityState.Entity_Attack_Long:
-                PlayAnim(EntityAnimation.Character_Idle);
-                PlayAnim(EntityAnimation.Character_StartCasting);
-                break;
-            case EntityState.Entity_Defend:
-                PlayAnim(EntityAnimation.Character_Idle);
-                PlayAnim(EntityAnimation.Character_Block);
-                break;
-            case EntityState.Entity_GetHit:
-                PlayAnim(EntityAnimation.Character_GetHit);
-                break;
-            case EntityState.Entity_Destroy:
-                PlayAnim(EntityAnimation.Character_Defeated);
-                break;
-            default:
-                break;
-        }
-    }
-
     public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
     {
         // reset trigger
@@ -109,9 +77,9 @@ public class EntityHandleAnimation : MonoBehaviour
         
         
         anim.CrossFade(animName.ToString(), transitionTime);
-        desAnimLayerWeight = NeedOverrideAnimationState(animName, transitionTime) ? 1f : 0f;
-        curAnimTransitionTime = 0;
-        finishedUpdateAnimWeight = false;
+        // desAnimLayerWeight = NeedOverrideAnimationState(animName, transitionTime) ? 1f : 0f;
+        // curAnimTransitionTime = 0;
+        // finishedUpdateAnimWeight = false;
     }
 
     private bool NeedOverrideAnimationState(EntityAnimation animName, float transitionTime = 0f)
