@@ -872,6 +872,7 @@ GameObject:
   - component: {fileID: 658148492817810252}
   - component: {fileID: 658148492817810263}
   - component: {fileID: 658148492817810269}
+  - component: {fileID: 658148492817810265}
   m_Layer: 3
   m_Name: Player_1
   m_TagString: Untagged
@@ -962,15 +963,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 658148492817810269}
-  entityStatData: {fileID: 11400000, guid: b966c7b26f24764459d4048a76aab1d7, type: 2}
   entityHandleInput: {fileID: 658148492817810263}
   handleAttack: {fileID: 658148492817810252}
   handleDamage: {fileID: 658148492817810244}
+  movementHandle: {fileID: 0}
+  entityStatData: {fileID: 11400000, guid: b966c7b26f24764459d4048a76aab1d7, type: 2}
   model: {fileID: 8311718412718196615}
-  collideLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  raycastDistance: 1.5
+  rotateSpeed: 300
   checkLocktargetRadius: 10
   lookSensitive: 300
   lockTargetObjLayerName: Enemy
@@ -978,7 +977,7 @@ MonoBehaviour:
   playerWorldUI: {fileID: 1593609489}
   playerCamera: {fileID: 1398105523}
   clampXRotationMin: -15
-  clampXRotationMax: 30
+  clampXRotationMax: 20
 --- !u!114 &5004066983610413462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,6 +1050,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a467fa761797d3f47b7c0cae2b8f3af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &658148492817810265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636770347797424941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027664403fe4334449e2c3874ba0746e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 8311718412718196615}
+  collideLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  raycastDistance: 0.62
+  rotateSpeed: 200
 --- !u!1 &5911138903035181920
 GameObject:
   m_ObjectHideFlags: 0

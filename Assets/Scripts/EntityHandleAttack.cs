@@ -104,17 +104,23 @@ public class EntityHandleAttack : MonoBehaviour
             {
                 isHoldingAttack = false;
                 Debug.Log("Shoot Spell");
+                ((RangeWeapon)currentWeapon).UseSpell();
                 entity.ChangeEntityState(EntityState.Entity_Idle);
             }
         }
     }
 
-    public void OnHitTarget(Collider targetCol, Vector3 hitPoint = default(Vector3))
+    public void OnHitTarget(Collider targetCol, Vector3 hitPoint = default)
     {
-        var damageable = targetCol.GetComponent<IDamageable>();
-        if (damageable != null)
+        if (targetCol.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakenDamage(currentWeapon.WeaponTrueDamage(), hitPoint);
         }
+    }
+
+    // use animation event , play at the end of casting animation
+    public void StartCastingSpell()
+    {
+        ((RangeWeapon)currentWeapon).Charging();
     }
 }

@@ -34,15 +34,6 @@ public class EntityHandleAnimation : MonoBehaviour
         // entity = GetComponent<Entity.Entity>();
     }
 
-    private void OnDestroy()
-    {
-    }
-
-    private void Update()
-    {
-        // UpdateAnimLayerWeight();
-    }
-
     // private void UpdateAnimLayerWeight()
     // {
     //     if (finishedUpdateAnimWeight)
@@ -67,15 +58,17 @@ public class EntityHandleAnimation : MonoBehaviour
     //     anim.SetLayerWeight(2, curAnimLayerWeight);
     // }
 
-    public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
+    public void PlayAnim(EntityAnimation animName, float transitionTime = 0f, bool ignoreOverrideCheck = false)
     {
         // reset trigger
-        if (!NeedOverrideAnimationState(animName))
-            anim.SetTrigger("BaseLayer");
-        else
-            anim.ResetTrigger("BaseLayer");
-        
-        
+        if (!ignoreOverrideCheck)
+        {
+            if (NeedOverrideAnimationState(animName))
+                anim.SetBool("BaseLayer", false);
+            else
+                anim.SetBool("BaseLayer", true);
+        }
+
         anim.CrossFade(animName.ToString(), transitionTime);
         // desAnimLayerWeight = NeedOverrideAnimationState(animName, transitionTime) ? 1f : 0f;
         // curAnimTransitionTime = 0;

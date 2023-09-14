@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class RangeWeapon : Weapon
 {
-    private Spell currentUseSpell;
+    [SerializeField] private Transform castingPoint;
+    [SerializeField] private SpellData currentSpellData;
+    private Spell spellUsed;
+
     public override float WeaponTrueDamage()
     {
-        var spellDamage = currentUseSpell != null ? currentUseSpell.spellDamage : 0f;
+        var spellDamage = currentSpellData != null ? currentSpellData.spellDamage : 0f;
         return weaponBaseDamage + spellDamage;
+    }
+
+    public void Charging()
+    {
+        spellUsed = Instantiate(currentSpellData.spellPrefab, castingPoint);
+        spellUsed.transform.ResetTransform();
+        spellUsed.Init(currentSpellData.spellSpeed);
+    }
+
+    public void UseSpell()
+    {
+        spellUsed.CastSpell();
     }
 }
