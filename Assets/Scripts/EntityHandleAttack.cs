@@ -7,21 +7,24 @@ using UnityEngine;
 
 public class EntityHandleAttack : MonoBehaviour
 {
-    private Weapon currentWeapon;
-    private bool isHoldingAttack;
-    private bool isBlocking;
+    [SerializeField] protected EntityHandleSpellSystem spellSystem;
+    protected Weapon currentWeapon;
+    protected bool isBlocking;
+    protected float chargingTime;
+    protected bool startCharging;
+    protected bool finishCharging;
+    protected EntityState callBackStateAfterAttack;
 
     void Start()
     {
-        EntityEvents.OnSetWeapon += OnSetWeapon;
+        EntityEvents.OnSetWeapon = OnSetWeapon;
     }
 
     void OnDestroy()
     {
-        EntityEvents.OnSetWeapon -= OnSetWeapon;
-
+        EntityEvents.OnSetWeapon = OnSetWeapon;
         if (currentWeapon != null)
-            currentWeapon.OnHitTarget += OnHitTarget;
+            currentWeapon.OnHitTarget = null;
     }
 
 
@@ -29,14 +32,14 @@ public class EntityHandleAttack : MonoBehaviour
     {
         currentWeapon = newWeapon;
         if (currentWeapon != null)
-            currentWeapon.OnHitTarget += OnHitTarget;
+            currentWeapon.OnHitTarget = OnHitTarget;
     }
 
     // for melee weapon
     // use in animation event
     public void ToggleHitBoxOn()
     {
-        if (!currentWeapon.IsCastingTypeWeapon())
+        if (!currentWeapon.IsChargingTypeWeapon())
         {
             ((MeleeWeapon)currentWeapon)?.ToggleHitBox(true);
         }
@@ -44,7 +47,7 @@ public class EntityHandleAttack : MonoBehaviour
 
     public void ToggleHitBoxOff()
     {
-        if (!currentWeapon.IsCastingTypeWeapon())
+        if (!currentWeapon.IsChargingTypeWeapon())
         {
             ((MeleeWeapon)currentWeapon)?.ToggleHitBox(false);
         }
@@ -58,7 +61,7 @@ public class EntityHandleAttack : MonoBehaviour
         Block(entity, entityInput);
     }
 
-    private void Block(Entity.Entity entity, EntityInput entityInput)
+    protected void Block(Entity.Entity entity, EntityInput entityInput)
     {
         if (entityInput.isBlockPressed)
         {
@@ -76,38 +79,74 @@ public class EntityHandleAttack : MonoBehaviour
         }
     }
 
-    private void Attack(Entity.Entity entity, EntityInput entityInput)
+    protected void Attack(Entity.Entity entity, EntityInput entityInput)
     {
         if (!entityInput.StartAttack)
             return;
 
+        var isChargingWeaponType = currentWeapon.IsChargingTypeWeapon();
         // melee
-        var isCastingWeaponType = currentWeapon.IsCastingTypeWeapon();
-        if (entityInput.isInstantAttackPressed && !isCastingWeaponType)
+        if (entityInput.isInstantAttackPressed && !isChargingWeaponType)
         {
-            entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f);
+            entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f, callBackStateAfterAttack);
             return;
         }
 
         // range
-        if (entityInput.isCastingAttackPressed)
+        if (isChargingWeaponType)
         {
-            if (isCastingWeaponType)
+            if (entityInput.isCastingAttackPressed)
             {
-                isHoldingAttack = true;
-                entity.ChangeEntityState(EntityState.Entity_Attack_Long);
+                ChargingAttack(entity, isChargingWeaponType);
+            }
+            if (entityInput.isCastingAttackReleased)
+            {
+                Activate(entity);
             }
         }
-        if (entityInput.isCastingAttackReleased)
+    }
+
+    protected void Activate(Entity.Entity entity)
+    {
+        if (finishCharging)
         {
-            if (isHoldingAttack)
-            {
-                isHoldingAttack = false;
-                Debug.Log("Shoot Spell");
-                ((RangeWeapon)currentWeapon).UseSpell();
-                entity.ChangeEntityState(EntityState.Entity_Idle);
-            }
+            entity.ChangeEntityState(EntityState.Entity_Idle, callBackLockState: callBackStateAfterAttack);
+            ((RangeWeapon)currentWeapon).ActivateSkill();
         }
+        else
+        {
+            entity.ChangeEntityState(EntityState.Entity_Idle, callBackLockState: callBackStateAfterAttack);
+            ((RangeWeapon)currentWeapon).DeActivateSkill();
+        }
+        finishCharging = false;
+    }
+
+    protected void ChargingAttack(Entity.Entity entity, bool isChargingWeaponType)
+    {
+        if (isChargingWeaponType)
+        {
+            startCharging = true;
+            chargingTime = spellSystem.GetCurrentSpellData().chargingTime;
+            entity.ChangeEntityState(EntityState.Entity_Attack_Long);
+        }
+    }
+
+    protected void Update()
+    {
+        callBackStateAfterAttack = isBlocking ? EntityState.Entity_Default : EntityState.Entity_Idle;
+        if (!startCharging)
+            return;
+        if (chargingTime <= 0)
+            OnFinishCharging();
+        else
+            chargingTime -= Time.deltaTime;
+    }
+
+    protected void OnFinishCharging()
+    {
+        finishCharging = true;
+        startCharging = false;
+        ((RangeWeapon)currentWeapon).OnFinishCharge();
     }
 
     public void OnHitTarget(Collider targetCol, Vector3 hitPoint = default)
@@ -121,6 +160,8 @@ public class EntityHandleAttack : MonoBehaviour
     // use animation event , play at the end of casting animation
     public void StartCastingSpell()
     {
-        ((RangeWeapon)currentWeapon).Charging();
+        var rangeWeapon = ((RangeWeapon)currentWeapon);
+        rangeWeapon.SetSpellData(spellSystem.GetCurrentSpellData());
+        rangeWeapon.Charging();
     }
 }

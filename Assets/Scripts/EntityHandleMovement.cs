@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Entity;
 using UnityEngine;
 
 public class EntityHandleMovement : MonoBehaviour
@@ -8,12 +9,20 @@ public class EntityHandleMovement : MonoBehaviour
     [SerializeField] protected LayerMask collideLayer;
     [SerializeField] protected float raycastDistance = 0.62f;
     [SerializeField] protected float rotateSpeed;
+    protected float slowSpeed;
+    protected float normalSpeed;
     private Vector3 rotateVec;
     private float currentMoveSpeed;
     private float desMoveSpeed;
 
 
-    public void SetMoveSpeed(float moveSpeed)
+    public void Init(EntityStatData entityData)
+    {
+        normalSpeed = entityData.movementSpeed;
+        slowSpeed = entityData.slowSpeed;
+    }
+
+    protected void SetMoveSpeed(float moveSpeed)
     {
         desMoveSpeed = moveSpeed;
     }
@@ -37,5 +46,19 @@ public class EntityHandleMovement : MonoBehaviour
     {
         rotateVec = Vector3.Lerp(rotateVec, desVec, rotateSpeed * Time.deltaTime);
         model.rotation = Quaternion.LookRotation(model.forward + rotateVec, Vector3.up);
+    }
+
+    public void SetSpeedBaseOnState(EntityState entityState)
+    {
+        switch (entityState)
+        {
+            case EntityState.Entity_Idle:
+                SetMoveSpeed(normalSpeed);
+                break;
+            case EntityState.Entity_Attack_Long:
+            case EntityState.Entity_Defend:
+                SetMoveSpeed(slowSpeed);
+                break;
+        }
     }
 }

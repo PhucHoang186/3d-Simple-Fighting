@@ -28,7 +28,7 @@ public class EntityHandleAnimation : MonoBehaviour
     private Animator anim;
     // private Entity.Entity entity;
 
-    private void Start()
+    private void Awake()
     {
         anim = GetComponent<Animator>();
         // entity = GetComponent<Entity.Entity>();

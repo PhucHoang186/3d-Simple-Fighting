@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RotaryHeart.Lib.SerializableDictionary;
+using System;
+
 
 public class SpellDatasConfig : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] SpellDataDict spellDataDict;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
+
+
+}
+[Serializable]
+public class SpellDataDict : SerializableDictionaryBase<string, SpellData>
+{
+
 }

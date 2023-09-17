@@ -10,18 +10,25 @@ public class Spell : MonoBehaviour
     private Vector3 shootDirection;
     private float spellSpeed;
     private bool isCastedSpell;
+    private float spelldamage;
 
-    public void Init(float speed = 0f)
+    public void Init(float speed = 0f, float spellDamage = 0)
     {
         spellSpeed = speed;
+        this.spelldamage = spellDamage;
     }
 
-    public virtual void CastSpell()
+    public virtual void ActivateSkill()
     {
         shootDirection = CalculateDirection(); ;
         transform.SetParent(null);
         isCastedSpell = true;
-        Destroy(this.gameObject, 5f);
+        Destroy(gameObject, 5f);
+    }
+
+    public virtual void DeActivateSkill()
+    {
+        Destroy(gameObject);
     }
 
     void Update()
@@ -29,7 +36,7 @@ public class Spell : MonoBehaviour
         if (!isCastedSpell)
             return;
         MoveToTarget();
-        if (Physics.Raycast(transform.position, shootDirection, raycastDistance))
+        if (Physics.Raycast(transform.position, shootDirection, out RaycastHit hit, raycastDistance))
         {
             OnHit();
         }
@@ -43,15 +50,30 @@ public class Spell : MonoBehaviour
     private Vector3 CalculateDirection()
     {
         var ray = CameraController.Instance.mainCam.ViewportPointToRay(Vector2.one * 0.5f);
-        var direction = ray.GetPoint(75) - transform.position;
+        var direction = Vector3.zero;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance))
+            direction = hit.point - transform.position;
+        else
+            direction = ray.GetPoint(75) - transform.position;
+
         direction = direction.normalized;
         return direction;
     }
 
     private void OnHit()
     {
+        isCastedSpell = false;
         model.SetActive(false);
         hitVfx.SetActive(true);
         Destroy(gameObject, 3f);
+        var colliders = Physics.OverlapSphere(transform.position, 2f);
+        foreach (var collider in colliders)
+        {
+            if (collider.transform.TryGetComponent<IDamageable>(out var damageable))
+            {
+                damageable.TakenDamage(spelldamage, collider.transform.position);
+            }
+        }
     }
 }

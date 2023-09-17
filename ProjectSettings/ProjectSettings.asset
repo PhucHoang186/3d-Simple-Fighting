@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: Hitori
   productName: Simple Hack & Slash
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -815,7 +815,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: PROBUILDER_EXPERIMENTAL_FEATURES
     Server: PROBUILDER_EXPERIMENTAL_FEATURES
-    Standalone: PROBUILDER_EXPERIMENTAL_FEATURES
+    Standalone: PROBUILDER_EXPERIMENTAL_FEATURES;RH_SerializedDictionary
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

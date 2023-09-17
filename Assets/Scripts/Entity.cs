@@ -10,6 +10,7 @@ namespace Entity
 {
     public enum EntityState
     {
+        Entity_Default,
         Entity_Idle,
         Entity_Move,
         Entity_Attack_Short,
@@ -35,6 +36,7 @@ namespace Entity
         protected float currentLockedTime;
         protected bool isLockedState;
         protected EntityState currentEntityState;
+        protected EntityState callBackLockState;
         protected EntityInput entityInput;
 
         protected virtual void Start()
@@ -42,6 +44,9 @@ namespace Entity
             entityInput = new EntityInput();
             if (handleDamage != null)
                 handleDamage.Init(entityStatData.maxHealth, OnTakenDamage, OnDestroyed);
+            if (movementHandle != null)
+                movementHandle.Init(entityStatData);
+            ChangeEntityState(EntityState.Entity_Idle);
         }
 
         protected virtual void Update()
@@ -53,8 +58,7 @@ namespace Entity
                     currentLockedTime -= Time.deltaTime;
                 else
                 {
-                    isLockedState = false;
-                    ChangeEntityState(EntityState.Entity_Idle);
+                    OnFinishLockState();
                 }
 
                 return;
@@ -65,6 +69,12 @@ namespace Entity
             if (!IsMovableState())
                 return;
             Move(entityInput.moveVec);
+        }
+
+        protected void OnFinishLockState()
+        {
+            isLockedState = false;
+            ChangeEntityState(callBackLockState);
         }
 
         protected virtual void Move(Vector3 moveVec)
@@ -89,11 +99,12 @@ namespace Entity
 
         protected virtual void Rotate()
         {
-           movementHandle.Rotate(entityInput.moveVec);
+            movementHandle.Rotate(entityInput.moveVec);
         }
 
-        protected virtual void CheckLockedState(EntityState entityState, float lockedTime = 0f)
+        protected virtual void CheckLockedState(EntityState entityState, float lockedTime = 0f, EntityState callBackLockState = EntityState.Entity_Idle)
         {
+            this.callBackLockState = callBackLockState;
             isLockedState = IsLockState(entityState);
             if (isLockedState)
             {
@@ -112,31 +123,29 @@ namespace Entity
                 handleAttack.HandleAttackInput(this, entityInput);
         }
 
-        public virtual void ChangeEntityState(EntityState newState, float lockedTime = 0f)
+        public virtual void ChangeEntityState(EntityState newState, float lockedTime = 0f, EntityState callBackLockState = EntityState.Entity_Idle)
         {
-            if (newState == currentEntityState)
+            if (newState == currentEntityState || newState == EntityState.Entity_Default)
                 return;
+            movementHandle.SetSpeedBaseOnState(newState);
             currentEntityState = newState;
-            CheckLockedState(currentEntityState, lockedTime);
-            switch (currentEntityState)
+            CheckLockedState(newState, lockedTime, callBackLockState);
+            switch (newState)
             {
                 case EntityState.Entity_Idle:
-                    movementHandle.SetMoveSpeed(entityStatData.movementSpeed);
                     PlayAnim(EntityAnimation.Character_Idle, 0.1f);
                     break;
                 case EntityState.Entity_Move:
                     PlayAnim(EntityAnimation.Character_Run, 0.1f);
                     break;
                 case EntityState.Entity_Attack_Short:
-                    PlayAnim(EntityAnimation.Character_Attack);
+                    PlayAnim(EntityAnimation.Character_Attack, ignoreOverrideCheck: callBackLockState == EntityState.Entity_Default);
                     break;
                 case EntityState.Entity_Attack_Long:
-                    movementHandle.SetMoveSpeed(entityStatData.slowSpeed);
                     PlayAnim(EntityAnimation.Character_Idle);
                     PlayAnim(EntityAnimation.Character_StartCasting);
                     break;
                 case EntityState.Entity_Defend:
-                    movementHandle.SetMoveSpeed(entityStatData.slowSpeed);
                     PlayAnim(EntityAnimation.Character_Idle);
                     PlayAnim(EntityAnimation.Character_Block);
                     break;
@@ -161,9 +170,9 @@ namespace Entity
             ChangeEntityState(EntityState.Entity_Destroy);
         }
 
-        public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
+        public void PlayAnim(EntityAnimation animName, float transitionTime = 0f, bool ignoreOverrideCheck = false)
         {
-            anim.PlayAnim(animName, transitionTime);
+            anim.PlayAnim(animName, transitionTime, ignoreOverrideCheck);
         }
     }
 }

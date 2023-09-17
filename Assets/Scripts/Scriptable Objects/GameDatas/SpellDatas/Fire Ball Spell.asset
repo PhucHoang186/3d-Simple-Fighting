@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Fire Ball
   spellPrefab: {fileID: 3979371667109690171, guid: 3359dc0b6e4f56b49ac28509423bc8bd, type: 3}
-  spellDamage: 2
+  spellDamage: 10
   spellSpeed: 15
+  chargingTime: 2

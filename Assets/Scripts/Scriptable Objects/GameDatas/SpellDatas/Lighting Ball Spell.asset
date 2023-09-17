@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e87acdcb55e9448b68b2fca6db3fef, type: 3}
+  m_Name: Lighting Ball Spell
+  m_EditorClassIdentifier: 
+  spellName: Lighting Ball
+  spellPrefab: {fileID: 3979371667109690171, guid: ab5124682a50fcc4c818c0d6d1b423b1, type: 3}
+  spellDamage: 10
+  spellSpeed: 15
+  chargingTime: 2

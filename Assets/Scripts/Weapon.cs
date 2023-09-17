@@ -21,7 +21,7 @@ public class Weapon : Equipment
         return 0f;
     }
 
-    public bool IsCastingTypeWeapon()
+    public bool IsChargingTypeWeapon()
     {
         return weaponType == WeaponType.Spell || weaponType == WeaponType.Range;
     }

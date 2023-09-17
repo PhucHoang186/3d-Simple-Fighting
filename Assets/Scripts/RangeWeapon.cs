@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class RangeWeapon : Weapon
 {
+    // use for bow and staff
     [SerializeField] private Transform castingPoint;
-    [SerializeField] private SpellData currentSpellData;
+    [SerializeField] private GameObject onChargeFinishVfx;
     private Spell spellUsed;
+    private SpellData currentSpellData;
+
+
+
+    public void SetSpellData(SpellData spellData)
+    {
+        currentSpellData = spellData;
+    }
 
     public override float WeaponTrueDamage()
     {
@@ -14,15 +23,28 @@ public class RangeWeapon : Weapon
         return weaponBaseDamage + spellDamage;
     }
 
-    public void Charging()
+    public void OnFinishCharge()
     {
-        spellUsed = Instantiate(currentSpellData.spellPrefab, castingPoint);
-        spellUsed.transform.ResetTransform();
-        spellUsed.Init(currentSpellData.spellSpeed);
+        onChargeFinishVfx.SetActive(true);
     }
 
-    public void UseSpell()
+    public void Charging()
     {
-        spellUsed.CastSpell();
+        onChargeFinishVfx.SetActive(false);
+        spellUsed = Instantiate(currentSpellData.spellPrefab, castingPoint);
+        spellUsed.transform.ResetTransform();
+        spellUsed.Init(currentSpellData.spellSpeed, WeaponTrueDamage());
+    }
+
+    public void DeActivateSkill()
+    {
+        spellUsed.DeActivateSkill();
+    }
+
+    public void ActivateSkill()
+    {
+        onChargeFinishVfx.SetActive(false);
+        onChargeFinishVfx.SetActive(false);
+        spellUsed.ActivateSkill();
     }
 }

@@ -122,10 +122,10 @@ public static class Direction3D
         Vector3Int.left,
         Vector3Int.up,
         Vector3Int.down,
-        Vector3Int.forward + Vector3Int.right,
-        Vector3Int.forward + Vector3Int.left,
-        Vector3Int.back + Vector3Int.right,
-        Vector3Int.back + Vector3Int.left,
+        Vector3Int.forward + Vector3Int.right, // top right
+        Vector3Int.forward + Vector3Int.left, // top left
+        Vector3Int.back + Vector3Int.right, // bottom right
+        Vector3Int.back + Vector3Int.left, // bottom right
     };
 
     public static Vector3Int GetRandomCardinalDirection(bool isThreeDemension = true)
