@@ -16,68 +16,41 @@ public enum EntityAnimation
     Character_GetHit,
     Character_Defeated,
     Character_Block,
+    Character_UnBlock,
 }
 
 public class EntityHandleAnimation : MonoBehaviour
 {
-    // private float animTransitionTime;
-    // private float curAnimTransitionTime;
-    // private float desAnimLayerWeight;
-    // private float curAnimLayerWeight;
-    // private bool finishedUpdateAnimWeight;
     private Animator anim;
-    // private Entity.Entity entity;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        // entity = GetComponent<Entity.Entity>();
     }
 
-    // private void UpdateAnimLayerWeight()
-    // {
-    //     if (finishedUpdateAnimWeight)
-    //         return;
-    //     if (curAnimTransitionTime > animTransitionTime)
-    //     {
-    //         finishedUpdateAnimWeight = true;
-    //         return;
-    //     }
-
-    //     if (animTransitionTime == 0)
-    //     {
-    //         curAnimLayerWeight = desAnimLayerWeight;
-    //     }
-    //     else
-    //     {
-    //         curAnimTransitionTime += Time.deltaTime;
-    //         curAnimLayerWeight = Mathf.Lerp(curAnimLayerWeight, desAnimLayerWeight, curAnimTransitionTime / animTransitionTime);
-    //     }
-
-    //     anim.SetLayerWeight(1, curAnimLayerWeight);
-    //     anim.SetLayerWeight(2, curAnimLayerWeight);
-    // }
-
-    public void PlayAnim(EntityAnimation animName, float transitionTime = 0f, bool ignoreOverrideCheck = false)
+    public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
     {
         // reset trigger
-        if (!ignoreOverrideCheck)
+        if (NeedOverrideAnimationState(animName))
+            anim.SetBool("BaseLayer", false);
+        else
         {
-            if (NeedOverrideAnimationState(animName))
-                anim.SetBool("BaseLayer", false);
-            else
-                anim.SetBool("BaseLayer", true);
+            Debug.LogError(animName);
+            anim.SetBool("BaseLayer", true);
         }
 
+        if(animName == EntityAnimation.Character_Block)
+            anim.SetBool("IsBlocking", true);
+        if (animName == EntityAnimation.Character_UnBlock)
+            anim.SetBool("IsBlocking", false);
+
         anim.CrossFade(animName.ToString(), transitionTime);
-        // desAnimLayerWeight = NeedOverrideAnimationState(animName, transitionTime) ? 1f : 0f;
-        // curAnimTransitionTime = 0;
-        // finishedUpdateAnimWeight = false;
     }
 
-    private bool NeedOverrideAnimationState(EntityAnimation animName, float transitionTime = 0f)
+    private bool NeedOverrideAnimationState(EntityAnimation animName)
     {
-        // animTransitionTime = transitionTime;
-        return animName == EntityAnimation.Character_Attack || animName == EntityAnimation.Character_StartCasting || animName == EntityAnimation.Character_Block;
+        return animName == EntityAnimation.Character_Attack
+        || animName == EntityAnimation.Character_StartCasting
+        || animName == EntityAnimation.Character_Block;
     }
 }

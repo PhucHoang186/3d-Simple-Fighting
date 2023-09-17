@@ -13,7 +13,6 @@ public class EntityHandleAttack : MonoBehaviour
     protected float chargingTime;
     protected bool startCharging;
     protected bool finishCharging;
-    protected EntityState callBackStateAfterAttack;
 
     void Start()
     {
@@ -68,14 +67,14 @@ public class EntityHandleAttack : MonoBehaviour
             if (isBlocking)
                 return;
             isBlocking = true;
-            entity.ChangeEntityState(EntityState.Entity_Defend);
+            entity.ChangeEntityState(EntityState.Entity_Block);
         }
         else
         {
             if (!isBlocking)
                 return;
             isBlocking = false;
-            entity.ChangeEntityState(EntityState.Entity_Idle);
+            entity.ChangeEntityState(EntityState.Entity_UnBlock);
         }
     }
 
@@ -88,7 +87,7 @@ public class EntityHandleAttack : MonoBehaviour
         // melee
         if (entityInput.isInstantAttackPressed && !isChargingWeaponType)
         {
-            entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f, callBackStateAfterAttack);
+            entity.ChangeEntityState(EntityState.Entity_Attack_Short);
             return;
         }
 
@@ -99,9 +98,15 @@ public class EntityHandleAttack : MonoBehaviour
             {
                 ChargingAttack(entity, isChargingWeaponType);
             }
+
             if (entityInput.isCastingAttackReleased)
             {
-                Activate(entity);
+                if (finishCharging)
+                {
+                    Activate(entity);
+                }
+                startCharging = false;
+                finishCharging = false;
             }
         }
     }
@@ -110,31 +115,29 @@ public class EntityHandleAttack : MonoBehaviour
     {
         if (finishCharging)
         {
-            entity.ChangeEntityState(EntityState.Entity_Idle, callBackLockState: callBackStateAfterAttack);
+            entity.ChangeEntityState(EntityState.Entity_Idle);
             ((RangeWeapon)currentWeapon).ActivateSkill();
         }
         else
         {
-            entity.ChangeEntityState(EntityState.Entity_Idle, callBackLockState: callBackStateAfterAttack);
+            entity.ChangeEntityState(EntityState.Entity_Idle);
             ((RangeWeapon)currentWeapon).DeActivateSkill();
         }
-        finishCharging = false;
     }
 
     protected void ChargingAttack(Entity.Entity entity, bool isChargingWeaponType)
     {
-        if (isChargingWeaponType)
-        {
-            startCharging = true;
-            chargingTime = spellSystem.GetCurrentSpellData().chargingTime;
-            entity.ChangeEntityState(EntityState.Entity_Attack_Long);
-        }
+        if (startCharging)
+            return;
+        startCharging = true;
+        chargingTime = spellSystem.GetCurrentSpellData().chargingTime;
+        entity.ChangeEntityState(EntityState.Entity_Attack_Long);
     }
 
     protected void Update()
     {
-        callBackStateAfterAttack = isBlocking ? EntityState.Entity_Default : EntityState.Entity_Idle;
-        if (!startCharging)
+        // callBackStateAfterAttack = isBlocking ? EntityState.Entity_Default : EntityState.Entity_Idle;
+        if (!startCharging || finishCharging)
             return;
         if (chargingTime <= 0)
             OnFinishCharging();
@@ -145,7 +148,6 @@ public class EntityHandleAttack : MonoBehaviour
     protected void OnFinishCharging()
     {
         finishCharging = true;
-        startCharging = false;
         ((RangeWeapon)currentWeapon).OnFinishCharge();
     }
 

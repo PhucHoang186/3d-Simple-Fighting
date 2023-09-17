@@ -20,11 +20,13 @@ public class EntityHandleMovement : MonoBehaviour
     {
         normalSpeed = entityData.movementSpeed;
         slowSpeed = entityData.slowSpeed;
+        desMoveSpeed = entityData.movementSpeed;
     }
 
-    protected void SetMoveSpeed(float moveSpeed)
+    protected void CheckMoveSpeedState(EntityInput entityInput)
     {
-        desMoveSpeed = moveSpeed;
+        // if(entityInput.isBlockPressed || enity)
+        // desMoveSpeed = moveSpeed;
     }
 
     public void Move(Vector3 moveVec)
@@ -53,11 +55,11 @@ public class EntityHandleMovement : MonoBehaviour
         switch (entityState)
         {
             case EntityState.Entity_Idle:
-                SetMoveSpeed(normalSpeed);
+                // SetMoveSpeed(normalSpeed);
                 break;
             case EntityState.Entity_Attack_Long:
-            case EntityState.Entity_Defend:
-                SetMoveSpeed(slowSpeed);
+            case EntityState.Entity_Block:
+                // SetMoveSpeed(slowSpeed);
                 break;
         }
     }

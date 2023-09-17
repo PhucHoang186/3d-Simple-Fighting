@@ -31,12 +31,6 @@ namespace Entity
             base.Update();
         }
 
-        protected override void Move(Vector3 moveVec)
-        {
-            ChangeEntityState(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle);
-            base.Move(moveVec);
-        }
-
         protected override void Rotate()
         {
             if (lockingTarget != null)
