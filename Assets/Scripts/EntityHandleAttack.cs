@@ -87,7 +87,7 @@ public class EntityHandleAttack : MonoBehaviour
         // melee
         if (entityInput.isInstantAttackPressed && !isChargingWeaponType)
         {
-            entity.ChangeEntityState(EntityState.Entity_Attack_Short);
+            entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f);
             return;
         }
 
@@ -96,7 +96,7 @@ public class EntityHandleAttack : MonoBehaviour
         {
             if (entityInput.isCastingAttackPressed)
             {
-                ChargingAttack(entity, isChargingWeaponType);
+                ChargingAttack(entity);
             }
 
             if (entityInput.isCastingAttackReleased)
@@ -125,7 +125,7 @@ public class EntityHandleAttack : MonoBehaviour
         }
     }
 
-    protected void ChargingAttack(Entity.Entity entity, bool isChargingWeaponType)
+    protected void ChargingAttack(Entity.Entity entity)
     {
         if (startCharging)
             return;

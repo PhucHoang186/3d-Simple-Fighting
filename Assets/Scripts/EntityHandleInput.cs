@@ -18,6 +18,7 @@ public class EntityHandleInput : MonoBehaviour
         entityInput.isCastingAttackPressed = GetCastingAttackInput();
         entityInput.isCastingAttackReleased = GetCastingAttackReleaseInput();
         entityInput.isBlockPressed = GetBlockingInput();
+        entityInput.isHoldingCombatInput = GetHoldingAttackInput();
         //lock target
         entityInput.isLockTarget = Input.GetKeyDown(KeyCode.LeftShift);
         return entityInput;
@@ -38,6 +39,11 @@ public class EntityHandleInput : MonoBehaviour
         return Input.GetMouseButtonUp(1);
     }
 
+    protected virtual bool GetHoldingAttackInput()
+    {
+        return Input.GetMouseButton(1) || Input.GetKey(KeyCode.Q);
+    }
+
     protected virtual bool GetBlockingInput()
     {
         return Input.GetKey(KeyCode.Q);
@@ -53,5 +59,6 @@ public struct EntityInput
     public bool isCastingAttackReleased;
     public bool isBlockPressed;
     public bool isLockTarget;
+    public bool isHoldingCombatInput;
     public bool StartAttack => isInstantAttackPressed || isCastingAttackPressed || isCastingAttackReleased;
 }

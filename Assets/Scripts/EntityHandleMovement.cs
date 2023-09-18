@@ -23,10 +23,9 @@ public class EntityHandleMovement : MonoBehaviour
         desMoveSpeed = entityData.movementSpeed;
     }
 
-    protected void CheckMoveSpeedState(EntityInput entityInput)
+    protected void SetMoveSpeed(float desMoveSpeed)
     {
-        // if(entityInput.isBlockPressed || enity)
-        // desMoveSpeed = moveSpeed;
+        this.desMoveSpeed = desMoveSpeed;
     }
 
     public void Move(Vector3 moveVec)
@@ -50,17 +49,11 @@ public class EntityHandleMovement : MonoBehaviour
         model.rotation = Quaternion.LookRotation(model.forward + rotateVec, Vector3.up);
     }
 
-    public void SetSpeedBaseOnState(EntityState entityState)
+    public void UpdateMoveSpeed(EntityInput entityInput)
     {
-        switch (entityState)
-        {
-            case EntityState.Entity_Idle:
-                // SetMoveSpeed(normalSpeed);
-                break;
-            case EntityState.Entity_Attack_Long:
-            case EntityState.Entity_Block:
-                // SetMoveSpeed(slowSpeed);
-                break;
-        }
+        if (entityInput.isHoldingCombatInput)
+            SetMoveSpeed(slowSpeed);
+        else
+            SetMoveSpeed(normalSpeed);
     }
 }

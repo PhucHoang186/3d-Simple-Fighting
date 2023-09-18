@@ -13,6 +13,7 @@ public enum EntityAnimation
     Character_Attack,
     Character_StartCasting,
     Character_Casting,
+    Character_UnCasting,
     Character_GetHit,
     Character_Defeated,
     Character_Block,
@@ -35,14 +36,18 @@ public class EntityHandleAnimation : MonoBehaviour
             anim.SetBool("BaseLayer", false);
         else
         {
-            Debug.LogError(animName);
             anim.SetBool("BaseLayer", true);
         }
 
-        if(animName == EntityAnimation.Character_Block)
+        if (animName == EntityAnimation.Character_Block)
             anim.SetBool("IsBlocking", true);
         if (animName == EntityAnimation.Character_UnBlock)
             anim.SetBool("IsBlocking", false);
+
+        if (animName == EntityAnimation.Character_UnCasting)
+            anim.SetBool("IsCasting", false);
+        if (animName == EntityAnimation.Character_StartCasting)
+            anim.SetBool("IsCasting", true);
 
         anim.CrossFade(animName.ToString(), transitionTime);
     }

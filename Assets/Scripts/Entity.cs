@@ -15,6 +15,7 @@ namespace Entity
         Entity_Move,
         Entity_Attack_Short,
         Entity_Attack_Long,
+        Entity_UnAttack_Long,
         Entity_Block,
         Entity_UnBlock,
         Entity_GetHit,
@@ -79,7 +80,12 @@ namespace Entity
 
         protected virtual void Move(Vector3 moveVec)
         {
-            ChangeEntityState(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle);
+            if (!entityInput.isHoldingCombatInput)
+            {
+                ChangeEntityState(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle);
+                // PlayAnim(entityInput.moveVec != Vector3.zero ? EntityAnimation.Character_Run : EntityAnimation.Character_Idle);
+            }
+            movementHandle.UpdateMoveSpeed(entityInput);
             movementHandle.Move(moveVec);
         }
 
@@ -91,7 +97,9 @@ namespace Entity
         private bool IsMovableState()
         {
             return currentEntityState == EntityState.Entity_Idle
-             || currentEntityState == EntityState.Entity_Move;
+             || currentEntityState == EntityState.Entity_Move
+             || currentEntityState == EntityState.Entity_Block
+             || currentEntityState == EntityState.Entity_Attack_Long;
         }
 
         protected virtual void GetInput()
@@ -128,7 +136,6 @@ namespace Entity
         {
             if (newState == currentEntityState)
                 return;
-            movementHandle.SetSpeedBaseOnState(newState);
             currentEntityState = newState;
             CheckLockedState(newState, lockedTime);
             switch (newState)
@@ -143,11 +150,15 @@ namespace Entity
                     PlayAnim(EntityAnimation.Character_Attack, 0.1f);
                     break;
                 case EntityState.Entity_Attack_Long:
-                    // PlayAnim(EntityAnimation.Character_Idle);
+                    PlayAnim(EntityAnimation.Character_Idle);
                     PlayAnim(EntityAnimation.Character_StartCasting);
                     break;
+                case EntityState.Entity_UnAttack_Long:
+                    PlayAnim(EntityAnimation.Character_StartCasting);
+                    ChangeEntityState(EntityState.Entity_Idle);
+                    break;
                 case EntityState.Entity_Block:
-                    // PlayAnim(EntityAnimation.Character_Idle);
+                    PlayAnim(EntityAnimation.Character_Idle);
                     PlayAnim(EntityAnimation.Character_Block);
                     break;
                 case EntityState.Entity_UnBlock:
