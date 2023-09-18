@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item Data")]
 public class ItemData : ScriptableObject
 {
-    public string itemName;
+    [field : SerializeField] public string itemName { get; set; }
     public Item itemPrefab;
     public Sprite itemIcon;
 
     public Item SpawnItem()
     {
-        var item =  Instantiate(itemPrefab);
+        var item = Instantiate(itemPrefab);
         return item;
     }
 }

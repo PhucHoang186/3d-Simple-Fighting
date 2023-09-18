@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class EntityHandleAttack : MonoBehaviour
 {
+    [SerializeField] protected Weapon defaultWeapon;
     [SerializeField] protected EntityHandleSpellSystem spellSystem;
     protected Weapon currentWeapon;
     protected bool isBlocking;
@@ -16,12 +17,13 @@ public class EntityHandleAttack : MonoBehaviour
 
     void Start()
     {
-        EntityEvents.OnSetWeapon = OnSetWeapon;
+        EntityEvents.OnSetWeapon += OnSetWeapon;
+        EntityEvents.OnSetWeapon?.Invoke(defaultWeapon);
     }
 
     void OnDestroy()
     {
-        EntityEvents.OnSetWeapon = OnSetWeapon;
+        EntityEvents.OnSetWeapon -= OnSetWeapon;
         if (currentWeapon != null)
             currentWeapon.OnHitTarget = null;
     }

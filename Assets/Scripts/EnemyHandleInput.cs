@@ -5,9 +5,9 @@ using Entity;
 
 public class EnemyHandleInput : EntityHandleInput
 {
+    [SerializeField] EnemyAI enemyAI;
     public override EntityInput GetInput()
     {
-        var entityInput =  new EntityInput();
-        return entityInput;
+        return enemyAI.GetEnemyAIInput();
     }
 }

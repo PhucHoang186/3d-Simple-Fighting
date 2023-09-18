@@ -23,7 +23,7 @@ public class MeleeWeapon : Weapon
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.CompareTag("Enemy"))
+        if (collider.CompareTag("Enemy") || collider.CompareTag("Player"))
         {
 
             OnHitTarget?.Invoke(collider, collider.ClosestPoint(transform.position));

@@ -178,7 +178,7 @@ namespace Entity
 
         public void OnTakenDamage()
         {
-            ChangeEntityState(EntityState.Entity_GetHit, 0.5f);
+            ChangeEntityState(EntityState.Entity_GetHit, 1f);
         }
 
         protected virtual void OnDestroyed()
