@@ -115,12 +115,12 @@ public class EntityHandleAttack : MonoBehaviour
     {
         if (finishCharging)
         {
-            entity.ChangeEntityState(EntityState.Entity_Idle);
+            entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
             ((RangeWeapon)currentWeapon).ActivateSkill();
         }
         else
         {
-            entity.ChangeEntityState(EntityState.Entity_Idle);
+            entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
             ((RangeWeapon)currentWeapon).DeActivateSkill();
         }
     }

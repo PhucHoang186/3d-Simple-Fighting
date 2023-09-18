@@ -154,7 +154,7 @@ namespace Entity
                     PlayAnim(EntityAnimation.Character_StartCasting);
                     break;
                 case EntityState.Entity_UnAttack_Long:
-                    PlayAnim(EntityAnimation.Character_StartCasting);
+                    PlayAnim(EntityAnimation.Character_UnCasting);
                     ChangeEntityState(EntityState.Entity_Idle);
                     break;
                 case EntityState.Entity_Block:
