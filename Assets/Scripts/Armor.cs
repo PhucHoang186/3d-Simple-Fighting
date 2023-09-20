@@ -7,8 +7,9 @@ public class Armor : Equipment
     [SerializeField] Transform mainPart;
     [SerializeField] Transform leftPart;
     [SerializeField] Transform rightPart;
+    public float DefendStat { get; set; }
 
-    public void EquipMultipleParts(Transform mainPart, Transform leftPart, Transform rightPart, Armor oldEquipment)
+    public void EquipMultipleParts(Transform mainPart, Equipment oldEquipment, Transform leftPart = null, Transform rightPart = null)
     {
         if (oldEquipment != null)
         {

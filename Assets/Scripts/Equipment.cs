@@ -24,4 +24,9 @@ public class Equipment : Item
         transform.parent = parent;
         transform.ResetTransform();
     }
+
+    public void UnEquip()
+    {
+        Destroy(this.gameObject);
+    }
 }

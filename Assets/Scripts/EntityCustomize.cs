@@ -13,54 +13,45 @@ namespace Entity
         [SerializeField] Transform leftArmPoint;
         [SerializeField] Transform rightArmPoint;
         [SerializeField] Transform weaponPoint;
-        [SerializeField] Transform shield;
-        private Equipment currentHelmet;
-        private Armor currentArmor;
-        private Equipment currentWeapon;
-        private Equipment currentShield;
-        public Weapon Currentweapon => (Weapon)currentWeapon;
+        [SerializeField] Transform shieldPoint;
+        private List<Equipment> allEquipments = new();
 
-        public void SetEquipment(Equipment equipment)
+
+        public void WearEquipment(Equipment equipment, Equipment oldEquipment = null)
         {
             switch (equipment.equipmentType)
             {
                 case EquipmentType.Helmet:
-                    equipment.Equip(helmetPoint, currentHelmet);
-                    currentHelmet = equipment;
+                    equipment.Equip(helmetPoint, oldEquipment);
                     break;
                 case EquipmentType.Armor:
-                    ((Armor)equipment).EquipMultipleParts(armorPoint, leftArmPoint, rightArmPoint, currentArmor);
-                    currentArmor = (Armor)equipment;
+                    ((Armor)equipment).EquipMultipleParts(armorPoint, oldEquipment, leftArmPoint, rightArmPoint);
                     DisableDefaultSkin();
                     break;
                 case EquipmentType.Weapon:
-                    equipment.Equip(weaponPoint, currentWeapon);
-                    currentWeapon = equipment;
-                    EntityEvents.OnSetWeapon?.Invoke((Weapon)equipment);
+                    equipment.Equip(weaponPoint, oldEquipment);
                     break;
                 case EquipmentType.Shield:
-                    equipment.Equip(shield, currentShield);
-                    currentShield = equipment;
+                    equipment.Equip(shieldPoint, oldEquipment);
                     break;
                 default:
                     break;
             }
+            allEquipments.Add(equipment);
         }
 
-        public void ResetEquipment()
+        public void UnWearEquipment(Equipment equipment)
+        {
+            if (allEquipments.Contains(equipment))
+            {
+                equipment.UnEquip();
+            }
+        }
+
+        public void ResetAllEquipment()
         {
             ToggleBodyParts(true);
-            DestroyEquipment(currentArmor);
-            DestroyEquipment(currentHelmet);
-            DestroyEquipment(currentWeapon);
-            DestroyEquipment(currentShield);
-        }
-
-        private void DestroyEquipment(Equipment equipment)
-        {
-            if (equipment != null)
-                Destroy(equipment.gameObject);
-            equipment = null;
+            
         }
 
         public void DisableDefaultSkin()

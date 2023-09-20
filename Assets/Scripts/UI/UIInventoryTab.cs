@@ -7,7 +7,13 @@ public class UIInventoryTab : MonoBehaviour
 {
     [SerializeField] UIItem itemPrefab;
     [SerializeField] Transform contentPanel;
-    private List<UIItem> inventoryUIList = new List<UIItem>();
+    [SerializeField] UiInventoryDescription uiInventoryDescription;
+    private List<UIItem> inventoryUIList = new();
+
+    [Header("testing")]
+    [SerializeField] Sprite testItemSprite;
+    [SerializeField] string testItemTitle;
+    [SerializeField] string testItemDescription;
 
     public void InitInventoryItemsUI(int inventorySize)
     {
@@ -22,7 +28,6 @@ public class UIInventoryTab : MonoBehaviour
 
     private void HandleEndDragItem(UIItem item)
     {
-        throw new NotImplementedException();
     }
 
     private void HandleBeginDragItem(UIItem item)
@@ -36,6 +41,7 @@ public class UIInventoryTab : MonoBehaviour
     private void HandleClickedItem(UIItem item)
     {
         Debug.Log("Clicked");
+        uiInventoryDescription.SetDescription(testItemSprite, testItemTitle, testItemDescription);
     }
 
     private void HandleRightClickedItem(UIItem item)
@@ -44,6 +50,7 @@ public class UIInventoryTab : MonoBehaviour
 
     public void Show()
     {
+        uiInventoryDescription.ResetDescription();
         gameObject.SetActive(true);
     }
 

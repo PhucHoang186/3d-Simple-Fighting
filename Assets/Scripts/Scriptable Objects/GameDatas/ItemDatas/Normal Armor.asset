@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e10eedb02751d4098e3ce07f8ce2cc, type: 3}
   m_Name: Normal Armor
   m_EditorClassIdentifier: 
-  itemName: 
+  <itemName>k__BackingField: 
   itemPrefab: {fileID: 969382964253860213, guid: de4c65308e11f004a961a301284fc23e, type: 3}
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 87ad78a0444619b4d8e27eba91572738, type: 3}

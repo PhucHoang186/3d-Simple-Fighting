@@ -25,8 +25,8 @@ public class MeleeWeapon : Weapon
     {
         if (collider.CompareTag("Enemy") || collider.CompareTag("Player"))
         {
-
-            OnHitTarget?.Invoke(collider, collider.ClosestPoint(transform.position));
+            if (collider.TryGetComponent<IDamageable>(out var damageable))
+                OnHitTarget(damageable, collider.ClosestPoint(transform.position));
         }
     }
 }

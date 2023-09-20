@@ -18,6 +18,7 @@ public enum EntityAnimation
     Character_Defeated,
     Character_Block,
     Character_UnBlock,
+    Character_Attack_Deflected,
 }
 
 public class EntityHandleAnimation : MonoBehaviour
@@ -31,13 +32,18 @@ public class EntityHandleAnimation : MonoBehaviour
 
     public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
     {
+        UpdateTriggerAnim(animName);
+
+        anim.CrossFade(animName.ToString(), transitionTime);
+    }
+
+    private void UpdateTriggerAnim(EntityAnimation animName)
+    {
         // reset trigger
         if (NeedOverrideAnimationState(animName))
             anim.SetBool("BaseLayer", false);
         else
-        {
             anim.SetBool("BaseLayer", true);
-        }
 
         if (animName == EntityAnimation.Character_Block)
             anim.SetBool("IsBlocking", true);
@@ -48,14 +54,13 @@ public class EntityHandleAnimation : MonoBehaviour
             anim.SetBool("IsCasting", false);
         if (animName == EntityAnimation.Character_StartCasting)
             anim.SetBool("IsCasting", true);
-
-        anim.CrossFade(animName.ToString(), transitionTime);
     }
 
     private bool NeedOverrideAnimationState(EntityAnimation animName)
     {
         return animName == EntityAnimation.Character_Attack
         || animName == EntityAnimation.Character_StartCasting
+        || animName == EntityAnimation.Character_Attack_Deflected
         || animName == EntityAnimation.Character_Block;
     }
 }

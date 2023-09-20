@@ -12,9 +12,13 @@ public enum WeaponType
 
 public class Weapon : Equipment
 {
-    public System.Action<Collider, Vector3> OnHitTarget;
     public WeaponType weaponType;
     public float weaponBaseDamage;
+
+    public void OnHitTarget(IDamageable damageable, Vector3 hitPoint = default)
+    {
+        damageable.TakenDamage(WeaponTrueDamage(), hitPoint);
+    }
 
     public virtual float WeaponTrueDamage()
     {

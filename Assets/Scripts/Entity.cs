@@ -20,6 +20,7 @@ namespace Entity
         Entity_UnBlock,
         Entity_GetHit,
         Entity_Destroy,
+        Entity_Attack_Deflected,
     }
 
     public class Entity : MonoBehaviour
@@ -83,7 +84,6 @@ namespace Entity
             if (!entityInput.isHoldingCombatInput)
             {
                 ChangeEntityState(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle);
-                // PlayAnim(entityInput.moveVec != Vector3.zero ? EntityAnimation.Character_Run : EntityAnimation.Character_Idle);
             }
             movementHandle.UpdateMoveSpeed(entityInput);
             movementHandle.Move(moveVec);
@@ -123,7 +123,9 @@ namespace Entity
 
         private bool IsLockState(EntityState entityState)
         {
-            return entityState == EntityState.Entity_Attack_Short || entityState == EntityState.Entity_GetHit;
+            return entityState == EntityState.Entity_Attack_Short
+             || entityState == EntityState.Entity_GetHit
+             || entityState == EntityState.Entity_Attack_Deflected;
         }
 
         protected virtual void HandleAttackInput()
@@ -167,6 +169,9 @@ namespace Entity
                     break;
                 case EntityState.Entity_GetHit:
                     PlayAnim(EntityAnimation.Character_GetHit);
+                    break;
+                case EntityState.Entity_Attack_Deflected:
+                    PlayAnim(EntityAnimation.Character_Attack_Deflected);
                     break;
                 case EntityState.Entity_Destroy:
                     PlayAnim(EntityAnimation.Character_Defeated);

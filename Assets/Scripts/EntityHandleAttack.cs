@@ -7,56 +7,34 @@ using UnityEngine;
 
 public class EntityHandleAttack : MonoBehaviour
 {
-    [SerializeField] protected Weapon defaultWeapon;
+    [SerializeField] EntityHandleEquipment handleEquipment;
     [SerializeField] protected EntityHandleSpellSystem spellSystem;
-    protected Weapon currentWeapon;
     protected bool isBlocking;
     protected float chargingTime;
     protected bool startCharging;
     protected bool finishCharging;
 
-    void Start()
-    {
-        EntityEvents.OnSetWeapon += OnSetWeapon;
-        EntityEvents.OnSetWeapon?.Invoke(defaultWeapon);
-    }
-
-    void OnDestroy()
-    {
-        EntityEvents.OnSetWeapon -= OnSetWeapon;
-        if (currentWeapon != null)
-            currentWeapon.OnHitTarget = null;
-    }
-
-
-    public void OnSetWeapon(Weapon newWeapon)
-    {
-        currentWeapon = newWeapon;
-        if (currentWeapon != null)
-            currentWeapon.OnHitTarget = OnHitTarget;
-    }
-
     // for melee weapon
     // use in animation event
     public void ToggleHitBoxOn()
     {
-        if (!currentWeapon.IsChargingTypeWeapon())
+        if (!handleEquipment.Weapon.IsChargingTypeWeapon())
         {
-            ((MeleeWeapon)currentWeapon)?.ToggleHitBox(true);
+            ((MeleeWeapon)handleEquipment.Weapon)?.ToggleHitBox(true);
         }
     }
 
     public void ToggleHitBoxOff()
     {
-        if (!currentWeapon.IsChargingTypeWeapon())
+        if (!handleEquipment.Weapon.IsChargingTypeWeapon())
         {
-            ((MeleeWeapon)currentWeapon)?.ToggleHitBox(false);
+            ((MeleeWeapon)handleEquipment.Weapon)?.ToggleHitBox(false);
         }
     }
 
     public void HandleAttackInput(Entity.Entity entity, EntityInput entityInput)
     {
-        if (currentWeapon == null)
+        if (handleEquipment.Weapon == null)
             return;
         Attack(entity, entityInput);
         Block(entity, entityInput);
@@ -76,6 +54,7 @@ public class EntityHandleAttack : MonoBehaviour
             if (!isBlocking)
                 return;
             isBlocking = false;
+            handleEquipment.Shield.ToggleShieldHitBox(false);
             entity.ChangeEntityState(EntityState.Entity_UnBlock);
         }
     }
@@ -85,7 +64,7 @@ public class EntityHandleAttack : MonoBehaviour
         if (!entityInput.StartAttack)
             return;
 
-        var isChargingWeaponType = currentWeapon.IsChargingTypeWeapon();
+        var isChargingWeaponType = handleEquipment.Weapon.IsChargingTypeWeapon();
         // melee
         if (entityInput.isInstantAttackPressed && !isChargingWeaponType)
         {
@@ -118,12 +97,12 @@ public class EntityHandleAttack : MonoBehaviour
         if (finishCharging)
         {
             entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
-            ((RangeWeapon)currentWeapon).ActivateSkill();
+            ((RangeWeapon)handleEquipment.Weapon).ActivateSkill();
         }
         else
         {
             entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
-            ((RangeWeapon)currentWeapon).DeActivateSkill();
+            ((RangeWeapon)handleEquipment.Weapon).DeActivateSkill();
         }
     }
 
@@ -150,22 +129,25 @@ public class EntityHandleAttack : MonoBehaviour
     protected void OnFinishCharging()
     {
         finishCharging = true;
-        ((RangeWeapon)currentWeapon).OnFinishCharge();
-    }
-
-    public void OnHitTarget(Collider targetCol, Vector3 hitPoint = default)
-    {
-        if (targetCol.TryGetComponent<IDamageable>(out var damageable))
-        {
-            damageable.TakenDamage(currentWeapon.WeaponTrueDamage(), hitPoint);
-        }
+        ((RangeWeapon)handleEquipment.Weapon).OnFinishCharge();
     }
 
     // use animation event , play at the end of casting animation
     public void StartCastingSpell()
     {
-        var rangeWeapon = ((RangeWeapon)currentWeapon);
+        var rangeWeapon = ((RangeWeapon)handleEquipment.Weapon);
         rangeWeapon.SetSpellData(spellSystem.GetCurrentSpellData());
         rangeWeapon.Charging();
     }
+
+    public void StartBlocking()
+    {
+        handleEquipment.Shield.ToggleShieldHitBox(true);
+    }
+
+    public void StopBlocking()
+    {
+        handleEquipment.Shield.ToggleShieldHitBox(false);
+    }
+
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e10eedb02751d4098e3ce07f8ce2cc, type: 3}
   m_Name: Normal Sword
   m_EditorClassIdentifier: 
-  itemName: 
+  <itemName>k__BackingField: 
   itemPrefab: {fileID: 7612032380001398970, guid: f99981b90447fb24b9099be149699e44, type: 3}
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 30a3ce3e5c87bbc4f9286ec7e4ae5a25, type: 3}

@@ -178,7 +178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6062295913742330108}
-  - component: {fileID: 5925507230057518658}
+  - component: {fileID: 1757229667645619469}
   m_Layer: 3
   m_Name: Helmet
   m_TagString: Untagged
@@ -202,7 +202,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5925507230057518658
+--- !u!114 &1757229667645619469
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,8 +211,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9111621322525719316}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7dc6f478b582434ba9b4d32f535823e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7144500c1b913fa4b8747aa6f4b5a4db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: 
   equipmentType: 1
+  mainPart: {fileID: 6062295913742330108}
+  leftPart: {fileID: 0}
+  rightPart: {fileID: 0}
