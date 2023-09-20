@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EntityHandleAttack : MonoBehaviour
 {
-    [SerializeField] EntityHandleEquipment handleEquipment;
+    [SerializeField] protected EntityHandleEquipment handleEquipment;
     [SerializeField] protected EntityHandleSpellSystem spellSystem;
     protected bool isBlocking;
     protected float chargingTime;

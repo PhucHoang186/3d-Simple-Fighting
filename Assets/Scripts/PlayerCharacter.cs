@@ -46,7 +46,6 @@ namespace Entity
                 xRotation = Mathf.Clamp(xRotation, clampXRotationMin, clampXRotationMax);
                 playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
                 transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
-
             }
         }
     }
