@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIItem : MonoBehaviour
+public class UIItem : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
 {
     [SerializeField] private Image itemImage;
     [SerializeField] private Image selectedImage;
@@ -14,6 +14,8 @@ public class UIItem : MonoBehaviour
     private bool isSelected;
     private bool isEmpty;
     public event Action<UIItem> OnItemClicked, OnRightMouseItemClicked, OnItemDropOn, OnItemBeginDrag, OnItemEndDrag;
+    public Sprite ItemSprite { get; set; }
+    public int ItemQuantity { get; set; }
 
     public void SetUpActions(Action<UIItem> OnItemClicked, Action<UIItem> OnRightMouseItemClicked, Action<UIItem> OnItemDropOn, Action<UIItem> OnItemBeginDrag, Action<UIItem> OnItemEndDrag)
     {
@@ -28,7 +30,12 @@ public class UIItem : MonoBehaviour
     {
         itemImage.sprite = itemSprite;
         quantityText.text = itemQuantity.ToString();
+        ItemSprite = itemSprite;
+        ItemQuantity = itemQuantity;
         isEmpty = false;
+        itemImage.gameObject.SetActive(itemSprite != null);
+        quantityText.gameObject.SetActive(itemQuantity > 0);
+
     }
 
     public void ResetData()
@@ -47,34 +54,38 @@ public class UIItem : MonoBehaviour
         selectedImage.gameObject.SetActive(false);
     }
 
-    public void OnBeginDrag()
+    public void OnBeginDrag(PointerEventData eventData)
     {
         if (isEmpty)
             return;
         OnItemBeginDrag?.Invoke(this);
     }
 
-    public void OnEndDrag()
+    public void OnEndDrag(PointerEventData eventData)
     {
         OnItemEndDrag?.Invoke(this);
     }
 
-    public void OnDrop()
+    public void OnDrop(PointerEventData eventData)
     {
         OnItemDropOn?.Invoke(this);
     }
 
-    public void OnPointerClicked(BaseEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        PointerEventData pointerEventData = (PointerEventData)eventData;
+        PointerEventData pointerEventData = eventData;
         if (pointerEventData.button == PointerEventData.InputButton.Right)
         {
             OnRightMouseItemClicked?.Invoke(this);
         }
         else
         {
+            Select();
             OnItemClicked?.Invoke(this);
         }
     }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+    }
 }

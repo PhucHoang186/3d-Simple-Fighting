@@ -10,6 +10,7 @@ public class UIInventoryManager : MonoBehaviour
     private void Start()
     {
         inventoryTab.InitInventoryItemsUI(inventorySize);
+        inventoryTab.Show();
     }
 
 
