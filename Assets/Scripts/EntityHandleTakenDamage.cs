@@ -3,41 +3,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityHandleTakenDamage : MonoBehaviour, IDamageable
+namespace Entity
 {
-    public Action onHitCb;
-    public Action onDestroyCb;
-    [SerializeField] private ParticleSystem hitParticle;
-    [SerializeField] private Collider entityCollider;
-    private float currentHealth;
-
-    public void Init(float maxHealth, Action onHit = null, Action onDestroy = null)
+    public class EntityHandleTakenDamage : MonoBehaviour, IDamageable
     {
-        currentHealth = maxHealth;
-        this.onHitCb = onHit;
-        this.onDestroyCb = onDestroy;
-    }
+        [SerializeField] Entity entity;
+        [SerializeField] protected ParticleSystem hitParticle;
+        [SerializeField] protected Collider entityCollider;
+        protected float currentHealth;
+        public float MaxHealth { get; set; }
 
-    public void TakenDamage(float damageAmount = 1, Vector3 hitPoint = default(Vector3))
-    {
-        var particle = Instantiate(hitParticle, hitPoint, Quaternion.identity);
-        Destroy(particle.gameObject, 2f);
-
-        currentHealth -= damageAmount;
-        if (currentHealth > 0)
+        public virtual void InitHealth(float maxHealth)
         {
-            onHitCb?.Invoke();
+            MaxHealth = maxHealth;
+            currentHealth = MaxHealth;
         }
-        else
+
+        // public void InitActions(Action onHit, Action onDestroy)
+        // {
+        //     this.onHitCb += onHit;
+        //     this.onDestroyCb += onDestroy;
+        // }
+
+        public virtual void TakenDamage(float damageAmount = 1, Vector3 hitPoint = default(Vector3))
         {
+            var particle = Instantiate(hitParticle, hitPoint, Quaternion.identity);
+            Destroy(particle.gameObject, 2f);
+
+            currentHealth -= damageAmount;
+            if (currentHealth > 0)
+            {
+                OnHit(currentHealth);
+            }
+            else
+            {
+                OnDestroyed();
+            }
+        }
+
+        protected virtual void OnHit(float currentHealth)
+        {
+            entity.ChangeEntityState(EntityState.Entity_GetHit, 1f);
+            // onHitCb?.Invoke();
+        }
+
+        protected virtual void OnDestroyed()
+        {
+            entity.ChangeEntityState(EntityState.Entity_Destroy);
             Destroy(entityCollider);
-            onDestroyCb?.Invoke();
+            // onDestroyCb?.Invoke();
         }
-    }
 
-    private void OnDestroy()
-    {
-        onHitCb = null;
-        onDestroyCb = null;
     }
 }

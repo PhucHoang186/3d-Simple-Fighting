@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity;
 
-public class EnemyHandleInput : EntityHandleInput
+namespace Entity
 {
-    [SerializeField] EnemyAI enemyAI;
-    public override EntityInput GetInput()
+    public class EnemyHandleInput : EntityHandleInput
     {
-        return enemyAI.GetEnemyAIInput();
+        [SerializeField] EnemyAI enemyAI;
+        public override EntityInput GetInput()
+        {
+            return enemyAI.GetEnemyAIInput();
+        }
     }
 }

@@ -4,63 +4,66 @@ using System.Collections.Generic;
 using Entity;
 using UnityEngine;
 
-public enum EntityAnimation
+namespace Entity
 {
-    Character_Idle,
-    Character_Roll,
-    Character_Run,
-    Character_Walk,
-    Character_Attack,
-    Character_StartCasting,
-    Character_Casting,
-    Character_UnCasting,
-    Character_GetHit,
-    Character_Defeated,
-    Character_Block,
-    Character_UnBlock,
-    Character_Attack_Deflected,
-}
-
-public class EntityHandleAnimation : MonoBehaviour
-{
-    private Animator anim;
-
-    private void Awake()
+    public enum EntityAnimation
     {
-        anim = GetComponent<Animator>();
+        Character_Idle,
+        Character_Roll,
+        Character_Run,
+        Character_Walk,
+        Character_Attack,
+        Character_StartCasting,
+        Character_Casting,
+        Character_UnCasting,
+        Character_GetHit,
+        Character_Defeated,
+        Character_Block,
+        Character_UnBlock,
+        Character_Attack_Deflected,
     }
 
-    public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
+    public class EntityHandleAnimation : MonoBehaviour
     {
-        UpdateTriggerAnim(animName);
+        private Animator anim;
 
-        anim.CrossFade(animName.ToString(), transitionTime);
-    }
+        private void Awake()
+        {
+            anim = GetComponent<Animator>();
+        }
 
-    private void UpdateTriggerAnim(EntityAnimation animName)
-    {
-        // reset trigger
-        if (NeedOverrideAnimationState(animName))
-            anim.SetBool("BaseLayer", false);
-        else
-            anim.SetBool("BaseLayer", true);
+        public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
+        {
+            UpdateTriggerAnim(animName);
 
-        if (animName == EntityAnimation.Character_Block)
-            anim.SetBool("IsBlocking", true);
-        if (animName == EntityAnimation.Character_UnBlock)
-            anim.SetBool("IsBlocking", false);
+            anim.CrossFade(animName.ToString(), transitionTime);
+        }
 
-        if (animName == EntityAnimation.Character_UnCasting)
-            anim.SetBool("IsCasting", false);
-        if (animName == EntityAnimation.Character_StartCasting)
-            anim.SetBool("IsCasting", true);
-    }
+        private void UpdateTriggerAnim(EntityAnimation animName)
+        {
+            // reset trigger
+            if (NeedOverrideAnimationState(animName))
+                anim.SetBool("BaseLayer", false);
+            else
+                anim.SetBool("BaseLayer", true);
 
-    private bool NeedOverrideAnimationState(EntityAnimation animName)
-    {
-        return animName == EntityAnimation.Character_Attack
-        || animName == EntityAnimation.Character_StartCasting
-        || animName == EntityAnimation.Character_Attack_Deflected
-        || animName == EntityAnimation.Character_Block;
+            if (animName == EntityAnimation.Character_Block)
+                anim.SetBool("IsBlocking", true);
+            if (animName == EntityAnimation.Character_UnBlock)
+                anim.SetBool("IsBlocking", false);
+
+            if (animName == EntityAnimation.Character_UnCasting)
+                anim.SetBool("IsCasting", false);
+            if (animName == EntityAnimation.Character_StartCasting)
+                anim.SetBool("IsCasting", true);
+        }
+
+        private bool NeedOverrideAnimationState(EntityAnimation animName)
+        {
+            return animName == EntityAnimation.Character_Attack
+            || animName == EntityAnimation.Character_StartCasting
+            || animName == EntityAnimation.Character_Attack_Deflected
+            || animName == EntityAnimation.Character_Block;
+        }
     }
 }

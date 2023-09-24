@@ -12,7 +12,8 @@ public class Billboard : MonoBehaviour
     {
         if (lookAtTarget == null)
             return;
-        lookDir = lookAtTarget.position;
+        lookDir =  lookAtTarget.forward + transform.position;
+        // lookDir.y = transform.position.y;
         transform.LookAt(lookDir);
     }
 }

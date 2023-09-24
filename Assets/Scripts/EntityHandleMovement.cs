@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class EntityHandleMovement : MonoBehaviour
 {
-    [SerializeField] Transform model;
     [SerializeField] protected LayerMask collideLayer;
     [SerializeField] protected float raycastDistance = 0.62f;
     [SerializeField] protected float rotateSpeed;
+
     protected float slowSpeed;
     protected float normalSpeed;
-    private Vector3 rotateVec;
-    private float currentMoveSpeed;
-    private float desMoveSpeed;
-
+    protected float currentMoveSpeed;
+    protected float desMoveSpeed;
+    protected float xRotation;
+    protected float yRotation;
 
     public void Init(EntityStatData entityData)
     {
@@ -43,10 +43,10 @@ public class EntityHandleMovement : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
     }
 
-    public void Rotate(Vector3 desVec)
+    public virtual void Rotate(Vector3 rotateVec)
     {
-        rotateVec = Vector3.Lerp(rotateVec, desVec, rotateSpeed * Time.deltaTime);
-        model.rotation = Quaternion.LookRotation(model.forward + rotateVec, Vector3.up);
+        yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + rotateVec.x, Time.deltaTime * rotateSpeed);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
     }
 
     public void UpdateMoveSpeed(EntityInput entityInput)

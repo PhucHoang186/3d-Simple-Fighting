@@ -1,35 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MouseFollower : MonoBehaviour
+namespace Inventory.UI
 {
-    [SerializeField] UIItem uIItem;
-    private Canvas canvas;
-
-    void Awake()
+    public class MouseFollower : MonoBehaviour
     {
-        canvas = transform.root.GetComponent<Canvas>();
-    }
+        [SerializeField] UIItem uIItem;
+        private Canvas canvas;
 
-    public void SetData(Sprite itemSprite, int itemQuantity)
-    {
-        uIItem.SetData(itemSprite, itemQuantity);
-    }
+        void Awake()
+        {
+            canvas = transform.root.GetComponent<Canvas>();
+        }
 
-    void Update()
-    {
-        Vector2 position;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)canvas.transform,
-        Input.mousePosition,
-        canvas.worldCamera, out position);
-        transform.position = canvas.transform.TransformPoint(position);
-    }
+        public void SetData(Sprite itemSprite, int itemQuantity)
+        {
+            uIItem.SetData(itemSprite, itemQuantity);
+        }
 
-    public void Toggle(bool isActive)
-    {
-        this.gameObject.SetActive(isActive);
+        void Update()
+        {
+            Vector2 position;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)canvas.transform,
+            Input.mousePosition,
+            canvas.worldCamera, out position);
+            transform.position = canvas.transform.TransformPoint(position);
+        }
+
+        public void Toggle(bool isActive)
+        {
+            this.gameObject.SetActive(isActive);
+        }
     }
 }

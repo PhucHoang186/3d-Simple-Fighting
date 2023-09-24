@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Normal Helmet
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 0
-  <MaxStackSize>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 1
   <ItemName>k__BackingField: Leather Helmet
   <ItemDescription>k__BackingField: A helmet made from animal head, provide lessor
     protection

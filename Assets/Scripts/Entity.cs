@@ -25,11 +25,11 @@ namespace Entity
 
     public class Entity : MonoBehaviour
     {
-        public EntityHandleAnimation anim;
+        [SerializeField] protected EntityHandleAnimation anim;
         [SerializeField] protected EntityHandleInput entityHandleInput;
         [SerializeField] protected EntityHandleAttack handleAttack;
         [SerializeField] protected EntityHandleTakenDamage handleDamage;
-        [SerializeField] protected EntityHandleMovement movementHandle;
+        [SerializeField] protected EntityHandleMovement handleMovement;
         [SerializeField] protected EntityStatData entityStatData;
         // movement
         [SerializeField] protected Transform model;
@@ -43,34 +43,42 @@ namespace Entity
 
         protected virtual void Start()
         {
-            entityInput = new EntityInput();
             if (handleDamage != null)
-                handleDamage.Init(entityStatData.maxHealth, OnTakenDamage, OnDestroyed);
-            if (movementHandle != null)
-                movementHandle.Init(entityStatData);
+            {
+                handleDamage.InitHealth(entityStatData.maxHealth);
+            }
+            if (handleMovement != null)
+                handleMovement.Init(entityStatData);
             ChangeEntityState(EntityState.Entity_Idle);
         }
 
         protected virtual void Update()
         {
-            // handle lock state
-            if (isLockedState)
-            {
-                if (currentLockedTime > 0)
-                    currentLockedTime -= Time.deltaTime;
-                else
-                {
-                    OnFinishLockState();
-                }
-
+            if(IsDefeated())
                 return;
-            }
+            // handle lock state
+            if (CheckIfInLockState())
+                return;
             // get entity input
             GetInput();
             HandleAttackInput();
             if (!IsMovableState())
                 return;
-            Move(entityInput.moveVec);
+            Move(entityInput);
+        }
+
+        protected bool CheckIfInLockState()
+        {
+            if (!isLockedState)
+                return false;
+
+            if (currentLockedTime > 0)
+                currentLockedTime -= Time.deltaTime;
+            else
+            {
+                OnFinishLockState();
+            }
+            return true;
         }
 
         protected void OnFinishLockState()
@@ -79,14 +87,17 @@ namespace Entity
             ChangeEntityState(EntityState.Entity_Idle);
         }
 
-        protected virtual void Move(Vector3 moveVec)
+        protected virtual void Move(EntityInput entityInput)
+        {
+            UpdateMoveStateAndAnimation();
+            handleMovement.UpdateMoveSpeed(entityInput);
+            handleMovement.Move(entityInput.moveVec);
+        }
+
+        private void UpdateMoveStateAndAnimation()
         {
             if (!entityInput.isHoldingCombatInput)
-            {
                 ChangeEntityState(entityInput.moveVec != Vector3.zero ? EntityState.Entity_Move : EntityState.Entity_Idle);
-            }
-            movementHandle.UpdateMoveSpeed(entityInput);
-            movementHandle.Move(moveVec);
         }
 
         protected void LateUpdate()
@@ -109,7 +120,7 @@ namespace Entity
 
         protected virtual void Rotate()
         {
-            movementHandle.Rotate(entityInput.moveVec);
+            handleMovement.Rotate(entityInput.lookRotation);
         }
 
         protected virtual void CheckLockedState(EntityState entityState, float lockedTime = 0f)
@@ -181,14 +192,9 @@ namespace Entity
             }
         }
 
-        public void OnTakenDamage()
+        protected bool IsDefeated()
         {
-            ChangeEntityState(EntityState.Entity_GetHit, 1f);
-        }
-
-        protected virtual void OnDestroyed()
-        {
-            ChangeEntityState(EntityState.Entity_Destroy);
+            return currentEntityState == EntityState.Entity_Destroy;
         }
 
         public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)

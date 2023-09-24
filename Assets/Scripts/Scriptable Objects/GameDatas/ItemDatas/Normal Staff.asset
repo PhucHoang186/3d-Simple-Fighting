@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Normal Staff
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 0
-  <MaxStackSize>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 1
   <ItemName>k__BackingField: 'Common '
   <ItemDescription>k__BackingField: 
   <ItemIcon>k__BackingField: {fileID: 21300000, guid: e7a5b4f6ed9029a4a84f779d8360be2c, type: 3}

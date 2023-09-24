@@ -7,10 +7,9 @@ public class ItemData : ScriptableObject
 {
     [field: SerializeField]
     public bool IsStackable { get; set; }
-    [field : SerializeField] 
     public int ID => GetInstanceID();
     [field: SerializeField]
-    public bool MaxStackSize { get; set; }
+    public int MaxStackSize { get; set; }
 
     [field: SerializeField]
     public string ItemName { get; set; }

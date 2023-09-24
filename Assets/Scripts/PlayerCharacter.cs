@@ -10,10 +10,8 @@ namespace Entity
         [Header("Player Settings")]
         [SerializeField] float lookSensitive;
         [Header("Player References")]
-        [SerializeField] EntityWorldUI playerWorldUI;
         [SerializeField] Transform playerCamera;
-        [SerializeField] float clampXRotationMin;
-        [SerializeField] float clampXRotationMax;
+
         private Transform lockingTarget;
         private float xRotation;
         private float yRotation;
@@ -29,24 +27,6 @@ namespace Entity
         protected override void Update()
         {
             base.Update();
-        }
-
-        protected override void Rotate()
-        {
-            if (lockingTarget != null)
-            {
-                var lookAtPoint = lockingTarget.position;
-                lookAtPoint.y = model.position.y;
-                model.LookAt(lookAtPoint);
-            }
-            else
-            {
-                xRotation = Mathf.Lerp(xRotation, xRotation - entityInput.lookRotation.y, Time.deltaTime * lookSensitive);
-                yRotation = Mathf.Lerp(transform.eulerAngles.y, transform.eulerAngles.y + entityInput.lookRotation.x, Time.deltaTime * lookSensitive);
-                xRotation = Mathf.Clamp(xRotation, clampXRotationMin, clampXRotationMax);
-                playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
-            }
         }
     }
 }
