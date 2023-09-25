@@ -61,8 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 
   equipmentType: 2
+  weaponBaseDamage: 100
   weaponType: 0
-  weaponBaseDamage: 2
   hitBoxCollider: {fileID: 6821475230804895734}
 --- !u!1001 &3479305157257074084
 PrefabInstance:

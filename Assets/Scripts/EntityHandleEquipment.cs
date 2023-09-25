@@ -75,9 +75,5 @@ public class EntityHandleEquipment : MonoBehaviour
     {
         entityCustomize.WearEquipment(shield, Shield);
         Shield = shield;
-        if (TryGetComponent<Entity.Entity>(out var entity))
-        {
-            shield.Init(entity);
-        }
     }
 }

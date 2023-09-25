@@ -26,14 +26,12 @@ namespace Inventory.Data
         {
             if (!itemData.IsStackable)
             {
-                while (quantity > 0 && !IsInventoryFull())
-                {
-                    quantity -= AddNonStackableItem(itemData, 1);
-                }
+                quantity = AddNonStackableItem(itemData, 1);
             }
             else
             {
                 quantity = AddStackableItem(itemData, quantity);
+                quantity = AddAllItemsToEmptySlots(itemData, quantity);
             }
             InformAboutInventoryChange();
             return quantity;
@@ -43,7 +41,7 @@ namespace Inventory.Data
         {
             foreach (var item in inventoryItems)
             {
-                if (!item.IsEmpty)
+                if (item.IsEmpty)
                     return false;
             }
             return true;
@@ -51,20 +49,9 @@ namespace Inventory.Data
 
         private int AddNonStackableItem(ItemData itemData, int quantity = 1)
         {
-            for (int i = 0; i < inventoryItems.Count; i++)
-            {
-                if (inventoryItems[i].IsEmpty)
-                {
-                    inventoryItems[i] = new InventoryItem
-                    {
-                        itemData = itemData,
-                        quantity = quantity,
-                    };
-                }
-                return quantity;
-            }
-            return 0;
+            return AddItemToFirstEmptySlot(itemData, quantity);
         }
+
 
         private int AddStackableItem(ItemData itemData, int quantity)
         {
@@ -73,21 +60,50 @@ namespace Inventory.Data
                 var checkItemData = inventoryItems[i];
                 if (!checkItemData.IsEmpty && checkItemData.itemData.ID == itemData.ID)
                 {
-                    var newQuantity = quantity + checkItemData.quantity;
-                    var itemsLeftToAdd = newQuantity - checkItemData.itemData.MaxStackSize;
+                    var newQuantity = quantity + checkItemData.quantity; // example max size 10 , new quantity 14
+                    var itemsLeftToAdd = newQuantity - checkItemData.itemData.MaxStackSize; // itemsLeftToAdd = 4
 
                     if (itemsLeftToAdd > 0)
                     {
-                        inventoryItems[i].ChangeQuantity(checkItemData.itemData.MaxStackSize);
+                        inventoryItems[i].ChangeQuantity(inventoryItems[i].itemData.MaxStackSize);
                         quantity = itemsLeftToAdd;
                     }
                     else
                     {
-                        inventoryItems[i].ChangeQuantity(newQuantity);
+                        inventoryItems[i] = inventoryItems[i].ChangeQuantity(newQuantity);
                         return 0;
                     }
-
                 }
+            }
+            return quantity;
+        }
+
+        private int AddItemToFirstEmptySlot(ItemData itemData, int quantity)
+        {
+            InventoryItem newItem = new()
+            {
+                itemData = itemData,
+                quantity = quantity,
+            };
+
+            for (int i = 0; i < inventoryItems.Count; i++)
+            {
+                if (inventoryItems[i].IsEmpty)
+                {
+                    inventoryItems[i] = newItem;
+                    return quantity;
+                }
+            }
+            return 0;
+        }
+
+        private int AddAllItemsToEmptySlots(ItemData itemData, int quantity)
+        {
+            while (quantity > 0 && !IsInventoryFull())
+            {
+                int newQuantity = Mathf.Clamp(quantity, 0, itemData.MaxStackSize);
+                quantity -= newQuantity;
+                AddItemToFirstEmptySlot(itemData, newQuantity);
             }
             return quantity;
         }
@@ -106,9 +122,7 @@ namespace Inventory.Data
 
         public void SwapItems(int itemIndex_1, int itemIndex_2)
         {
-            InventoryItem tempItem = inventoryItems[itemIndex_1];
-            inventoryItems[itemIndex_1] = inventoryItems[itemIndex_2];
-            inventoryItems[itemIndex_2] = tempItem;
+            (inventoryItems[itemIndex_1], inventoryItems[itemIndex_2]) = (inventoryItems[itemIndex_2], inventoryItems[itemIndex_1]);
             InformAboutInventoryChange();
         }
 
@@ -148,7 +162,7 @@ namespace Inventory.Data
         }
 
         public static InventoryItem GetEmptyItem()
-        => new InventoryItem
+        => new()
         {
             itemData = null,
             quantity = 0,

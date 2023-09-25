@@ -19,6 +19,7 @@ namespace Entity
         Entity_Block,
         Entity_UnBlock,
         Entity_GetHit,
+        Entity_Blocking_GetHit,
         Entity_Destroy,
         Entity_Attack_Deflected,
     }
@@ -33,9 +34,6 @@ namespace Entity
         [SerializeField] protected EntityStatData entityStatData;
         // movement
         [SerializeField] protected Transform model;
-        [SerializeField] protected float rotateSpeed;
-        protected float currentMoveSpeed;
-        protected float desMoveSpeed;
         protected float currentLockedTime;
         protected bool isLockedState;
         protected EntityState currentEntityState;
@@ -44,12 +42,22 @@ namespace Entity
         protected virtual void Start()
         {
             if (handleDamage != null)
-            {
-                handleDamage.InitHealth(entityStatData.maxHealth);
-            }
+                handleDamage.InitActions(OnHit, OnDestroyed);
+
             if (handleMovement != null)
                 handleMovement.Init(entityStatData);
+
             ChangeEntityState(EntityState.Entity_Idle);
+        }
+
+        private void OnDestroyed()
+        {
+            ChangeEntityState(EntityState.Entity_Destroy);
+        }
+
+        private void OnHit(float damageAmount)
+        {
+            ChangeEntityState(EntityState.Entity_GetHit, 1f);
         }
 
         protected virtual void Update()
@@ -127,9 +135,7 @@ namespace Entity
         {
             isLockedState = IsLockState(entityState);
             if (isLockedState)
-            {
                 currentLockedTime = lockedTime;
-            }
         }
 
         private bool IsLockState(EntityState entityState)
@@ -151,41 +157,31 @@ namespace Entity
                 return;
             currentEntityState = newState;
             CheckLockedState(newState, lockedTime);
+            anim.UpdateAnimationBaseOnState(newState);
             switch (newState)
             {
                 case EntityState.Entity_Idle:
-                    PlayAnim(EntityAnimation.Character_Idle, 0.1f);
                     break;
                 case EntityState.Entity_Move:
-                    PlayAnim(EntityAnimation.Character_Run, 0.1f);
                     break;
                 case EntityState.Entity_Attack_Short:
-                    PlayAnim(EntityAnimation.Character_Attack, 0.1f);
                     break;
                 case EntityState.Entity_Attack_Long:
-                    PlayAnim(EntityAnimation.Character_Idle);
-                    PlayAnim(EntityAnimation.Character_StartCasting);
                     break;
                 case EntityState.Entity_UnAttack_Long:
-                    PlayAnim(EntityAnimation.Character_UnCasting);
                     ChangeEntityState(EntityState.Entity_Idle);
                     break;
                 case EntityState.Entity_Block:
-                    PlayAnim(EntityAnimation.Character_Idle);
-                    PlayAnim(EntityAnimation.Character_Block);
                     break;
                 case EntityState.Entity_UnBlock:
-                    PlayAnim(EntityAnimation.Character_UnBlock);
                     ChangeEntityState(EntityState.Entity_Idle);
                     break;
                 case EntityState.Entity_GetHit:
-                    PlayAnim(EntityAnimation.Character_GetHit);
+                case EntityState.Entity_Blocking_GetHit:
                     break;
                 case EntityState.Entity_Attack_Deflected:
-                    PlayAnim(EntityAnimation.Character_Attack_Deflected);
                     break;
                 case EntityState.Entity_Destroy:
-                    PlayAnim(EntityAnimation.Character_Defeated);
                     break;
                 default:
                     break;

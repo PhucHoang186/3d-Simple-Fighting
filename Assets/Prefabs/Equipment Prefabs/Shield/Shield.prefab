@@ -49,8 +49,8 @@ MonoBehaviour:
   itemName: 
   equipmentType: 3
   shieldCollider: {fileID: 6990470275704101453}
-  physicDefend: 0
-  magicDefend: 0
+  physicDefend: 10
+  magicDefend: 10
   sparkle: {fileID: 8635263088225240809}
   blockCooldown: 1
 --- !u!65 &6990470275704101453

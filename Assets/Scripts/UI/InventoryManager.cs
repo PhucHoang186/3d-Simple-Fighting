@@ -12,7 +12,7 @@ namespace Inventory
         [SerializeField] bool openOnPlay;
         [SerializeField] UIInventoryTab inventoryTab;
         [SerializeField] InventoryData inventoryData;
-        [SerializeField] List<InventoryItem> initialItemList = new List<InventoryItem>();
+        [SerializeField] List<InventoryItem> initialItemList = new();
 
         private void Start()
         {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Entity;
 using UnityEngine;
 
 public class Shield : Equipment
@@ -15,11 +16,6 @@ public class Shield : Equipment
     public void ToggleShieldHitBox(bool isActive)
     {
         shieldCollider.enabled = isActive;
-    }
-
-    public void Init(Entity.Entity entity)
-    {
-        // this.entity1 = entity;
     }
 
     private void Update()
@@ -40,11 +36,10 @@ public class Shield : Equipment
 
         if (collider.TryGetComponent<Weapon>(out Weapon weapon))
         {
-            var entity = weapon.GetComponentInParent<Entity.Entity>();
-            entity.ChangeEntityState(Entity.EntityState.Entity_Attack_Deflected, 1f);
-            ShowHitSparkle();
             currentBlockCooldown = blockCooldown;
             canBlock = false;
+            DeflectEntityAttack(weapon);
+            NullifyWeaponDamage(weapon, physicDefend);
             return;
         }
 
@@ -52,6 +47,19 @@ public class Shield : Equipment
         {
             // spell
         }
+    }
+
+    private void NullifyWeaponDamage(Weapon weapon, float nullifyAmount)
+    {
+        weapon.SetNullifyDamage(nullifyAmount);
+    }
+
+    private void DeflectEntityAttack(Weapon weapon)
+    {
+        // weapon.
+        var enemy = weapon.GetComponentInParent<Entity.Entity>();
+        enemy.ChangeEntityState(Entity.EntityState.Entity_Attack_Deflected, 1f);
+        ShowHitSparkle();
     }
 
     private void ShowHitSparkle()

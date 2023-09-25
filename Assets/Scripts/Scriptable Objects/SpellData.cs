@@ -9,5 +9,5 @@ public class SpellData : ScriptableObject
     public Spell spellPrefab;
     public float spellDamage;
     public float spellSpeed = 2f;
-    public float chargingTime;
+    public float castTime;
 }

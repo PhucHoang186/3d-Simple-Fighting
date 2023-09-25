@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,22 +8,34 @@ public class Spell : MonoBehaviour
     [SerializeField] GameObject model;
     [SerializeField] GameObject hitVfx;
     [SerializeField] float raycastDistance;
+    private Action<IDamageable, Vector3> OnHitTargetCb;
     private Vector3 shootDirection;
     private float spellSpeed;
+    private bool isStartCastSpell;
     private bool isCastedSpell;
-    private float spelldamage;
+    private float currentTime;
+    private float desCastTime;
 
-    public void Init(float speed = 0f, float spellDamage = 0)
+    public void Init(float castTime, float speed = 0f, Action<IDamageable, Vector3> OnHitTarget = null)
     {
         spellSpeed = speed;
-        this.spelldamage = spellDamage;
+        this.OnHitTargetCb = OnHitTarget;
+        SetUpSpellCasting(castTime);
+    }
+
+    private void SetUpSpellCasting(float castTime)
+    {
+        isStartCastSpell = true;
+        currentTime = 0f;
+        desCastTime = castTime;
+        transform.localScale = Vector3.zero;
     }
 
     public virtual void ActivateSkill()
     {
-        shootDirection = CalculateDirection(); ;
-        transform.SetParent(null);
+        shootDirection = CalculateDirection();
         isCastedSpell = true;
+        transform.SetParent(null);
         Destroy(gameObject, 5f);
     }
 
@@ -33,6 +46,12 @@ public class Spell : MonoBehaviour
 
     void Update()
     {
+        if (isStartCastSpell)
+        {
+            currentTime += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, currentTime / desCastTime);
+        }
+
         if (!isCastedSpell)
             return;
         MoveToTarget();
@@ -67,12 +86,16 @@ public class Spell : MonoBehaviour
         model.SetActive(false);
         hitVfx.SetActive(true);
         Destroy(gameObject, 3f);
-        var colliders = Physics.OverlapSphere(transform.position, 2f);
-        foreach (var collider in colliders)
+        Collider[] colliders = new Collider[10];
+        Physics.OverlapSphereNonAlloc(transform.position, 2f, colliders);
+        if (colliders.Length > 0)
         {
-            if (collider.transform.TryGetComponent<IDamageable>(out var damageable))
+            foreach (var collider in colliders)
             {
-                damageable.TakenDamage(spelldamage, collider.transform.position);
+                if (collider != null && collider.transform.TryGetComponent<IDamageable>(out var damageable))
+                {
+                    OnHitTargetCb?.Invoke(damageable, collider.transform.position);
+                }
             }
         }
     }

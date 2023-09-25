@@ -32,10 +32,50 @@ namespace Entity
             anim = GetComponent<Animator>();
         }
 
+        public void UpdateAnimationBaseOnState(EntityState entityState)
+        {
+            switch (entityState)
+            {
+                case EntityState.Entity_Idle:
+                    PlayAnim(EntityAnimation.Character_Idle, 0.1f);
+                    break;
+                case EntityState.Entity_Move:
+                    PlayAnim(EntityAnimation.Character_Run, 0.1f);
+                    break;
+                case EntityState.Entity_Attack_Short:
+                    PlayAnim(EntityAnimation.Character_Attack, 0.1f);
+                    break;
+                case EntityState.Entity_Attack_Long:
+                    PlayAnim(EntityAnimation.Character_Idle);
+                    PlayAnim(EntityAnimation.Character_StartCasting);
+                    break;
+                case EntityState.Entity_UnAttack_Long:
+                    PlayAnim(EntityAnimation.Character_UnCasting);
+                    break;
+                case EntityState.Entity_Block:
+                    PlayAnim(EntityAnimation.Character_Block);
+                    break;
+                case EntityState.Entity_UnBlock:
+                    PlayAnim(EntityAnimation.Character_UnBlock);
+                    break;
+                case EntityState.Entity_GetHit:
+                case EntityState.Entity_Blocking_GetHit:
+                    PlayAnim(EntityAnimation.Character_GetHit);
+                    break;
+                case EntityState.Entity_Attack_Deflected:
+                    PlayAnim(EntityAnimation.Character_Attack_Deflected);
+                    break;
+                case EntityState.Entity_Destroy:
+                    PlayAnim(EntityAnimation.Character_Defeated);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void PlayAnim(EntityAnimation animName, float transitionTime = 0f)
         {
             UpdateTriggerAnim(animName);
-
             anim.CrossFade(animName.ToString(), transitionTime);
         }
 

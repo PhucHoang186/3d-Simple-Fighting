@@ -16,7 +16,7 @@ public class MeleeWeapon : Weapon
         hitBoxCollider.enabled = isActive;
     }
 
-    public override float WeaponTrueDamage()
+    public override float WeaponTotalDamage()
     {
         return weaponBaseDamage;
     }

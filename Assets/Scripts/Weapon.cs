@@ -12,18 +12,31 @@ public enum WeaponType
 
 public class Weapon : Equipment
 {
-    public WeaponType weaponType;
-    public float weaponBaseDamage;
+    [SerializeField] protected float weaponBaseDamage;
+    [SerializeField] protected WeaponType weaponType;
+    protected float nullifyAmount;
 
-    public void OnHitTarget(IDamageable damageable, Vector3 hitPoint = default)
-    {
-        damageable.TakenDamage(WeaponTrueDamage(), hitPoint);
-    }
-
-    public virtual float WeaponTrueDamage()
+    public virtual float WeaponTotalDamage()
     {
         return 0f;
     }
+
+    public float WeaponTrueDamage()
+    {
+        return WeaponTotalDamage() - nullifyAmount;
+    }
+
+    public virtual void SetNullifyDamage(float nullifyAmount)
+    {
+        this.nullifyAmount = nullifyAmount;
+    }
+
+    protected void OnHitTarget(IDamageable damageable, Vector3 hitPoint = default)
+    {
+        damageable.TakenDamage(WeaponTrueDamage(), hitPoint);
+        this.nullifyAmount = 0f;
+    }
+
 
     public bool IsChargingTypeWeapon()
     {

@@ -113,7 +113,7 @@ namespace Entity
             if (startCharging)
                 return;
             startCharging = true;
-            chargingTime = spellSystem.GetCurrentSpellData().chargingTime;
+            chargingTime = spellSystem.GetCurrentSpellData().castTime;
             entity.ChangeEntityState(EntityState.Entity_Attack_Long);
         }
 

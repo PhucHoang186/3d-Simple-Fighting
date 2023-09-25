@@ -17,7 +17,7 @@ public class RangeWeapon : Weapon
         currentSpellData = spellData;
     }
 
-    public override float WeaponTrueDamage()
+    public override float WeaponTotalDamage()
     {
         var spellDamage = currentSpellData != null ? currentSpellData.spellDamage : 0f;
         return weaponBaseDamage + spellDamage;
@@ -33,7 +33,7 @@ public class RangeWeapon : Weapon
         onChargeFinishVfx.SetActive(false);
         spellUsed = Instantiate(currentSpellData.spellPrefab, castingPoint);
         spellUsed.transform.ResetTransform();
-        spellUsed.Init(currentSpellData.spellSpeed, WeaponTrueDamage());
+        spellUsed.Init(currentSpellData.castTime, currentSpellData.spellSpeed, OnHitTarget);
     }
 
     public void DeActivateSkill()
@@ -43,7 +43,6 @@ public class RangeWeapon : Weapon
 
     public void ActivateSkill()
     {
-        onChargeFinishVfx.SetActive(false);
         onChargeFinishVfx.SetActive(false);
         spellUsed.ActivateSkill();
     }

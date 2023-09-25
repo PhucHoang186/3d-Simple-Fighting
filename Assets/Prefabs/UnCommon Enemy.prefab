@@ -694,6 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179aca4ce6c4d194f90b65850eda8a57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleDamage: {fileID: 7788673413360413858}
   healthBar: {fileID: 279161128}
   healthText: {fileID: 448269314}
 --- !u!1 &3319601199429450398
@@ -1201,7 +1202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7330204051826772325}
   - component: {fileID: 3700324379557516063}
-  - component: {fileID: 3700324379557516056}
+  - component: {fileID: 5464211086217982136}
   - component: {fileID: 3700324379557516057}
   - component: {fileID: 3700324379557516052}
   - component: {fileID: 8630780280424957413}
@@ -1212,7 +1213,7 @@ GameObject:
   - component: {fileID: 3700324379557516048}
   - component: {fileID: 6155530175602531102}
   - component: {fileID: 3700324379557516053}
-  - component: {fileID: 8771558978861421544}
+  - component: {fileID: 7788673413360413858}
   m_Layer: 6
   m_Name: UnCommon Enemy
   m_TagString: Enemy
@@ -1258,8 +1259,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!65 &3700324379557516056
-BoxCollider:
+--- !u!136 &5464211086217982136
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1268,9 +1269,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.7204349, z: 1}
-  m_Center: {x: 0, y: 0.8075794, z: 0}
+  m_Radius: 0.5
+  m_Height: 1.6
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!54 &3700324379557516057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1302,11 +1304,10 @@ MonoBehaviour:
   anim: {fileID: 3700324379557516055}
   entityHandleInput: {fileID: 3700324379557516054}
   handleAttack: {fileID: 3700324379557516053}
-  handleDamage: {fileID: 8771558978861421544}
+  handleDamage: {fileID: 0}
   handleMovement: {fileID: 3700324379557516048}
   entityStatData: {fileID: 11400000, guid: ed6420abf6c2c204f81693790a46a2a8, type: 2}
   model: {fileID: 6021662401407762293}
-  rotateSpeed: 0
 --- !u!114 &8630780280424957413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1429,7 +1430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handleEquipment: {fileID: 9149973872830061224}
   spellSystem: {fileID: 6155530175602531102}
---- !u!114 &8771558978861421544
+--- !u!114 &7788673413360413858
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1438,13 +1439,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7994396295499600863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f86f9b174212d441829a5e466d5d931, type: 3}
+  m_Script: {fileID: 11500000, guid: d0bb8d642374d564cb686b34c9e243e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entity: {fileID: 3700324379557516052}
-  hitParticle: {fileID: 19896336, guid: d75bea4d6c9e81d419a11ed44c3c4718, type: 3}
-  entityCollider: {fileID: 3700324379557516056}
-  enemyHealthUI: {fileID: 1544364906}
+  entityStatData: {fileID: 11400000, guid: ed6420abf6c2c204f81693790a46a2a8, type: 2}
+  hitParticle: {fileID: 19845262, guid: fdac75e990da47649b31f10049c400b0, type: 3}
+  entityCollider: {fileID: 5464211086217982136}
 --- !u!1 &8157800508444342568
 GameObject:
   m_ObjectHideFlags: 0
