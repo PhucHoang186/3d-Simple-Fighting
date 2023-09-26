@@ -28,7 +28,6 @@ public class Spell : MonoBehaviour
         isStartCastSpell = true;
         currentTime = 0f;
         desCastTime = castTime;
-        transform.localScale = Vector3.zero;
     }
 
     public virtual void ActivateSkill()
@@ -41,7 +40,7 @@ public class Spell : MonoBehaviour
 
     public virtual void DeActivateSkill()
     {
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 
     void Update()
@@ -49,7 +48,9 @@ public class Spell : MonoBehaviour
         if (isStartCastSpell)
         {
             currentTime += Time.deltaTime;
-            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, currentTime / desCastTime);
+            transform.localScale = Vector3.one * currentTime / desCastTime;
+            if (currentTime >= desCastTime)
+                isStartCastSpell = false;
         }
 
         if (!isCastedSpell)

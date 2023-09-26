@@ -30,25 +30,29 @@ public class EntityHandleEquipment : MonoBehaviour
 
     public Equipment Equip(ItemData equipmentData)
     {
-        var equipment = (Equipment)equipmentData.SpawnItem();
-        switch ((equipment.equipmentType))
+        var equipmentObj = equipmentData.SpawnItem();
+        if (equipmentObj.TryGetComponent<Equipment>(out var equipment))
         {
-            case EquipmentType.Armor:
-                EquipArmor((Armor)equipment);
-                break;
-            case EquipmentType.Helmet:
-                EquipHelmet((Armor)equipment);
-                break;
-            case EquipmentType.Weapon:
-                EquipWeapon((Weapon)equipment);
-                break;
-            case EquipmentType.Shield:
-                EquipShield((Shield)equipment);
-                break;
-            default:
-                break;
+            switch ((equipment.equipmentType))
+            {
+                case EquipmentType.Armor:
+                    EquipArmor((Armor)equipment);
+                    break;
+                case EquipmentType.Helmet:
+                    EquipHelmet((Armor)equipment);
+                    break;
+                case EquipmentType.Weapon:
+                    EquipWeapon((Weapon)equipment);
+                    break;
+                case EquipmentType.Shield:
+                    EquipShield((Shield)equipment);
+                    break;
+                default:
+                    break;
+            }
+            return equipment;
         }
-        return equipment;
+        return null;
     }
 
 

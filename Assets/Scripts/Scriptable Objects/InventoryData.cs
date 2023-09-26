@@ -31,7 +31,7 @@ namespace Inventory.Data
             else
             {
                 quantity = AddStackableItem(itemData, quantity);
-                quantity = AddAllItemsToEmptySlots(itemData, quantity);
+                quantity = AddMultipleItemsToEmptySlots(itemData, quantity);
             }
             InformAboutInventoryChange();
             return quantity;
@@ -65,7 +65,7 @@ namespace Inventory.Data
 
                     if (itemsLeftToAdd > 0)
                     {
-                        inventoryItems[i].ChangeQuantity(inventoryItems[i].itemData.MaxStackSize);
+                        inventoryItems[i] = inventoryItems[i].ChangeQuantity(inventoryItems[i].itemData.MaxStackSize);
                         quantity = itemsLeftToAdd;
                     }
                     else
@@ -91,13 +91,13 @@ namespace Inventory.Data
                 if (inventoryItems[i].IsEmpty)
                 {
                     inventoryItems[i] = newItem;
-                    return quantity;
+                    return 0;
                 }
             }
-            return 0;
+            return -1;
         }
 
-        private int AddAllItemsToEmptySlots(ItemData itemData, int quantity)
+        private int AddMultipleItemsToEmptySlots(ItemData itemData, int quantity)
         {
             while (quantity > 0 && !IsInventoryFull())
             {

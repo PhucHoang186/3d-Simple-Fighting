@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class EnemyWorldSpaceHealthUI : MonoBehaviour
 {
-    [SerializeField] EntityHandleTakenDamage handleDamage;
+    [SerializeField] EntityHandleHealth handleHealth;
     [SerializeField] Image healthBar;
     [SerializeField] private TMP_Text healthText;
     private float maxHealth;
@@ -27,12 +27,12 @@ public class EnemyWorldSpaceHealthUI : MonoBehaviour
     public void Start()
     {
         InitHealth();
-        handleDamage.InitActions(OnHit, OnDestroyed);
+        handleHealth.InitActions(OnHit, OnDestroyed);
     }
 
     private void InitHealth()
     {
-        this.maxHealth = handleDamage.MaxHealth;
+        this.maxHealth = handleHealth.MaxHealth;
         Health = maxHealth;
     }
 

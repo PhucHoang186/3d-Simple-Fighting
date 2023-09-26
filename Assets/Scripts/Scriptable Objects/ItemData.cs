@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Item Data")]
-public class ItemData : ScriptableObject
+public abstract class ItemData : ScriptableObject
 {
     [field: SerializeField]
     public bool IsStackable { get; set; }
@@ -18,9 +17,9 @@ public class ItemData : ScriptableObject
     public string ItemDescription{ get; set; }
     [field: SerializeField]
     public Sprite ItemIcon { get; set; }
-    public Item itemPrefab;
+    public GameObject itemPrefab;
 
-    public Item SpawnItem()
+    public GameObject SpawnItem()
     {
         var item = Instantiate(itemPrefab);
         return item;

@@ -88,6 +88,10 @@ namespace Entity
                     {
                         Activate(entity);
                     }
+                    else
+                    {
+                        DeActivate(entity);
+                    }
                     startCharging = false;
                     finishCharging = false;
                 }
@@ -96,16 +100,13 @@ namespace Entity
 
         protected void Activate(Entity entity)
         {
-            if (finishCharging)
-            {
-                entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
-                ((RangeWeapon)handleEquipment.Weapon).ActivateSkill();
-            }
-            else
-            {
-                entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
-                ((RangeWeapon)handleEquipment.Weapon).DeActivateSkill();
-            }
+            entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
+            ((RangeWeapon)handleEquipment.Weapon).ActivateSkill();
+        }
+        private void DeActivate(Entity entity)
+        {
+            entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
+            ((RangeWeapon)handleEquipment.Weapon).DeActivateSkill();
         }
 
         protected void ChargingAttack(Entity entity)

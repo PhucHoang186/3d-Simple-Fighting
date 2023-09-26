@@ -29,7 +29,7 @@ namespace Entity
         [SerializeField] protected EntityHandleAnimation anim;
         [SerializeField] protected EntityHandleInput entityHandleInput;
         [SerializeField] protected EntityHandleAttack handleAttack;
-        [SerializeField] protected EntityHandleTakenDamage handleDamage;
+        [SerializeField] protected EntityHandleHealth handleHealth;
         [SerializeField] protected EntityHandleMovement handleMovement;
         [SerializeField] protected EntityStatData entityStatData;
         // movement
@@ -41,8 +41,8 @@ namespace Entity
 
         protected virtual void Start()
         {
-            if (handleDamage != null)
-                handleDamage.InitActions(OnHit, OnDestroyed);
+            if (handleHealth != null)
+                handleHealth.InitActions(OnHit, OnDestroyed);
 
             if (handleMovement != null)
                 handleMovement.Init(entityStatData);

@@ -16,4 +16,4 @@ MonoBehaviour:
   spellPrefab: {fileID: 3979371667109690171, guid: ab5124682a50fcc4c818c0d6d1b423b1, type: 3}
   spellDamage: 10
   spellSpeed: 15
-  chargingTime: 2
+  castTime: 5
