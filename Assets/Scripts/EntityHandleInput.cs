@@ -43,7 +43,7 @@ namespace Entity
 
         protected virtual bool GetHoldingAttackInput()
         {
-            return Input.GetMouseButton(1) || Input.GetKey(KeyCode.Q);
+            return Input.GetMouseButton(1);
         }
 
         protected virtual bool GetBlockingInput()

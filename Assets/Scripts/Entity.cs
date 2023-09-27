@@ -22,6 +22,7 @@ namespace Entity
         Entity_Blocking_GetHit,
         Entity_Destroy,
         Entity_Attack_Deflected,
+        Entity_Interact_With_UI,
     }
 
     public class Entity : MonoBehaviour
@@ -62,13 +63,15 @@ namespace Entity
 
         protected virtual void Update()
         {
-            if(IsDefeated())
+            if (IsInteractWithUI())
                 return;
+            if (IsDefeated())
+                return;
+            GetInput();
             // handle lock state
             if (CheckIfInLockState())
                 return;
             // get entity input
-            GetInput();
             HandleAttackInput();
             if (!IsMovableState())
                 return;
@@ -181,11 +184,18 @@ namespace Entity
                     break;
                 case EntityState.Entity_Attack_Deflected:
                     break;
+                case EntityState.Entity_Interact_With_UI:
+                    break;
                 case EntityState.Entity_Destroy:
                     break;
                 default:
                     break;
             }
+        }
+
+        private bool IsInteractWithUI()
+        {
+            return currentEntityState == EntityState.Entity_Interact_With_UI;
         }
 
         protected bool IsDefeated()
