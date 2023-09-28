@@ -3,12 +3,14 @@ using Entity;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Inventory.Data;
 
 public class EntityHandleEquipment : MonoBehaviour
 {
-    [SerializeField] EntityCustomize entityCustomize;
-    [SerializeField] List<GameObject> allEquipments = new();
-    [SerializeField] List<ItemData> starterEquipments;
+    [SerializeField] protected EntityCustomize entityCustomize;
+    [SerializeField] protected List<EquippableItemData> defaultEquipments;
+
+    protected List<GameObject> allEquipments = new();
     public Armor Armor { get; private set; }
     public Armor Helmet { get; private set; }
     public Weapon Weapon { get; private set; }
@@ -16,19 +18,14 @@ public class EntityHandleEquipment : MonoBehaviour
 
     private void Start()
     {
-        foreach (var equipmentData in starterEquipments)
+        foreach (var equipmentData in defaultEquipments)
         {
-            var item = Equip((equipmentData));
+            var item = Equip(equipmentData);
             allEquipments.Add(item.gameObject);
-
-            if (item.equipmentType == EquipmentType.Weapon)
-                Weapon = (Weapon)item;
-            else if (item.equipmentType == EquipmentType.Shield)
-                Shield = (Shield)item;
         }
     }
 
-    public Equipment Equip(ItemData equipmentData)
+    public virtual Equipment Equip(EquippableItemData equipmentData, List<ItemParameter> itemState = null)
     {
         var equipmentObj = equipmentData.SpawnItem();
         if (equipmentObj.TryGetComponent<Equipment>(out var equipment))

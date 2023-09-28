@@ -13,7 +13,7 @@ public class ItemPickUp : MonoBehaviour
 
     void Start()
     {
-        var itemObj = Instantiate(ItemData.itemPrefab, modelContainer);
+        var itemObj = Instantiate(ItemData.ItemPrefab, modelContainer);
         itemObj.transform.ResetTransform();
     }
 

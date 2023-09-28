@@ -38,12 +38,16 @@ public class RangeWeapon : Weapon
 
     public void DeActivateSkill()
     {
-        spellUsed.DeActivateSkill();
+        if (spellUsed != null)
+            spellUsed.DeActivateSkill();
     }
 
     public void ActivateSkill()
     {
-        onChargeFinishVfx.SetActive(false);
-        spellUsed.ActivateSkill();
+        if (spellUsed != null)
+        {
+            onChargeFinishVfx.SetActive(false);
+            spellUsed.ActivateSkill();
+        }
     }
 }

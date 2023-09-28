@@ -22,16 +22,16 @@ namespace Inventory.Data
             }
         }
 
-        public int AddItem(ItemData itemData, int quantity)
+        public int AddItem(ItemData itemData, int quantity, List<ItemParameter> itemState = null)
         {
             if (!itemData.IsStackable)
             {
-                quantity = AddNonStackableItem(itemData, 1);
+                quantity = AddNonStackableItem(itemData, 1, itemState);
             }
             else
             {
                 quantity = AddStackableItem(itemData, quantity);
-                quantity = AddMultipleItemsToEmptySlots(itemData, quantity);
+                quantity = AddMultipleItemsToEmptySlots(itemData, quantity, itemState);
             }
             InformAboutInventoryChange();
             return quantity;
@@ -47,9 +47,9 @@ namespace Inventory.Data
             return true;
         }
 
-        private int AddNonStackableItem(ItemData itemData, int quantity = 1)
+        private int AddNonStackableItem(ItemData itemData, int quantity = 1, List<ItemParameter> itemState = null)
         {
-            return AddItemToFirstEmptySlot(itemData, quantity);
+            return AddItemToFirstEmptySlot(itemData, quantity, itemState);
         }
 
 
@@ -78,12 +78,13 @@ namespace Inventory.Data
             return quantity;
         }
 
-        private int AddItemToFirstEmptySlot(ItemData itemData, int quantity)
+        private int AddItemToFirstEmptySlot(ItemData itemData, int quantity, List<ItemParameter> itemState = null)
         {
             InventoryItem newItem = new()
             {
                 itemData = itemData,
                 quantity = quantity,
+                itemState = new List<ItemParameter>(itemState == null ? itemData.DefaultParameterList : itemState)
             };
 
             for (int i = 0; i < inventoryItems.Count; i++)
@@ -97,13 +98,13 @@ namespace Inventory.Data
             return -1;
         }
 
-        private int AddMultipleItemsToEmptySlots(ItemData itemData, int quantity)
+        private int AddMultipleItemsToEmptySlots(ItemData itemData, int quantity, List<ItemParameter> itemState = null)
         {
             while (quantity > 0 && !IsInventoryFull())
             {
                 int newQuantity = Mathf.Clamp(quantity, 0, itemData.MaxStackSize);
                 quantity -= newQuantity;
-                AddItemToFirstEmptySlot(itemData, newQuantity);
+                AddItemToFirstEmptySlot(itemData, newQuantity, itemState);
             }
             return quantity;
         }
@@ -143,6 +144,22 @@ namespace Inventory.Data
             return returnValues;
         }
 
+        public void RemoveItem(int itemIndex, int quantity)
+        {
+            if (inventoryItems.Count <= itemIndex || inventoryItems[itemIndex].IsEmpty)
+                return;
+
+            var remainingQuantity = inventoryItems[itemIndex].quantity - quantity;
+            if (remainingQuantity > 0)
+            {
+                inventoryItems[itemIndex] = inventoryItems[itemIndex].ChangeQuantity(remainingQuantity);
+            }
+            else
+            {
+                inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
+            }
+            InformAboutInventoryChange();
+        }
     }
 
     [Serializable]
@@ -150,6 +167,7 @@ namespace Inventory.Data
     {
         public int quantity;
         public ItemData itemData;
+        public List<ItemParameter> itemState;
 
         public bool IsEmpty => itemData == null;
         public InventoryItem ChangeQuantity(int newQuantity)
@@ -158,6 +176,7 @@ namespace Inventory.Data
             {
                 itemData = this.itemData,
                 quantity = newQuantity,
+                itemState = new List<ItemParameter>(this.itemState)
             };
         }
 
@@ -166,6 +185,7 @@ namespace Inventory.Data
         {
             itemData = null,
             quantity = 0,
+            itemState = new List<ItemParameter>()
         };
     }
 }

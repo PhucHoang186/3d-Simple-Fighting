@@ -596,8 +596,9 @@ GameObject:
   - component: {fileID: 658148492817810263}
   - component: {fileID: 658148492817810269}
   - component: {fileID: 658148492817810275}
-  - component: {fileID: 658148492817810285}
   - component: {fileID: 658148492817810288}
+  - component: {fileID: 658148492817810279}
+  - component: {fileID: 658148492817810287}
   m_Layer: 3
   m_Name: Player_1
   m_TagString: Player
@@ -667,7 +668,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5636770347797424941}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 1.6
@@ -688,7 +689,7 @@ MonoBehaviour:
   anim: {fileID: 658148492817810269}
   entityHandleInput: {fileID: 658148492817810263}
   handleAttack: {fileID: 658148492817810252}
-  handleHealth: {fileID: 0}
+  handleHealth: {fileID: 658148492817810244}
   handleMovement: {fileID: 658148492817810288}
   entityStatData: {fileID: 11400000, guid: b966c7b26f24764459d4048a76aab1d7, type: 2}
   model: {fileID: 8311718412718196615}
@@ -726,7 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bb8d642374d564cb686b34c9e243e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityStatData: {fileID: 0}
+  entityStatData: {fileID: 11400000, guid: b966c7b26f24764459d4048a76aab1d7, type: 2}
   hitParticle: {fileID: 19845262, guid: fdac75e990da47649b31f10049c400b0, type: 3}
   entityCollider: {fileID: 5498951192690471642}
 --- !u!114 &658148492817810252
@@ -741,7 +742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb9f80af3650b042a8fc4b276731b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleEquipment: {fileID: 658148492817810285}
+  handleEquipment: {fileID: 0}
   spellSystem: {fileID: 658148492817810275}
 --- !u!114 &658148492817810263
 MonoBehaviour:
@@ -782,25 +783,6 @@ MonoBehaviour:
   spellAvailables:
   - {fileID: 11400000, guid: b11bf392f6b4e5f4fb85faec2bf31a00, type: 2}
   - {fileID: 11400000, guid: 86a36bf16dbc62f47b99a7265b2a03b5, type: 2}
---- !u!114 &658148492817810285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5636770347797424941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 335cd2f3be1785a419d5f79924699c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entityCustomize: {fileID: 5004066983610413462}
-  allEquipments: []
-  starterEquipments:
-  - {fileID: 11400000, guid: e07b97f3b59600b45b2defd96ec81524, type: 2}
-  - {fileID: 11400000, guid: 0808b76f093ed3140959ec56a341defb, type: 2}
-  - {fileID: 11400000, guid: 098002091f8afb144ba5c1e57346faa7, type: 2}
-  - {fileID: 11400000, guid: 0c01b786c9e95a84ca8dd13c7921c65a, type: 2}
 --- !u!114 &658148492817810288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,6 +803,44 @@ MonoBehaviour:
   playerCamera: {fileID: 1398105523}
   clampXRotationMin: -10
   clampXRotationMax: 30
+--- !u!114 &658148492817810279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636770347797424941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20995c507170d0b4cb715551c69c2e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryData: {fileID: 11400000, guid: 07afc791be2d1844ebbb09656d3a50d0, type: 2}
+--- !u!114 &658148492817810287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636770347797424941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8c2eb3be420cb41b287d8cb59bc9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openOnPlay: 0
+  inventoryTab: {fileID: 0}
+  inventoryData: {fileID: 11400000, guid: 07afc791be2d1844ebbb09656d3a50d0, type: 2}
+  initialItemList:
+  - quantity: 10
+    itemData: {fileID: 11400000, guid: e07b97f3b59600b45b2defd96ec81524, type: 2}
+    itemState: []
+  - quantity: 1
+    itemData: {fileID: 11400000, guid: ef5eb72af02fdb24da216af4bb295154, type: 2}
+    itemState: []
+  - quantity: 1
+    itemData: {fileID: 11400000, guid: 2c756df072b4648448cb0a0ac69494af, type: 2}
+    itemState: []
 --- !u!1 &5911138903035181920
 GameObject:
   m_ObjectHideFlags: 0

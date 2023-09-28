@@ -13,10 +13,17 @@ MonoBehaviour:
   m_Name: Inventory Data
   m_EditorClassIdentifier: 
   inventoryItems:
-  - quantity: 1
-    itemData: {fileID: 0}
   - quantity: 10
-    itemData: {fileID: 0}
+    itemData: {fileID: 11400000, guid: e07b97f3b59600b45b2defd96ec81524, type: 2}
+    itemState: []
   - quantity: 1
-    itemData: {fileID: 0}
-  <Size>k__BackingField: 3
+    itemData: {fileID: 11400000, guid: ef5eb72af02fdb24da216af4bb295154, type: 2}
+    itemState:
+    - parameterData: {fileID: 11400000, guid: a7bc2248f247e51478da62cd4139d155, type: 2}
+      value: 100
+  - quantity: 1
+    itemData: {fileID: 11400000, guid: c0c38071c42a0a7488ca52d545551f57, type: 2}
+    itemState:
+    - parameterData: {fileID: 11400000, guid: a7bc2248f247e51478da62cd4139d155, type: 2}
+      value: 10
+  <Size>k__BackingField: 30

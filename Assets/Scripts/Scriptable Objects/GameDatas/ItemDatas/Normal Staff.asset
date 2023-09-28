@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76d6289409fae7b4d904d66bc0d3dd50, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e3d3da77300f83478a7cfb0e76b5813, type: 3}
   m_Name: Normal Staff
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 1
   <ItemName>k__BackingField: 'Common '
   <ItemDescription>k__BackingField: 
+  <DefaultParameterList>k__BackingField:
+  - parameterData: {fileID: 11400000, guid: a7bc2248f247e51478da62cd4139d155, type: 2}
+    value: 10
   <ItemIcon>k__BackingField: {fileID: 21300000, guid: e7a5b4f6ed9029a4a84f779d8360be2c, type: 3}
-  itemPrefab: {fileID: 7129357675767280838, guid: a62abf681534dcc4c84f8e0043b2fca6, type: 3}
-  modifierDatas: []
+  <ItemPrefab>k__BackingField: {fileID: 7129357675767280838, guid: a62abf681534dcc4c84f8e0043b2fca6, type: 3}

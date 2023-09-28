@@ -29,13 +29,16 @@ namespace Inventory.UI
                 var itemUI = Instantiate(itemPrefab, contentPanel);
                 itemUI.transform.ResetTransform();
                 inventoryUIList.Add(itemUI);
-                itemUI.SetUpActions(HandleClickedItem, HandleRightClickedItem, HandleSwapItem, HandleBeginDragItem, HandleEndDragItem);
+                itemUI.SetUpActions(HandleClickedItem, HandleShowActionsItem, HandleSwapItem, HandleBeginDragItem, HandleEndDragItem);
             }
         }
 
         private void HandleShowActionsItem(UIItem item)
         {
-
+            int index = inventoryUIList.IndexOf(item);
+            if (index == -1)
+                return;
+            OnItemActionsRequested?.Invoke(index);
         }
 
         private void HandleEndDragItem(UIItem item)
@@ -72,14 +75,6 @@ namespace Inventory.UI
             if (index == -1)
                 return;
             OnDescriptionRequested?.Invoke(index);
-        }
-
-        private void HandleRightClickedItem(UIItem item)
-        {
-            int index = inventoryUIList.IndexOf(item);
-            if (index == -1)
-                return;
-            OnItemActionsRequested?.Invoke(index);
         }
 
         private void ResetDragItem()
