@@ -15,13 +15,6 @@ namespace Entity
         protected float nullifyAmount;
         protected Action<float> onHitCb;
         protected Action onDestroyCb;
-        
-        [Button]
-        public void DecreaseHealth()
-        {
-            currentHealth -= 10;
-        }
-
         public float MaxHealth { get; set; }
 
         void Awake()

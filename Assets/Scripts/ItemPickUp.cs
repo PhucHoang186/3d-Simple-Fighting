@@ -25,5 +25,6 @@ public class ItemPickUp : MonoBehaviour
     private void PlayPickUpAnimation()
     {
         modelContainer.gameObject.SetActive(false);
+        this.enabled = false;
     }
 }

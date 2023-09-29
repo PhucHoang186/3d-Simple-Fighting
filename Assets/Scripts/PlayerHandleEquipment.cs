@@ -6,14 +6,15 @@ namespace Entity
 {
     public class PlayerHandleEquipment : EntityHandleEquipment
     {
-        [SerializeField] List<ItemParameter> parametersToModify, currentItemState;
+        [SerializeField] List<ItemParameter> parametersToModify;
         [SerializeField] InventoryData inventoryData;
+        private List<ItemParameter> currentItemState;
 
         public override Equipment Equip(EquippableItemData equipmentData, List<ItemParameter> itemState = null)
         {
             if (itemState != null)
                 currentItemState = new List<ItemParameter>(itemState);
-            ModifyParameters();
+            // ModifyParameters();
             inventoryData.AddItem(equipmentData, 1, currentItemState);
             return base.Equip(equipmentData, itemState);
         }

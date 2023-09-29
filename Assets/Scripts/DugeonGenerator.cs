@@ -33,26 +33,28 @@ namespace Generation
         public void RunRandomWalkGeneration()
         {
             HashSet<Vector3Int> floorPositions = CreateRoomsAndCorridors();
+            SpawnEnv(floorPositions);
 
+        }
+
+        private void SpawnEnv(HashSet<Vector3Int> floorPositions)
+        {
             mapSpawner.SpawnFloorTiles(floorPositions, wallLayer);
             mapSpawner.SpawnWalls(WallGenerator.CreateWalls(floorPositions, stepOffset), wallLayer);
             mapSpawner.SpawnCorners(WallGenerator.CreateCorners(floorPositions, stepOffset), wallLayer);
-
         }
 
         [Button]
         public void RunBinaryPartitioningGeneration()
-        {
-            var roomList = ProceduralGenrationAlgorithms.BinaryPartitioning(new BoundsInt(startPosition, new Vector3Int(dungeonWidth * stepOffset, 0, dungeonHeight * stepOffset)), minWidth * stepOffset, minHeight * stepOffset, stepOffset);
-            HashSet<Vector3Int> floorPositions = randomWalkRoom ? CreateRoomsRandomly(roomList) : CreateRoomsFromList(roomList);
-            HashSet<Vector3Int> corridorPositions = CreateCorridorsConnectRooms(roomList);
-
+        {   BoundsInt areaBound = new BoundsInt(startPosition, new Vector3Int(dungeonWidth * stepOffset, 0, dungeonHeight * stepOffset));
+            var roomList = ProceduralGenrationAlgorithms.BinaryPartitioning(areaBound, minWidth * stepOffset, minHeight * stepOffset, stepOffset);
+            HashSet<Vector3Int> floorPositions = randomWalkRoom ? CreateRoomsUseRDW(roomList) : CreateRoomsUSeBP(roomList);
+            HashSet<Vector3Int> corridorPositions = CreateCorridorsFromRoomList(roomList);
             RoomsData roomsData = ProceduralGenrationAlgorithms.GetAllRoomsFloorDatas(floorPositions, stepOffset);
-            floorPositions.UnionWith(corridorPositions);
+            propsGenerator.GenerateProps(roomsData);
 
-            mapSpawner.SpawnFloorTiles(floorPositions, wallLayer);
-            mapSpawner.SpawnWalls(WallGenerator.CreateWalls(floorPositions, stepOffset), wallLayer);
-            mapSpawner.SpawnCorners(WallGenerator.CreateCorners(floorPositions, stepOffset), wallLayer);
+            floorPositions.UnionWith(corridorPositions);
+            SpawnEnv(floorPositions);
         }
 
         [Button]
@@ -61,7 +63,7 @@ namespace Generation
             mapSpawner.DestroyTiles();
         }
 
-        private HashSet<Vector3Int> CreateCorridorsConnectRooms(List<BoundsInt> roomList)
+        private HashSet<Vector3Int> CreateCorridorsFromRoomList(List<BoundsInt> roomList)
         {
             List<Vector3Int> roomCenters = new();
             HashSet<Vector3Int> corridors = new();
@@ -192,7 +194,7 @@ namespace Generation
         }
 
 
-        private HashSet<Vector3Int> CreateRoomsRandomly(List<BoundsInt> roomList)
+        private HashSet<Vector3Int> CreateRoomsUseRDW(List<BoundsInt> roomList)
         {
             HashSet<Vector3Int> floorPositions = new();
             foreach (var room in roomList)
@@ -215,7 +217,7 @@ namespace Generation
         }
 
 
-        private HashSet<Vector3Int> CreateRoomsFromList(List<BoundsInt> roomList)
+        private HashSet<Vector3Int> CreateRoomsUSeBP(List<BoundsInt> roomList)
         {
             HashSet<Vector3Int> floorPositions = new();
             foreach (var room in roomList)

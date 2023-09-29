@@ -84,7 +84,7 @@ namespace Inventory.Data
             {
                 itemData = itemData,
                 quantity = quantity,
-                itemState = new List<ItemParameter>(itemState == null ? itemData.DefaultParameterList : itemState)
+                itemState = new List<ItemParameter>(itemState ?? itemData.DefaultParameterList)
             };
 
             for (int i = 0; i < inventoryItems.Count; i++)

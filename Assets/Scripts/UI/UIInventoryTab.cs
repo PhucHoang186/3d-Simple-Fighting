@@ -12,6 +12,7 @@ namespace Inventory.UI
         [SerializeField] Transform contentPanel;
         [SerializeField] UiInventoryDescription uiInventoryDescription;
         [SerializeField] MouseFollower mouseFollower;
+        [SerializeField] ItemActionPanel itemActionPanel;
         private List<UIItem> inventoryUIList = new();
         public event Action<int> OnDescriptionRequested, OnItemActionsRequested, OnStartDragging;
         public event Action<int, int> OnSwapItems;
@@ -33,11 +34,23 @@ namespace Inventory.UI
             }
         }
 
+        public void AddAction(string actionName, Action onClickAtction)
+        {
+            itemActionPanel.AddActionButton(actionName, onClickAtction);
+        }
+
+        public void ShowItemAction(int itemIndex)
+        {
+            itemActionPanel.ToggleButton(true);
+            itemActionPanel.transform.position = inventoryUIList[itemIndex].transform.position;
+        }
+
         private void HandleShowActionsItem(UIItem item)
         {
             int index = inventoryUIList.IndexOf(item);
             if (index == -1)
                 return;
+            // itemActionPanel.ToggleButton(true);
             OnItemActionsRequested?.Invoke(index);
         }
 
@@ -93,6 +106,7 @@ namespace Inventory.UI
 
         public void Hide()
         {
+            itemActionPanel.ToggleButton(false);
             gameObject.SetActive(false);
             ResetDragItem();
         }
@@ -109,6 +123,7 @@ namespace Inventory.UI
             {
                 item.UnSelect();
             }
+            itemActionPanel.ToggleButton(false);
         }
 
         private void ResetAllItemDatas()

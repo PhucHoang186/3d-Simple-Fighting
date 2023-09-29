@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Entity;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace Entity
@@ -22,7 +17,7 @@ namespace Entity
         {
             if (!handleEquipment.Weapon.IsChargingTypeWeapon())
             {
-                ((MeleeWeapon)handleEquipment.Weapon)?.ToggleHitBox(true);
+                ((MeleeWeapon)handleEquipment.Weapon).ToggleHitBox(true);
             }
         }
 
@@ -30,7 +25,7 @@ namespace Entity
         {
             if (!handleEquipment.Weapon.IsChargingTypeWeapon())
             {
-                ((MeleeWeapon)handleEquipment.Weapon)?.ToggleHitBox(false);
+                ((MeleeWeapon)handleEquipment.Weapon).ToggleHitBox(false);
             }
         }
 

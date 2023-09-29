@@ -23,8 +23,8 @@ namespace Generation
 
         public static List<BoundsInt> BinaryPartitioning(BoundsInt spaceToSplit, int minWidth, int minHeight, int stepOffset)
         {
-            Queue<BoundsInt> roomsQueue = new Queue<BoundsInt>();
-            List<BoundsInt> roomsList = new List<BoundsInt>();
+            Queue<BoundsInt> roomsQueue = new();
+            List<BoundsInt> roomsList = new();
             roomsQueue.Enqueue(spaceToSplit);
             while (roomsQueue.Count > 0)
             {
