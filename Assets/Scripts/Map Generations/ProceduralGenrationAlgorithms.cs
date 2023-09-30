@@ -104,6 +104,7 @@ namespace Generation
         public static RoomsData GetAllRoomsFloorDatas(HashSet<Vector3Int> floorPositions, int stepOffset)
         {
             RoomsData roomsDatas = new();
+            roomsDatas.Init();
             var cardinalDirectionsList = Direction3D.GetCardinalDirectionsListIgnoreY();
 
             int neighborNumber = 4;
@@ -195,6 +196,16 @@ namespace Generation
 
     public class RoomsData
     {
+        public void Init()
+        {
+            NearWallTopFloors = new();
+            NearWallDownFloors = new();
+            NearWallRightFloors = new();
+            NearWallLeftFloors = new();
+            NonNearWallFloors = new();
+            NearCornerFloors = new();
+        }
+
         public HashSet<Vector3Int> NearWallTopFloors { get; set; }
         public HashSet<Vector3Int> NearWallDownFloors { get; set; }
         public HashSet<Vector3Int> NearWallRightFloors { get; set; }
