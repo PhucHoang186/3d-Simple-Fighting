@@ -59,6 +59,8 @@ public class Shield : Equipment
         // weapon.
         var enemy = weapon.GetComponentInParent<Entity.Entity>();
         enemy.ChangeEntityState(Entity.EntityState.Entity_Attack_Deflected, 1f);
+        var thisEntity = GetComponentInParent<Entity.Entity>();
+        thisEntity.ChangeEntityState(Entity.EntityState.Entity_Blocking_GetHit);
         ShowHitSparkle();
     }
 

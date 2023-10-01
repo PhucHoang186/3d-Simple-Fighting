@@ -30,6 +30,8 @@ namespace Entity
         private void Awake()
         {
             anim = GetComponent<Animator>();
+            if (anim == null)
+                anim = GetComponentInChildren<Animator>();
         }
 
         public void UpdateAnimationBaseOnState(EntityState entityState)
@@ -53,7 +55,7 @@ namespace Entity
                     PlayAnim(EntityAnimation.Character_UnCasting);
                     break;
                 case EntityState.Entity_Block:
-                    PlayAnim(EntityAnimation.Character_Block);
+                    PlayAnim(EntityAnimation.Character_Block, 0.1f);
                     break;
                 case EntityState.Entity_UnBlock:
                     PlayAnim(EntityAnimation.Character_UnBlock);
@@ -83,19 +85,35 @@ namespace Entity
         {
             // reset trigger
             if (NeedOverrideAnimationState(animName))
-                anim.SetBool("BaseLayer", false);
+                SetAnimTrigger("BaseLayer", false);
             else
-                anim.SetBool("BaseLayer", true);
+                SetAnimTrigger("BaseLayer", true);
 
             if (animName == EntityAnimation.Character_Block)
-                anim.SetBool("IsBlocking", true);
+                SetAnimTrigger("IsBlocking", true);
             if (animName == EntityAnimation.Character_UnBlock)
-                anim.SetBool("IsBlocking", false);
+                SetAnimTrigger("IsBlocking", false);
 
             if (animName == EntityAnimation.Character_UnCasting)
-                anim.SetBool("IsCasting", false);
+                SetAnimTrigger("IsCasting", false);
             if (animName == EntityAnimation.Character_StartCasting)
-                anim.SetBool("IsCasting", true);
+                SetAnimTrigger("IsCasting", true);
+        }
+
+        private void SetAnimTrigger(string triggerName, bool isActive)
+        {
+            if (CheckIFAnimTriggerExist(triggerName))
+                anim.SetBool(triggerName, isActive);
+        }
+
+        private bool CheckIFAnimTriggerExist(string triggerName)
+        {
+            foreach (var param in anim.parameters)
+            {
+                if (param.name == triggerName)
+                    return true;
+            }
+            return false;
         }
 
         private bool NeedOverrideAnimationState(EntityAnimation animName)

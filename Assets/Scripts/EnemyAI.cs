@@ -1,17 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using Entity;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] protected EntityStatData enemyStat;
     [SerializeField] protected float checkRange;
     [SerializeField] protected float chaseRange;
     [SerializeField] protected float attackRange;
     [SerializeField] protected float attackSpeed;
     [SerializeField] protected Transform target;
     protected float currentAttackSpeed;
+
+    public void Start()
+    {
+        target = FindAnyObjectByType<PlayerCharacter>().transform;
+    }
 
     public EntityInput GetEnemyAIInput()
     {
@@ -39,6 +41,7 @@ public class EnemyAI : MonoBehaviour
             entityInput.isInstantAttackPressed = false;
             currentAttackSpeed -= Time.deltaTime;
         }
+        // entityInput.isBlockPressed = true;
         return entityInput;
     }
 }

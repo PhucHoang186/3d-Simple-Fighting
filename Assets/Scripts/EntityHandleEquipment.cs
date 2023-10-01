@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using Inventory.Data;
 
+[RequireComponent(typeof(EntityCustomize))]
 public class EntityHandleEquipment : MonoBehaviour
 {
     [SerializeField] protected EntityCustomize entityCustomize;

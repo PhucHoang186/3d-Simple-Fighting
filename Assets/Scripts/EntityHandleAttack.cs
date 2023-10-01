@@ -29,15 +29,15 @@ namespace Entity
             }
         }
 
-        public void HandleAttackInput(Entity entity, EntityInput entityInput)
+        public virtual void HandleAttackInput(Entity entity, EntityInput entityInput)
         {
-            if (handleEquipment.Weapon == null)
-                return;
-            Attack(entity, entityInput);
-            Block(entity, entityInput);
+            if (handleEquipment.Weapon != null)
+                Attack(entity, entityInput);
+            if (handleEquipment.Shield != null)
+                Block(entity, entityInput);
         }
 
-        protected void Block(Entity entity, EntityInput entityInput)
+        protected virtual void Block(Entity entity, EntityInput entityInput)
         {
             if (entityInput.isBlockPressed)
             {
@@ -56,7 +56,7 @@ namespace Entity
             }
         }
 
-        protected void Attack(Entity entity, EntityInput entityInput)
+        protected virtual void Attack(Entity entity, EntityInput entityInput)
         {
             if (!entityInput.StartAttack)
                 return;
@@ -65,7 +65,7 @@ namespace Entity
             // melee
             if (entityInput.isInstantAttackPressed && !isChargingWeaponType)
             {
-                entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f);
+                entity.ChangeEntityState(EntityState.Entity_Attack_Short, 2f);
                 return;
             }
 
@@ -93,18 +93,19 @@ namespace Entity
             }
         }
 
-        protected void Activate(Entity entity)
+        protected virtual void Activate(Entity entity)
         {
             entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
             ((RangeWeapon)handleEquipment.Weapon).ActivateSkill();
         }
-        private void DeActivate(Entity entity)
+
+        protected virtual void DeActivate(Entity entity)
         {
             entity.ChangeEntityState(EntityState.Entity_UnAttack_Long);
             ((RangeWeapon)handleEquipment.Weapon).DeActivateSkill();
         }
 
-        protected void ChargingAttack(Entity entity)
+        protected virtual void ChargingAttack(Entity entity)
         {
             if (startCharging)
                 return;

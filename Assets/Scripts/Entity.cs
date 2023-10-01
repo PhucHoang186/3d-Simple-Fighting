@@ -34,7 +34,6 @@ namespace Entity
         [SerializeField] protected EntityHandleMovement handleMovement;
         [SerializeField] protected EntityStatData entityStatData;
         // movement
-        [SerializeField] protected Transform model;
         protected float currentLockedTime;
         protected bool isLockedState;
         protected EntityState currentEntityState;
@@ -121,7 +120,8 @@ namespace Entity
             return currentEntityState == EntityState.Entity_Idle
              || currentEntityState == EntityState.Entity_Move
              || currentEntityState == EntityState.Entity_Block
-             || currentEntityState == EntityState.Entity_Attack_Long;
+             || currentEntityState == EntityState.Entity_Attack_Long
+             || currentEntityState == EntityState.Entity_Default;
         }
 
         protected virtual void GetInput()
@@ -163,6 +163,8 @@ namespace Entity
             anim.UpdateAnimationBaseOnState(newState);
             switch (newState)
             {
+                case EntityState.Entity_Default:
+                    break;
                 case EntityState.Entity_Idle:
                     break;
                 case EntityState.Entity_Move:
@@ -180,7 +182,9 @@ namespace Entity
                     ChangeEntityState(EntityState.Entity_Idle);
                     break;
                 case EntityState.Entity_GetHit:
+                    break;
                 case EntityState.Entity_Blocking_GetHit:
+                    ChangeEntityState(EntityState.Entity_Idle);
                     break;
                 case EntityState.Entity_Attack_Deflected:
                     break;

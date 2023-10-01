@@ -11,7 +11,7 @@ public enum EquipmentType
     Shield,
 }
 
-public class Equipment : Item
+public class Equipment : MonoBehaviour
 {
     public EquipmentType equipmentType;
 

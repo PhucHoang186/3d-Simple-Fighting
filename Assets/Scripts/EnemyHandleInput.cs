@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Entity
 {
+    [RequireComponent(typeof(EnemyAI))]
     public class EnemyHandleInput : EntityHandleInput
     {
         [SerializeField] EnemyAI enemyAI;
