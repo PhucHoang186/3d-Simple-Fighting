@@ -46,10 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4edd840b1e06ef448dab740b993f382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 
   equipmentType: 3
   shieldCollider: {fileID: 6990470275704101453}
-  physicDefend: 10
+  physicDefend: 1000
   magicDefend: 10
   sparkle: {fileID: 8635263088225240809}
   blockCooldown: 1

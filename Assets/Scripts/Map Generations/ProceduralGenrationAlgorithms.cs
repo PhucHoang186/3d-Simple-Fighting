@@ -107,10 +107,10 @@ namespace Generation
             roomsDatas.Init();
             var cardinalDirectionsList = Direction3D.GetCardinalDirectionsListIgnoreY();
 
-            int neighborNumber = 4;
             foreach (var floorPosition in floorPositions)
             {
                 // check 4 directions
+                int neighborNumber = 4;
                 // top
                 if (!floorPositions.Contains(floorPosition + stepOffset * cardinalDirectionsList[0]))
                 {
@@ -145,6 +145,11 @@ namespace Generation
                 {
                     roomsDatas.NonNearWallFloors.Add(floorPosition);
                 }
+
+                roomsDatas.NearWallTopFloors.ExceptWith(roomsDatas.NearCornerFloors);
+                roomsDatas.NearWallDownFloors.ExceptWith(roomsDatas.NearCornerFloors);
+                roomsDatas.NearWallRightFloors.ExceptWith(roomsDatas.NearCornerFloors);
+                roomsDatas.NearWallLeftFloors.ExceptWith(roomsDatas.NearCornerFloors);
             }
 
             return roomsDatas;

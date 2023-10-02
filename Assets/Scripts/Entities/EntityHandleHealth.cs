@@ -41,9 +41,8 @@ namespace Entity
                 return;
 
             currentHealth -= remainingDamageDealt;
+            OnHit(remainingDamageDealt);
             SpawnHitVfx(hitPoint);
-            OnHit(damageAmount);
-
             if (currentHealth <= 0)
                 OnDestroyed();
         }
@@ -70,11 +69,11 @@ namespace Entity
             Destroy(entityCollider);
             onDestroyCb?.Invoke();
         }
+
         public void OnDestroy()
         {
             onHitCb = null;
             onDestroyCb = null;
         }
-
     }
 }

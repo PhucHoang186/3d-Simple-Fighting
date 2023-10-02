@@ -28,11 +28,15 @@ namespace Generation
         [SerializeField] int minHeight;
         [SerializeField] int offset;
         [SerializeField] bool randomWalkRoom;
+        
+        private HashSet<Vector3Int> floorPositions =  new();
+        private List<GameObject> allProps =  new();
 
         [Button]
         public void RunRandomWalkGeneration()
         {
-            HashSet<Vector3Int> floorPositions = CreateRoomsAndCorridors();
+            floorPositions.Clear();
+            floorPositions = CreateRoomsAndCorridors();
             SpawnEnv(floorPositions);
 
         }
@@ -46,21 +50,36 @@ namespace Generation
 
         [Button]
         public void RunBinaryPartitioningGeneration()
-        {   BoundsInt areaBound = new BoundsInt(startPosition, new Vector3Int(dungeonWidth * stepOffset, 0, dungeonHeight * stepOffset));
+        {
+            BoundsInt areaBound = new(startPosition, new Vector3Int(dungeonWidth * stepOffset, 0, dungeonHeight * stepOffset));
             var roomList = ProceduralGenrationAlgorithms.BinaryPartitioning(areaBound, minWidth * stepOffset, minHeight * stepOffset, stepOffset);
-            HashSet<Vector3Int> floorPositions = randomWalkRoom ? CreateRoomsUseRDW(roomList) : CreateRoomsUSeBP(roomList);
+            floorPositions.Clear();
+            floorPositions = randomWalkRoom ? CreateRoomsUseRDW(roomList) : CreateRoomsUSeBP(roomList);
             HashSet<Vector3Int> corridorPositions = CreateCorridorsFromRoomList(roomList);
-            RoomsData roomsData = ProceduralGenrationAlgorithms.GetAllRoomsFloorDatas(floorPositions, stepOffset);
-            propsGenerator.GenerateProps(roomsData);
+            HashSet<Vector3Int> fullEnvPositions = new(floorPositions);
+            fullEnvPositions.UnionWith(corridorPositions);
+            // RoomsData roomsData = ProceduralGenrationAlgorithms.GetAllRoomsFloorDatas(floorPositions, stepOffset);
+            // propsGenerator.GenerateProps(roomsData, availablePropPositions, stepOffset);
+            SpawnEnv(fullEnvPositions);
+        }
 
-            floorPositions.UnionWith(corridorPositions);
-            SpawnEnv(floorPositions);
+        [Button]
+        public void SpawnProp()
+        {
+            HashSet<Vector3Int> availablePropPositions = new(floorPositions);
+            RoomsData roomsData = ProceduralGenrationAlgorithms.GetAllRoomsFloorDatas(availablePropPositions, stepOffset);
+            propsGenerator.GenerateProps(roomsData, floorPositions, stepOffset);
         }
 
         [Button]
         public void ClearMap()
         {
             mapSpawner.DestroyTiles();
+        }
+
+
+        private void DeleteAllProps()
+        {
         }
 
         private HashSet<Vector3Int> CreateCorridorsFromRoomList(List<BoundsInt> roomList)
