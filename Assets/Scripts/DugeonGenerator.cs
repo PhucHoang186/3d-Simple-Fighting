@@ -60,8 +60,8 @@ namespace Generation
             HashSet<Vector3Int> corridorPositions = CreateCorridorsFromRoomList(roomList);
             HashSet<Vector3Int> fullEnvPositions = new(floorPositions);
             fullEnvPositions.UnionWith(corridorPositions);
-            floorPositions.ExceptWith(corridorPositions);
             roomsData = ProceduralGenrationAlgorithms.GetAllRoomsFloorDatas(floorPositions, stepOffset);
+            floorPositions.ExceptWith(corridorPositions);
             // propsGenerator.GenerateProps(roomsData, availablePropPositions, stepOffset);
             SpawnEnv(fullEnvPositions);
         }
