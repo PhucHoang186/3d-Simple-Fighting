@@ -28,6 +28,7 @@ namespace Generation
         public int GroupMinCount = 1;
         [Min(1)]
         public int GroupMaxCount = 1;
+        public int PropPerimeter => PropSize.x * PropSize.y;
 
         public GameObject SpawnProp(Vector3 floorPosition, Transform parent)
         {

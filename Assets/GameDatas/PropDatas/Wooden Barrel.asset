@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8d414eb9dd2074cac63c22980abdb7, type: 3}
   m_Name: Wooden Barrel
   m_EditorClassIdentifier: 
-  PropSize: {x: 0, y: 0}
-  PropPrefab: {fileID: 919132149155446097, guid: 3b5f2c16f2e72d749b0351277797bb31, type: 3}
+  PropSize: {x: 1, y: 1}
+  PropPrefab: {fileID: 2710996305671652817, guid: 95c827805e76ed24a8660e162da8c3d4, type: 3}
   Corner: 1
   NearWallTop: 1
   NearWallRight: 1

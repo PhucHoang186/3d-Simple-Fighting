@@ -21,7 +21,7 @@ namespace Generation
             return path;
         }
 
-        public static List<BoundsInt> BinaryPartitioning(BoundsInt spaceToSplit, int minWidth, int minHeight, int stepOffset)
+        public static List<BoundsInt> GetRoomByBinaryPartitioning(BoundsInt spaceToSplit, int minWidth, int minHeight, int stepOffset)
         {
             Queue<BoundsInt> roomsQueue = new();
             List<BoundsInt> roomsList = new();

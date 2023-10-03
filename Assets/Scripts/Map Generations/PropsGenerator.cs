@@ -12,31 +12,63 @@ namespace Generation
         [SerializeField] List<PropData> propDatas;
         [SerializeField, Range(0, 1)]
         float cornerPropPlacementRate = 0.7f;
+        [SerializeField, Range(0, 1)]
+        float wallPropPlacementRate = 0.7f;
         private List<GameObject> propsSpawnedList = new();
 
-        public void GenerateProps(RoomsData roomsData, HashSet<Vector3Int> availablePositions, int stepOffset)
+        public List<GameObject> GenerateProps(RoomsData roomsData, HashSet<Vector3Int> availablePositions, int stepOffset)
         {
+            List<GameObject> props = new();
+            // corner
             List<PropData> nearCornerProps = propDatas.Where(x => x.Corner).ToList();
-            PlacePropsInCorner(roomsData.NearCornerFloors, nearCornerProps, availablePositions);
-
+            props.AddRange(PlaceProps(roomsData.NearCornerFloors, nearCornerProps, availablePositions, cornerPropPlacementRate));
+            // top
+            List<PropData> nearTopProps = propDatas.Where(x => x.NearWallTop).OrderByDescending(x => x.PropPerimeter).ToList();
+            props.AddRange(PlaceProps(roomsData.NearWallTopFloors, nearTopProps, availablePositions, wallPropPlacementRate));
+            // bottom
+            List<PropData> nearBottomProps = propDatas.Where(x => x.NearWallTop).OrderByDescending(x => x.PropPerimeter).ToList();
+            props.AddRange(PlaceProps(roomsData.NearWallTopFloors, nearBottomProps, availablePositions, wallPropPlacementRate));
+            // left
+            List<PropData> nearLeftProps = propDatas.Where(x => x.NearWallTop).OrderByDescending(x => x.PropPerimeter).ToList();
+            props.AddRange(PlaceProps(roomsData.NearWallTopFloors, nearLeftProps, availablePositions, wallPropPlacementRate));
+            // right
+            List<PropData> nearRightProps = propDatas.Where(x => x.NearWallTop).OrderByDescending(x => x.PropPerimeter).ToList();
+            props.AddRange(PlaceProps(roomsData.NearWallTopFloors, nearRightProps, availablePositions, wallPropPlacementRate));
+            return props;
         }
 
-        private void PlacePropAtPostition(Vector3Int placePostition, List<PropData> listProps, HashSet<Vector3Int> availablePositions)
+        private GameObject PlacePropAtPostition(Vector3Int placePostition, List<PropData> listProps, HashSet<Vector3Int> availablePositions)
         {
-            var cornerPropSpawned = listProps.PickRandomValueFromList().SpawnProp(placePostition, this.transform);
-            propsSpawnedList.Add(cornerPropSpawned);
+            var propSpawned = listProps.PickRandomValueFromList().SpawnProp(placePostition, this.transform);
+            propsSpawnedList.Add(propSpawned);
             availablePositions.Remove(placePostition);
+            return propSpawned;
         }
 
-        private void PlacePropsInCorner(HashSet<Vector3Int> cornerPositions, List<PropData> cornerProps, HashSet<Vector3Int> availablePositions)
+        // private List<GameObject> PlacePropsInCorner(HashSet<Vector3Int> cornerPositions, List<PropData> cornerProps, HashSet<Vector3Int> availablePositions, float spawnPercent)
+        // {
+        //     List<GameObject> props = new();
+        //     foreach (var cornerPosition in cornerPositions)
+        //     {
+        //         if (Random.value <= cornerPropPlacementRate)
+        //         {
+        //             props.Add(PlacePropAtPostition(cornerPosition, cornerProps, availablePositions, ));
+        //         }
+        //     }
+        //     return props;
+        // }
+
+        private List<GameObject> PlaceProps(HashSet<Vector3Int> floorPositions, List<PropData> cornerProps, HashSet<Vector3Int> availablePositions, float spawnPercent)
         {
-            foreach (var cornerPosition in cornerPositions)
+            List<GameObject> props = new();
+            foreach (var floorPosition in floorPositions)
             {
-                if (Random.value <= cornerPropPlacementRate)
+                if (Random.value <= spawnPercent)
                 {
-                    PlacePropAtPostition(cornerPosition, cornerProps, availablePositions);
+                    props.Add(PlacePropAtPostition(floorPosition, cornerProps, availablePositions));
                 }
             }
+            return props;
         }
     }
 }

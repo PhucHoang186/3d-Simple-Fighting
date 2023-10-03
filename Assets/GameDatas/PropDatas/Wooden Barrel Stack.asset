@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8d414eb9dd2074cac63c22980abdb7, type: 3}
+  m_Name: Wooden Barrel Stack
+  m_EditorClassIdentifier: 
+  PropSize: {x: 1, y: 1}
+  PropPrefab: {fileID: 3274510601822798070, guid: 4f697dc5a4a586148b13c569b100ed9e, type: 3}
+  Corner: 1
+  NearWallTop: 1
+  NearWallRight: 1
+  NearWallBottom: 1
+  NearWallLeft: 1
+  Inner: 0
+  PlacementQuanityMin: 1
+  PlacementQuanityMax: 1
+  PlaceAsGroup: 0
+  GroupMinCount: 1
+  GroupMaxCount: 1

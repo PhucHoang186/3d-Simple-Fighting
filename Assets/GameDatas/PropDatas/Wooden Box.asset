@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8d414eb9dd2074cac63c22980abdb7, type: 3}
   m_Name: Wooden Box
   m_EditorClassIdentifier: 
-  PropSize: {x: 0, y: 0}
-  PropPrefab: {fileID: 919132149155446097, guid: 0cbd1eb98ecda5041b4ff90ff43a7126, type: 3}
+  PropSize: {x: 1, y: 1}
+  PropPrefab: {fileID: 3552941995621238227, guid: 5570d370ab727b9439343a2402ab334d, type: 3}
   Corner: 1
   NearWallTop: 1
   NearWallRight: 1
