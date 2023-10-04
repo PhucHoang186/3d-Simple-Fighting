@@ -62,7 +62,6 @@ namespace Generation
             fullEnvPositions.UnionWith(corridorPositions);
             roomsData = ProceduralGenrationAlgorithms.GetAllRoomsFloorDatas(floorPositions, stepOffset);
             floorPositions.ExceptWith(corridorPositions);
-            // propsGenerator.GenerateProps(roomsData, availablePropPositions, stepOffset);
             SpawnEnv(fullEnvPositions);
         }
 
@@ -80,6 +79,7 @@ namespace Generation
             {
                 DestroyImmediate(prop);
             }
+            allProps.Clear();
         }
 
         [Button]
@@ -117,26 +117,21 @@ namespace Generation
             closestRoomCenter = ConvertPositionTo_Gcd_OfStepOffset(closestRoomCenter);
 
             while (position.z != closestRoomCenter.z)
-            // while (position.z > closestRoomCenter.z + stepOffset && position.z < closestRoomCenter.z - offset)
             {
                 if (position.z > closestRoomCenter.z)
                     position += Vector3Int.back * stepOffset;
                 else if (position.z < closestRoomCenter.z)
                     position += Vector3Int.forward * stepOffset;
-
-                // if (position.z % stepOffset == 0)
                 corridor.Add(position);
             }
 
 
             while (position.x != closestRoomCenter.x)
-            // while (position.x > closestRoomCenter.x + stepOffset && position.x < closestRoomCenter.x - offset)
             {
                 if (position.x > closestRoomCenter.x)
                     position += Vector3Int.left * stepOffset;
                 else if (position.x < closestRoomCenter.x)
                     position += Vector3Int.right * stepOffset;
-                // if (position.x % stepOffset == 0)
                 corridor.Add(position);
             }
 
@@ -302,9 +297,11 @@ namespace Generation
                 return;
             DrawBox(roomsData.NearCornerFloors, Color.yellow);
             DrawBox(roomsData.NearWallTopFloors, Color.blue);
-            DrawBox(roomsData.NearWallDownFloors, Color.red);
-            DrawBox(roomsData.NearWallLeftFloors, Color.red);
-            DrawBox(roomsData.NearWallRightFloors, Color.red);
+            DrawBox(roomsData.NearWallDownFloors, Color.blue);
+            DrawBox(roomsData.NearWallLeftFloors, Color.blue);
+            DrawBox(roomsData.NearWallRightFloors, Color.blue);
+            DrawBox(roomsData.NonNearWallFloors, Color.cyan);
+            DrawBox2(allProps, Color.red);
         }
 
         private void DrawBox(HashSet<Vector3Int> posiions, Color color)
@@ -312,7 +309,19 @@ namespace Generation
             Gizmos.color = color;
             foreach (var position in posiions)
             {
-                Gizmos.DrawCube(position, Vector3.one * 4);
+                var newPosition = (Vector3)position;
+                newPosition.y -= 0.5f; 
+                Gizmos.DrawCube(newPosition , Vector3.one * 4);
+            }
+        }
+           private void DrawBox2(List<GameObject> posiions, Color color)
+        {
+            Gizmos.color = color;
+            foreach (var position in posiions)
+            {
+                var newPosition = position.transform.position;
+                newPosition.y -= 0.5f; 
+                Gizmos.DrawCube(newPosition , Vector3.one * 4);
             }
         }
     }

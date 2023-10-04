@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8d414eb9dd2074cac63c22980abdb7, type: 3}
+  m_Name: Wooden Table
+  m_EditorClassIdentifier: 
+  PropSize: {x: 1, y: 2}
+  PropPrefab: {fileID: 8709558502921108928, guid: add8bbee901e5cc4cb3d7cadae10a0cd, type: 3}
+  SpawnPercent: 0.015
+  Corner: 0
+  NearWallTop: 0
+  NearWallRight: 0
+  NearWallBottom: 0
+  NearWallLeft: 0
+  Inner: 1
+  PlacementQuanityMin: 1
+  PlacementQuanityMax: 1
+  PlaceAsGroup: 0
+  GroupMinCount: 1
+  GroupMaxCount: 1

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PropSize: {x: 1, y: 1}
   PropPrefab: {fileID: 2710996305671652817, guid: 95c827805e76ed24a8660e162da8c3d4, type: 3}
+  SpawnPercent: 0.35
   Corner: 1
   NearWallTop: 1
   NearWallRight: 1
@@ -22,6 +23,6 @@ MonoBehaviour:
   Inner: 0
   PlacementQuanityMin: 1
   PlacementQuanityMax: 1
-  PlaceAsGroup: 0
-  GroupMinCount: 1
-  GroupMaxCount: 1
+  PlaceAsGroup: 1
+  GroupMinCount: 2
+  GroupMaxCount: 3

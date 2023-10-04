@@ -10,6 +10,8 @@ namespace Generation
         [Header("Prop Data:")]
         public Vector2Int PropSize;
         public GameObject PropPrefab;
+        [Range(0, 1)]
+        public float SpawnPercent = 0.3f;
         [Header("Placement Type:")]
         public bool Corner = true;
         public bool NearWallTop = true;
@@ -36,11 +38,6 @@ namespace Generation
             propObj.transform.ResetTransform();
             propObj.transform.position = floorPosition;
             return propObj;
-        }
-
-        public bool CheckIfPlaceable(Vector3 floorPosition)
-        {
-            return true;
         }
     }
 }

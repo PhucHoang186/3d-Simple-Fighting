@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PropSize: {x: 1, y: 1}
   PropPrefab: {fileID: 3274510601822798070, guid: 4f697dc5a4a586148b13c569b100ed9e, type: 3}
+  SpawnPercent: 0
   Corner: 1
   NearWallTop: 1
   NearWallRight: 1
