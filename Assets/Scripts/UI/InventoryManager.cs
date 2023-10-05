@@ -10,6 +10,7 @@ namespace Inventory
 {
     public class InventoryManager : MonoBehaviour
     {
+        [SerializeField] GameObject player;
         [SerializeField] bool openOnPlay;
         [SerializeField] UIInventoryTab inventoryTab;
         [SerializeField] InventoryData inventoryData;
@@ -110,7 +111,7 @@ namespace Inventory
             IItemAction itemAttion = inventoryItem.itemData as IItemAction;
             if (inventoryItem.itemData != null)
             {
-                itemAttion.PerformAction(gameObject, inventoryItem.itemState);
+                itemAttion.PerformAction(player, inventoryItem.itemState);
             }
         }
 
@@ -143,7 +144,7 @@ namespace Inventory
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!inventoryTab.isActiveAndEnabled)
                 {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7708060444285032426}
   - component: {fileID: 4642055015885687079}
   - component: {fileID: 6990470275704101453}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.44669533, y: 0.81302536, z: 0.7794986}
+  m_Size: {x: 0.44669533, y: 1.6607506, z: 0.7794986}
   m_Center: {x: 0.27665234, y: 0.0153840035, z: 0.14338541}
 --- !u!1001 &7984726735139658047
 PrefabInstance:
@@ -132,6 +132,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: shield
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 86f4012ed4b5f1e44ae7c078d56e25df, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86f4012ed4b5f1e44ae7c078d56e25df, type: 3}
 --- !u!4 &7585693260281888468 stripped
@@ -146,13 +150,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7585693260281888468}
     m_Modifications:
+    - target: {fileID: 1477966038841352, guid: 0b76d277096f4dc4fad0065918f5c9d3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1493123572548342, guid: 0b76d277096f4dc4fad0065918f5c9d3, type: 3}
       propertyPath: m_Name
       value: SwordHitMiniRed
       objectReference: {fileID: 0}
     - target: {fileID: 1493123572548342, guid: 0b76d277096f4dc4fad0065918f5c9d3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493123572548342, guid: 0b76d277096f4dc4fad0065918f5c9d3, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1741778894566216, guid: 0b76d277096f4dc4fad0065918f5c9d3, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4457386425015312, guid: 0b76d277096f4dc4fad0065918f5c9d3, type: 3}
       propertyPath: m_RootOrder

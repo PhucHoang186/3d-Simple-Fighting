@@ -12,12 +12,12 @@ public class EntityHandleEquipment : MonoBehaviour
     [SerializeField] protected List<EquippableItemData> defaultEquipments;
 
     protected List<GameObject> allEquipments = new();
-    public Armor Armor { get; private set; }
-    public Armor Helmet { get; private set; }
-    public Weapon Weapon { get; private set; }
-    public Shield Shield { get; private set; }
+    public Armor Armor { get; protected set; }
+    public Armor Helmet { get; protected set; }
+    public Weapon Weapon { get; protected set; }
+    public Shield Shield { get; protected set; }
 
-    private void Start()
+    protected void Start()
     {
         foreach (var equipmentData in defaultEquipments)
         {
@@ -34,16 +34,21 @@ public class EntityHandleEquipment : MonoBehaviour
             switch ((equipment.equipmentType))
             {
                 case EquipmentType.Armor:
-                    EquipArmor((Armor)equipment);
+                    PutOnEquipment(equipment, Armor);
+                    Armor = ((Armor)equipment);
                     break;
                 case EquipmentType.Helmet:
-                    EquipHelmet((Armor)equipment);
+                    PutOnEquipment(equipment, Helmet);
+                    Helmet = ((Armor)equipment);
                     break;
                 case EquipmentType.Weapon:
-                    EquipWeapon((Weapon)equipment);
+                    PutOnEquipment(equipment, Weapon);
+                    Weapon = ((Weapon)equipment);
+
                     break;
                 case EquipmentType.Shield:
-                    EquipShield((Shield)equipment);
+                    PutOnEquipment(equipment, Shield);
+                    Shield = ((Shield)equipment);
                     break;
                 default:
                     break;
@@ -53,29 +58,8 @@ public class EntityHandleEquipment : MonoBehaviour
         return null;
     }
 
-
-    private void EquipArmor(Armor armor)
+    protected void PutOnEquipment(Equipment newEquipment, Equipment currentEquipment)
     {
-        entityCustomize.WearEquipment(armor, Armor);
-        Armor = armor;
-    }
-
-    private void EquipHelmet(Armor helmet)
-    {
-        entityCustomize.WearEquipment(helmet, Helmet);
-        Helmet = helmet;
-    }
-
-    private void EquipWeapon(Weapon weapon)
-    {
-        entityCustomize.WearEquipment(weapon, Weapon);
-        Weapon = weapon;
-        // weapon.OnHitTarget = onHitTargetCb;
-    }
-
-    private void EquipShield(Shield shield)
-    {
-        entityCustomize.WearEquipment(shield, Shield);
-        Shield = shield;
+        entityCustomize.WearEquipment(newEquipment, currentEquipment);
     }
 }

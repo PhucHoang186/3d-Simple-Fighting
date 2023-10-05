@@ -8,6 +8,8 @@ public class EntityHandleMovement : MonoBehaviour
     [SerializeField] protected LayerMask collideLayer;
     [SerializeField] protected float raycastDistance = 0.62f;
     [SerializeField] protected float rotateSpeed;
+    [Range(0, 1)]
+    [SerializeField] protected float slowDownPercent;
 
     protected float slowSpeed;
     protected float normalSpeed;
@@ -30,16 +32,19 @@ public class EntityHandleMovement : MonoBehaviour
 
     public void Move(Vector3 moveVec)
     {
+        moveVec.Normalize();
         currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, desMoveSpeed, Time.deltaTime * 5f);
         if (Physics.Raycast(transform.position, Vector3.forward * moveVec.z, raycastDistance, collideLayer)) // check back and forth
         {
             moveVec.z = 0f;
+            moveVec.x *= slowDownPercent;
         }
         if (Physics.Raycast(transform.position, Vector3.right * moveVec.x, raycastDistance, collideLayer)) // check left and right
         {
             moveVec.x = 0f;
+            moveVec.z *= slowDownPercent;
         }
-        var newPos = transform.position + moveVec.normalized * currentMoveSpeed;
+        var newPos = transform.position + moveVec * currentMoveSpeed;
         transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
     }
 

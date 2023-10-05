@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7177083237697331610}
   - component: {fileID: 8658917818828413779}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Staff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,10 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cdab75fe9bbcc249940667ab0283a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 
   equipmentType: 2
-  weaponType: 2
   weaponBaseDamage: 1
+  weaponType: 2
   castingPoint: {fileID: 6278002044072120820}
   onChargeFinishVfx: {fileID: 790441722299864278}
 --- !u!1 &8968911959303948882
@@ -61,7 +60,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6278002044072120820}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Casting Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +93,7 @@ GameObject:
   - component: {fileID: 3473049928305594209}
   - component: {fileID: 6772120998999930229}
   - component: {fileID: 7719845847235665746}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: staff_rare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,8 +180,16 @@ PrefabInstance:
       value: PowerupGlow2
       objectReference: {fileID: 0}
     - target: {fileID: 116678, guid: cbaf2c9f645e7d148aa4402a74bf6e9f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 116678, guid: cbaf2c9f645e7d148aa4402a74bf6e9f, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 143688, guid: cbaf2c9f645e7d148aa4402a74bf6e9f, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 403218, guid: cbaf2c9f645e7d148aa4402a74bf6e9f, type: 3}
       propertyPath: m_RootOrder

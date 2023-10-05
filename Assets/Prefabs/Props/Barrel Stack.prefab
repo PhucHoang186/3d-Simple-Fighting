@@ -99,12 +99,34 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb189a62939dbeb4faf9912d0d5a616b, type: 2}
     - target: {fileID: 919132149155446097, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}
       propertyPath: m_Name
       value: barrel_small_stack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}
+--- !u!1 &4688981969486919560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}
+  m_PrefabInstance: {fileID: 5608095976699431641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &3683614811484676871
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4688981969486919560}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.8501403, y: 1.7701383, z: 1}
+  m_Center: {x: 0.0000012218952, y: 0.88506985, z: 0.000000029802322}
 --- !u!4 &5357397819299392818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}

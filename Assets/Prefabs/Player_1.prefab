@@ -51,7 +51,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -447,7 +447,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &7128201362437225262
 Transform:
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 658148492817810275}
   - component: {fileID: 658148492817810288}
   - component: {fileID: 658148492817810279}
-  - component: {fileID: 658148492817810287}
+  - component: {fileID: 658148492817810299}
   m_Layer: 3
   m_Name: Player_1
   m_TagString: Player
@@ -692,7 +692,6 @@ MonoBehaviour:
   handleHealth: {fileID: 658148492817810244}
   handleMovement: {fileID: 658148492817810288}
   entityStatData: {fileID: 11400000, guid: b966c7b26f24764459d4048a76aab1d7, type: 2}
-  model: {fileID: 8311718412718196615}
 --- !u!114 &5004066983610413462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb9f80af3650b042a8fc4b276731b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleEquipment: {fileID: 0}
+  handleEquipment: {fileID: 658148492817810299}
   spellSystem: {fileID: 658148492817810275}
 --- !u!114 &658148492817810263
 MonoBehaviour:
@@ -799,7 +798,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   raycastDistance: 0.62
-  rotateSpeed: 200
+  rotateSpeed: 500
   playerCamera: {fileID: 1398105523}
   clampXRotationMin: -10
   clampXRotationMax: 30
@@ -816,7 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryData: {fileID: 11400000, guid: 07afc791be2d1844ebbb09656d3a50d0, type: 2}
---- !u!114 &658148492817810287
+--- !u!114 &658148492817810299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -825,22 +824,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5636770347797424941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f8c2eb3be420cb41b287d8cb59bc9c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d45d7778592c7c4a9fe4165e3082283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openOnPlay: 0
-  inventoryTab: {fileID: 0}
+  entityCustomize: {fileID: 5004066983610413462}
+  defaultEquipments:
+  - {fileID: 11400000, guid: ef5eb72af02fdb24da216af4bb295154, type: 2}
+  - {fileID: 11400000, guid: 098002091f8afb144ba5c1e57346faa7, type: 2}
+  parametersToModify:
+  - parameterData: {fileID: 11400000, guid: a7bc2248f247e51478da62cd4139d155, type: 2}
+    value: -10
   inventoryData: {fileID: 11400000, guid: 07afc791be2d1844ebbb09656d3a50d0, type: 2}
-  initialItemList:
-  - quantity: 10
-    itemData: {fileID: 11400000, guid: e07b97f3b59600b45b2defd96ec81524, type: 2}
-    itemState: []
-  - quantity: 1
-    itemData: {fileID: 11400000, guid: ef5eb72af02fdb24da216af4bb295154, type: 2}
-    itemState: []
-  - quantity: 1
-    itemData: {fileID: 11400000, guid: 2c756df072b4648448cb0a0ac69494af, type: 2}
-    itemState: []
 --- !u!1 &5911138903035181920
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +851,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &141535436454979360
 Transform:
@@ -1025,7 +1019,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &5983066268637729735
 Transform:

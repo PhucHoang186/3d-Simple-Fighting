@@ -65,7 +65,7 @@ namespace Entity
             // melee
             if (entityInput.isInstantAttackPressed && !isChargingWeaponType)
             {
-                entity.ChangeEntityState(EntityState.Entity_Attack_Short, 2f);
+                entity.ChangeEntityState(EntityState.Entity_Attack_Short, 1f);
                 return;
             }
 

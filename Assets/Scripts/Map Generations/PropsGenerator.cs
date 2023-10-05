@@ -58,17 +58,21 @@ namespace Generation
 
         private List<GameObject> PlaceProps(HashSet<Vector3Int> floorPositions, List<PropData> propDatas, HashSet<Vector3Int> availablePositions, float spawnPercent)
         {
-            var propData = propDatas.PickRandomValueFromList();
             List<GameObject> props = new();
-            foreach (var floorPosition in floorPositions)
+            foreach (var propData in propDatas)
             {
-                if (propData.PlaceAsGroup)
+                foreach (var floorPosition in floorPositions)
                 {
-                    props.AddRange(PlaceGroupPropObjects(floorPosition, propData, availablePositions));
-                }
-                else
-                {
-                    props.Add(PlacePropAtPostition(floorPosition, propData, availablePositions));
+                    if (propData.PlaceAsGroup)
+                    {
+                        props.AddRange(PlaceGroupPropObjects(floorPosition, propData, availablePositions));
+                    }
+                    else
+                    {
+                        var prop = PlacePropAtPostition(floorPosition, propData, availablePositions);
+                        if (prop != null)
+                            props.Add(prop);
+                    }
                 }
             }
             return props;
@@ -77,10 +81,10 @@ namespace Generation
         private List<GameObject> PlaceGroupPropObjects(Vector3Int placePostition, PropData propData, HashSet<Vector3Int> availablePositions)
         {
             var searchOffset = 1; // 8 direct
-            int spawnNumber = Random.Range(propData.GroupMinCount, propData.GroupMaxCount);
+            int spawnNumber = Random.Range(propData.GroupMinCount, propData.GroupMaxCount + 1);
             List<GameObject> props = new();
 
-            List<Vector3Int> propGroupPositions = new(){placePostition};
+            List<Vector3Int> propGroupPositions = new() { placePostition };
             for (int x = -searchOffset; x <= searchOffset; x++)
             {
                 for (int z = -searchOffset; z <= searchOffset; z++)
@@ -96,7 +100,9 @@ namespace Generation
             int spawnCount = Mathf.Min(spawnNumber, propGroupPositions.Count);
             for (int i = 0; i < spawnCount; i++)
             {
-                props.Add(PlacePropAtPostition(propGroupPositions[i], propData, availablePositions));
+                var prop = PlacePropAtPostition(propGroupPositions[i], propData, availablePositions);
+                if (prop != null)
+                    props.Add(prop);
             }
             return props;
         }
@@ -110,7 +116,7 @@ namespace Generation
                 propPosition.Add(position);
                 if (!availablePostitions.Contains(position))
                 {
-                    Debug.LogError("can't place on X");
+                    Debug.Log("can't place on X");
                     return false;
                 }
             }
@@ -121,7 +127,7 @@ namespace Generation
                 propPosition.Add(position);
                 if (!availablePostitions.Contains(position))
                 {
-                    Debug.LogError("can't place on Y");
+                    Debug.Log("can't place on Y");
                     return false;
                 }
             }

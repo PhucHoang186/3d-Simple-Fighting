@@ -265,7 +265,7 @@ namespace Generation
                 // get corridor positions
                 var path = ProceduralGenrationAlgorithms.RandomWalkCorridor(currentPosition, corridorLength, stepOffset);
                 corridorPositions.UnionWith(path);
-                currentPosition = path[path.Count - 1];
+                currentPosition = path[^1];
                 allRoomsPositions.Add(currentPosition);
             }
 
@@ -320,7 +320,6 @@ namespace Generation
             foreach (var position in posiions)
             {
                 var newPosition = position.transform.position;
-                newPosition.y -= 0.5f; 
                 Gizmos.DrawCube(newPosition , Vector3.one * 4);
             }
         }
