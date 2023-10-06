@@ -98,8 +98,6 @@ namespace Inventory.UI
 
         public void Show()
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
             gameObject.SetActive(true);
             ResetSelection();
         }

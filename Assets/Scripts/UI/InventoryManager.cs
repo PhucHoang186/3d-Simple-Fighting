@@ -144,7 +144,7 @@ namespace Inventory
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.I))
             {
                 if (!inventoryTab.isActiveAndEnabled)
                 {
