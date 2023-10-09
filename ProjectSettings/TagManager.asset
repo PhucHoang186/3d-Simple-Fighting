@@ -17,7 +17,7 @@ TagManager:
   - Weapon
   - Collide
   - Light
-  - MapRenderer3D
+  - MapRenderer2D
   - MapRenderer3D
   - Obstacle
   - 

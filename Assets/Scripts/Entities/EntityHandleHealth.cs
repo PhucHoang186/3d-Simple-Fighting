@@ -13,7 +13,7 @@ namespace Entity
         [SerializeField] protected Collider entityCollider;
         protected float currentHealth;
         protected float nullifyAmount;
-        protected Action<float> onHitCb;
+        protected Action<float, float> onChangeHealthCb;
         protected Action onDestroyCb;
         public float MaxHealth { get; set; }
 
@@ -28,9 +28,9 @@ namespace Entity
             currentHealth = MaxHealth;
         }
 
-        public void InitActions(Action<float> onHit, Action onDestroy)
+        public void InitActions(Action<float, float> onHit, Action onDestroy)
         {
-            this.onHitCb += onHit;
+            this.onChangeHealthCb += onHit;
             this.onDestroyCb += onDestroy;
         }
 
@@ -41,7 +41,8 @@ namespace Entity
                 return;
 
             currentHealth -= remainingDamageDealt;
-            OnHit(remainingDamageDealt);
+            OnChangeHealth(currentHealth);
+            
             SpawnHitVfx(hitPoint);
             if (currentHealth <= 0)
                 OnDestroyed();
@@ -56,12 +57,13 @@ namespace Entity
         public void Heal(int healAmount)
         {
             currentHealth += healAmount;
-            currentHealth = Mathf.Clamp(currentHealth, 0 , MaxHealth);
+            OnChangeHealth(healAmount);
         }
 
-        public void OnHit(float damageAmount)
+        public void OnChangeHealth(float currentHealth)
         {
-            onHitCb?.Invoke(damageAmount);
+            currentHealth = Mathf.Clamp(currentHealth, 0 , MaxHealth);
+            onChangeHealthCb?.Invoke(currentHealth, MaxHealth);
         }
 
         public void OnDestroyed()
@@ -72,7 +74,7 @@ namespace Entity
 
         public void OnDestroy()
         {
-            onHitCb = null;
+            onChangeHealthCb = null;
             onDestroyCb = null;
         }
     }

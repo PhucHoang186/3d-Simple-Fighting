@@ -55,7 +55,7 @@ namespace Entity
             ChangeEntityState(EntityState.Entity_Destroy);
         }
 
-        private void OnHit(float damageAmount)
+        private void OnHit(float currentHealth, float maxHealth)
         {
             ChangeEntityState(EntityState.Entity_GetHit, 1f);
         }

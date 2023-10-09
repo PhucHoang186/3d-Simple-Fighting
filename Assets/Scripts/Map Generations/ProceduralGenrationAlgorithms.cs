@@ -21,70 +21,6 @@ namespace Generation
             return path;
         }
 
-        public static List<BoundsInt> GetRoomByBinaryPartitioning(BoundsInt spaceToSplit, int minWidth, int minHeight, int stepOffset)
-        {
-            Queue<BoundsInt> roomsQueue = new();
-            List<BoundsInt> roomsList = new();
-            roomsQueue.Enqueue(spaceToSplit);
-            while (roomsQueue.Count > 0)
-            {
-                var room = roomsQueue.Dequeue();
-                if (room.size.x >= minWidth && room.size.z >= minHeight)
-                {
-                    if (Random.value <= 0.5f)
-                    {
-                        // split horizontally
-                        if (room.size.z >= minHeight * 2)
-                        {
-                            SplitHorizontally(minHeight, roomsQueue, room, stepOffset);
-                        }
-                        else if (room.size.x >= minWidth * 2)
-                        {
-                            SplitVertically(minWidth, roomsQueue, room, stepOffset);
-                        }
-                        else
-                        {
-                            roomsList.Add(room);
-                        }
-                    }
-                    else
-                    {
-                        if (room.size.x >= minWidth * 2)
-                        {
-                            SplitVertically(minWidth, roomsQueue, room, stepOffset);
-                        }
-                        else if (room.size.z >= minHeight * 2)
-                        {
-                            SplitHorizontally(minHeight, roomsQueue, room, stepOffset);
-                        }
-                        else
-                        {
-                            roomsList.Add(room);
-                        }
-                    }
-                }
-            }
-            return roomsList;
-        }
-
-        private static void SplitHorizontally(int minHeight, Queue<BoundsInt> roomsQueue, BoundsInt room, int stepOffset)
-        {
-            var zSplit = Random.Range((int)1 / stepOffset, (int)room.size.z / stepOffset) * stepOffset;
-            var room1 = new BoundsInt(room.min, new Vector3Int(room.size.x, room.size.y, zSplit));
-            var room2 = new BoundsInt(new Vector3Int(room.min.x, room.min.y, room.min.z + zSplit), new Vector3Int(room.size.x, room.size.y, room.size.z - zSplit));
-            roomsQueue.Enqueue(room1);
-            roomsQueue.Enqueue(room2);
-        }
-
-        private static void SplitVertically(int minWidth, Queue<BoundsInt> roomsQueue, BoundsInt room, int stepOffset)
-        {
-            var xSplit = Random.Range((int)1 / stepOffset, (int)room.size.x / stepOffset) * stepOffset;
-            var room1 = new BoundsInt(room.min, new Vector3Int(xSplit, room.size.y, room.size.z));
-            var room2 = new BoundsInt(new Vector3Int(room.min.x + xSplit, room.min.y, room.min.z), new Vector3Int(room.size.x - xSplit, room.size.y, room.size.z));
-            roomsQueue.Enqueue(room1);
-            roomsQueue.Enqueue(room2);
-        }
-
         public static List<Vector3Int> RandomWalkCorridor(Vector3Int startPosition, int corridorLength, int stepOffset)
         {
             List<Vector3Int> path = new List<Vector3Int>();
@@ -100,6 +36,7 @@ namespace Generation
             }
             return path;
         }
+
 
         public static RoomsData GetAllRoomsFloorDatas(HashSet<Vector3Int> floorPositions, int stepOffset)
         {
@@ -168,8 +105,8 @@ namespace Generation
             Down,
         }
 
-        public static List<Vector3Int> cardinalDirectionsList = new List<Vector3Int>
-    {
+        public static List<Vector3Int> eightDirectionsList = new List<Vector3Int>
+        {
         Vector3Int.forward,
         Vector3Int.back,
         Vector3Int.right,
@@ -180,22 +117,44 @@ namespace Generation
         Vector3Int.forward + Vector3Int.left, // top left
         Vector3Int.back + Vector3Int.right, // bottom right
         Vector3Int.back + Vector3Int.left, // bottom right
-    };
+        };
+
+        public static List<Vector3> eightNormalizedDirectionsList = new()
+        {
+            new Vector3(0, 0,1).normalized,
+            new Vector3(0, 0,-1).normalized,
+            new Vector3(1, 0, 0).normalized,
+            new Vector3(-1, 0, 0).normalized,
+            new Vector3(1, 0,1).normalized,
+            new Vector3(-1, 0,1).normalized,
+            new Vector3(1, 0,-1).normalized,
+            new Vector3(-1, 0,-1).normalized,
+        };
 
         public static Vector3Int GetRandomCardinalDirection(bool isThreeDemension = true)
         {
-            var length = isThreeDemension ? cardinalDirectionsList.Count : cardinalDirectionsList.Count - 6;
-            return cardinalDirectionsList[Random.Range(0, length)];
+            var length = isThreeDemension ? eightDirectionsList.Count : eightDirectionsList.Count - 6;
+            return eightDirectionsList[Random.Range(0, length)];
         }
 
         public static List<Vector3Int> GetCardinalDirectionsListIgnoreY()
         {
-            return cardinalDirectionsList.GetRange(0, 4);
+            return eightDirectionsList.GetRange(0, 4);
         }
 
-        public static List<Vector3Int> GetExtraDirectionList()
+        public static List<Vector3Int> GetDiagonalDirectionList()
         {
-            return cardinalDirectionsList.GetRange(6, 4);
+            return eightDirectionsList.GetRange(6, 4);
+        }
+
+        public static List<Vector3> GetNormalizeEightDirection()
+        {
+            List<Vector3> normalizedDirection = new();
+            for (int i = 0; i < normalizedDirection.Count; i++)
+            {
+                normalizedDirection[i] = ((Vector3)eightDirectionsList[i]).normalized;
+            }
+            return normalizedDirection;
         }
     }
 

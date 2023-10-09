@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4edd11cad62eab146ac7bf792cf780ca, type: 3}
   m_Name: IslandData
   m_EditorClassIdentifier: 
-  interations: 10
-  walkLength: 10
-  stepOffset: 4
-  wallLayer: 1
+  interations: 20
+  walkLength: 20
   startRandomlyEachInteraction: 0

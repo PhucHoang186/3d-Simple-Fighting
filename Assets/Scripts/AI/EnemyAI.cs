@@ -7,13 +7,14 @@ namespace AI
 {
     public class EnemyAI : MonoBehaviour
     {
-     
+
         [SerializeField] protected float checkRange;
         [SerializeField] protected float chaseRange;
         [SerializeField] protected float attackRange;
         [SerializeField] protected float attackSpeed;
         [SerializeField] protected Transform target;
         IDetect[] detectables;
+        ISteering[] steerings;
         protected float currentAttackSpeed;
         private AIData aIData;
 
@@ -21,13 +22,24 @@ namespace AI
         {
             target = FindAnyObjectByType<PlayerCharacter>().transform;
             detectables = GetComponents<IDetect>();
+            steerings = GetComponents<ISteering>();
             aIData = new();
             InvokeRepeating(nameof(Detect), 0, 0.1f);
         }
 
         private void Detect()
         {
-            detectables[0].Detect(aIData);
+            foreach (var detectable in detectables)
+            {
+                detectable.Detect(aIData);
+            }
+            float[] dangers = new float[8];
+            float[] interests = new float[8];
+            foreach (var steering in steerings)
+            {
+                (dangers, interests) = steering.GetSteering(dangers, interests, aIData);
+            }
+
         }
 
         public EntityInput GetEnemyAIInput()
@@ -64,7 +76,7 @@ namespace AI
     public class AIData
     {
         public List<Transform> targets;
-        public Collider[] colliders;
+        public Collider[] obstacles;
         public Transform currentTarget;
         public int TargetsCount => targets != null ? targets.Count : 0;
     }
@@ -72,5 +84,10 @@ namespace AI
     public interface IDetect
     {
         public void Detect(AIData aiData);
+    }
+
+    public interface ISteering
+    {
+        public (float[], float[]) GetSteering(float[] dangers, float[] interests, AIData aIData);
     }
 }

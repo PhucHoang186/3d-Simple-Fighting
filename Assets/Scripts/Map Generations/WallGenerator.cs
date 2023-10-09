@@ -57,7 +57,7 @@ namespace Generation
         private static HashSet<CornerData> FindCornerInDirections(HashSet<Vector3Int> floorPositions, int stepOffset)
         {
             HashSet<CornerData> cornerDatas = new HashSet<CornerData>();
-            var extraDirectionList = Direction3D.GetExtraDirectionList();
+            var extraDirectionList = Direction3D.GetDiagonalDirectionList();
             var cardinalDirectionList = Direction3D.GetCardinalDirectionsListIgnoreY();
             foreach (var position in floorPositions)
             {

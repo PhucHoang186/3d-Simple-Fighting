@@ -70,8 +70,7 @@ public class Spell : MonoBehaviour
     private Vector3 CalculateDirection()
     {
         var ray = CameraController.Instance.mainCam.ViewportPointToRay(Vector2.one * 0.5f);
-        var direction = Vector3.zero;
-
+        Vector3 direction;
         if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance))
             direction = hit.point - transform.position;
         else
