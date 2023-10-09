@@ -50,7 +50,6 @@ namespace Inventory.UI
             int index = inventoryUIList.IndexOf(item);
             if (index == -1)
                 return;
-            // itemActionPanel.ToggleButton(true);
             OnItemActionsRequested?.Invoke(index);
         }
 

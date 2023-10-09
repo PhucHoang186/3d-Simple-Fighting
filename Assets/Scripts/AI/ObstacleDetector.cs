@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AI;
+using Unity.VisualScripting;
 
 public class ObstacleDetector : MonoBehaviour, IDetect
 {
@@ -9,6 +10,7 @@ public class ObstacleDetector : MonoBehaviour, IDetect
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float detectRange;
     [SerializeField] bool showGizmos;
+    [SerializeField] float checkRepeatTime;
     private Collider[] colliders;
 
     public void Detect(AIData aiData)
@@ -20,9 +22,12 @@ public class ObstacleDetector : MonoBehaviour, IDetect
 
     void OnDrawGizmosSelected()
     {
-        if (!showGizmos || !Application.isPlaying)
+        if (!showGizmos || !Application.isPlaying || colliders == null)
             return;
         Gizmos.color = Color.red;
-        // Gizmos.DrawSphere(transform.position, explosionRadius);
+        foreach (var collider in colliders)
+        {
+            Gizmos.DrawSphere(collider.transform.position, 1f);
+        }
     }
 }

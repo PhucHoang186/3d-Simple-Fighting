@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5920501368406341735}
   - component: {fileID: 8812037809021632971}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: WallRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2463554136339568614}
   - component: {fileID: 6222024770414829223}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Model Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}

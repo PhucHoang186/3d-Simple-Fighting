@@ -7,16 +7,27 @@ namespace AI
 {
     public class EnemyAI : MonoBehaviour
     {
+     
         [SerializeField] protected float checkRange;
         [SerializeField] protected float chaseRange;
         [SerializeField] protected float attackRange;
         [SerializeField] protected float attackSpeed;
         [SerializeField] protected Transform target;
+        IDetect[] detectables;
         protected float currentAttackSpeed;
+        private AIData aIData;
 
         public void Start()
         {
             target = FindAnyObjectByType<PlayerCharacter>().transform;
+            detectables = GetComponents<IDetect>();
+            aIData = new();
+            InvokeRepeating(nameof(Detect), 0, 0.1f);
+        }
+
+        private void Detect()
+        {
+            detectables[0].Detect(aIData);
         }
 
         public EntityInput GetEnemyAIInput()
