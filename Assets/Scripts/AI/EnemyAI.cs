@@ -12,11 +12,13 @@ namespace AI
         [SerializeField] protected float chaseRange;
         [SerializeField] protected float attackRange;
         [SerializeField] protected float attackSpeed;
+        [SerializeField] protected ContextSolver solver;
         [SerializeField] protected Transform target;
         IDetect[] detectables;
         ISteering[] steerings;
         protected float currentAttackSpeed;
         private AIData aIData;
+        private Vector3 movementDirection;
 
         public void Start()
         {
@@ -35,11 +37,7 @@ namespace AI
             }
             float[] dangers = new float[8];
             float[] interests = new float[8];
-            foreach (var steering in steerings)
-            {
-                (dangers, interests) = steering.GetSteering(dangers, interests, aIData);
-            }
-
+            movementDirection = solver.GetMovementDirection(steerings, aIData);
         }
 
         public EntityInput GetEnemyAIInput()
@@ -48,9 +46,10 @@ namespace AI
                 return new();
             var entityInput = new EntityInput();
             var distance = Vector3.Distance(transform.position, target.position);
+            entityInput.moveVec = movementDirection;
             if (distance <= attackRange)
             {
-                entityInput = Attack();
+                // entityInput = Attack();
             }
             return entityInput;
         }

@@ -4,48 +4,51 @@ using AI;
 using Generation;
 using UnityEngine;
 
-public class ObstacleAvoidanceBehaviour : MonoBehaviour, ISteering
+namespace AI
 {
-    [SerializeField] float targetRadius;
-    [SerializeField] float checkRadius;
-    [SerializeField] bool showGizmos;
-    private float[] dangerTempList;
-
-    public (float[], float[]) GetSteering(float[] dangers, float[] interests, AIData aIData)
+    public class ObstacleAvoidanceBehaviour : MonoBehaviour, ISteering
     {
-        foreach (var obstacle in aIData.obstacles)
+        [SerializeField] float targetRadius;
+        [SerializeField] float checkRadius;
+        [SerializeField] bool showGizmos;
+        private float[] dangerTempList;
+
+        public (float[], float[]) GetSteering(float[] dangers, float[] interests, AIData aIData)
         {
-            if (obstacle != null)
+            foreach (var obstacle in aIData.obstacles)
             {
-                var directionToObstacle = obstacle.ClosestPoint(transform.position) - transform.position;
-                var distanceToObstacle = directionToObstacle.magnitude;
-                var weight = distanceToObstacle <= targetRadius ? 1 : (checkRadius - distanceToObstacle) / checkRadius;
-                var directionToObstacleNormalized = directionToObstacle.normalized;
-                var eightNormalizedDirectionsList = Direction3D.eightNormalizedDirectionsList;
-                for (int i = 0; i < eightNormalizedDirectionsList.Count; i++)
+                if (obstacle != null)
                 {
-                    var result = Vector3.Dot(directionToObstacleNormalized, eightNormalizedDirectionsList[i]);
-                    var finalValue = result * weight;
-                    if (dangers[i] < finalValue)
+                    var directionToObstacle = obstacle.ClosestPoint(transform.position) - transform.position;
+                    var distanceToObstacle = directionToObstacle.magnitude;
+                    var weight = distanceToObstacle <= targetRadius ? 1 : (checkRadius - distanceToObstacle) / checkRadius;
+                    var directionToObstacleNormalized = directionToObstacle.normalized;
+                    var eightNormalizedDirectionsList = Direction3D.eightNormalizedDirectionsList;
+                    for (int i = 0; i < eightNormalizedDirectionsList.Count; i++)
                     {
-                        dangers[i] = finalValue;
+                        var result = Vector3.Dot(directionToObstacleNormalized, eightNormalizedDirectionsList[i]);
+                        var finalValue = result * weight;
+                        if (dangers[i] < finalValue)
+                        {
+                            dangers[i] = finalValue;
+                        }
                     }
                 }
             }
+            dangerTempList = dangers;
+
+            return (dangers, interests);
         }
-        dangerTempList = dangers;
 
-        return (dangers, interests);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (!showGizmos || !Application.isPlaying || dangerTempList == null)
-            return;
-        Gizmos.color = Color.red;
-        for (int i = 0; i < dangerTempList.Length; i++)
+        void OnDrawGizmosSelected()
         {
-            Gizmos.DrawRay(transform.position, dangerTempList[i] * Direction3D.eightNormalizedDirectionsList[i]);
+            if (!showGizmos || !Application.isPlaying || dangerTempList == null)
+                return;
+            Gizmos.color = Color.red;
+            for (int i = 0; i < dangerTempList.Length; i++)
+            {
+                Gizmos.DrawRay(transform.position, dangerTempList[i] * Direction3D.eightNormalizedDirectionsList[i]);
+            }
         }
     }
 }

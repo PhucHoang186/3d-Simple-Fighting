@@ -12,7 +12,7 @@ public class ObstacleDetector : MonoBehaviour, IDetect
     [SerializeField] float detectRange;
     [SerializeField] bool showGizmos;
     [SerializeField] float checkRepeatTime;
-    private Collider[] colliders = new Collider[20];
+    private Collider[] colliders = new Collider[100];
     private int colliderFound;
 
     public void Detect(AIData aiData)

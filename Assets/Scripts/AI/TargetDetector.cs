@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AI;
 using UnityEngine;
 
 public class TargetDetector : MonoBehaviour, IDetect
 {
     [SerializeField] LayerMask targetLayer;
+    [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float detectRange;
     [SerializeField] bool showGizmos;
     [SerializeField] float checkRepeatTime;
-    private Collider[] colliders = new Collider[20];
+    private Collider[] colliders = new Collider[100];
     private int colliderFound;
 
     public void Detect(AIData aiData)
@@ -18,23 +20,21 @@ public class TargetDetector : MonoBehaviour, IDetect
         if (colliderFound > 0 && colliders != null)
         {
             var directionToTarget = (colliders[0].transform.position - transform.position).normalized;
-            if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, detectRange, targetLayer))
+            Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, detectRange, obstacleLayer);
+            if (hit.collider != null && (targetLayer & (1 << hit.collider.gameObject.layer)) != 0)
             {
                 aiData.targets = new List<Transform> { hit.transform };
-
+                return;
             }
         }
+        aiData.targets = null;
     }
 
     void OnDrawGizmosSelected()
     {
-        if (!showGizmos || !Application.isPlaying || colliders == null)
+        if (!showGizmos || !Application.isPlaying)
             return;
-        Gizmos.color = Color.green;
-        for (int i = 0; i < colliderFound; i++)
-        {
-            if (colliders[i] != null)
-                Gizmos.DrawSphere(colliders[i].transform.position, 1f);
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectRange);
     }
 }

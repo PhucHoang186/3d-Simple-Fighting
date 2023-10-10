@@ -1067,6 +1067,10 @@ GameObject:
   - component: {fileID: 4928724934566288880}
   - component: {fileID: 4928724934566288881}
   - component: {fileID: 827241268}
+  - component: {fileID: 827241281}
+  - component: {fileID: 827241282}
+  - component: {fileID: 827241283}
+  - component: {fileID: 827241297}
   m_Layer: 0
   m_Name: BlackKnight
   m_TagString: Enemy
@@ -1100,7 +1104,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4928724934575681078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 39cf14e07d0a4d9283249bf44919acef, type: 3}
   m_Controller: {fileID: 22100000, guid: 5d673360a7f84f3438758da04a07d45c, type: 2}
   m_CullingMode: 1
@@ -1199,6 +1203,7 @@ MonoBehaviour:
   chaseRange: 100
   attackRange: 10
   attackSpeed: 2
+  solver: {fileID: 827241297}
   target: {fileID: 0}
 --- !u!114 &4928724934566288846
 MonoBehaviour:
@@ -1280,10 +1285,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 8192
-  detectRange: 5
+    m_Bits: 512
+  detectRange: 10
+  showGizmos: 1
+  checkRepeatTime: 0.2
+--- !u!114 &827241281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4928724934575681078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d2d260ed0099747916f0e52a074b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 520
+  detectRange: 10
   showGizmos: 1
   checkRepeatTime: 0.1
+--- !u!114 &827241282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4928724934575681078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d410d142f85958d40b41f79ac2de46d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRadius: 0.5
+  checkRadius: 10
+  showGizmos: 0
+--- !u!114 &827241283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4928724934575681078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 653d10237b6af5c4fb1f2972576c6ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetReachThreshold: 0.1
+  showGizmos: 1
+  reachTarget: 1
+--- !u!114 &827241297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4928724934575681078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9455478cc4f9a0942bb2610aae087d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4928724934575681080
 GameObject:
   m_ObjectHideFlags: 0

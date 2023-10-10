@@ -6,6 +6,7 @@ namespace Generation
 {
     public static class ProceduralGenrationAlgorithms
     {
+        private static Vector3Int lastDirection;
         public static HashSet<Vector3Int> SimpleRandomWalk(Vector3Int startPosition, int walkLength, int stepOffset)
         {
             HashSet<Vector3Int> path = new();
@@ -27,7 +28,11 @@ namespace Generation
             path.Add(startPosition);
             var previousPosition = startPosition;
             var direction = Direction3D.GetRandomCardinalDirection(false);
-
+            while (lastDirection == -direction)
+            {
+                direction = Direction3D.GetRandomCardinalDirection(false);
+            }
+            lastDirection = direction;
             for (int i = 0; i < corridorLength; i++)
             {
                 var newPosition = previousPosition + stepOffset * direction;

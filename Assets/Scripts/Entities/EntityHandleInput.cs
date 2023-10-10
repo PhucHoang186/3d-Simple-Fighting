@@ -10,7 +10,7 @@ namespace Entity
         public virtual EntityInput GetInput()
         {
             var entityInput = new EntityInput();
-            entityInput.moveVec = transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical");
+            entityInput.moveVec = (transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical")).normalized;
             // rotation
             entityInput.lookRotation.x = Input.GetAxis("Mouse X");
             entityInput.lookRotation.y = Input.GetAxis("Mouse Y");

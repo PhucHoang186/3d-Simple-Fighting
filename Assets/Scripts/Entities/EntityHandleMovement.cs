@@ -32,7 +32,7 @@ public class EntityHandleMovement : MonoBehaviour
 
     public void Move(Vector3 moveVec)
     {
-        moveVec.Normalize();
+        // moveVec.Normalize();
         currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, desMoveSpeed, Time.deltaTime * 5f);
         if (Physics.Raycast(transform.position, Vector3.forward * moveVec.z, raycastDistance, collideLayer)) // check back and forth
         {

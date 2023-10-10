@@ -23,7 +23,7 @@ public class PartitionGeneration : MonoBehaviour
         return newPosition;
     }
 
-    public List<BoundsInt> GetRoomByBinaryPartitioning(BoundsInt spaceToSplit, int minWidth, int minHeight, int stepOffset)
+    public List<BoundsInt> GetRoomByBinaryPartitioning(BoundsInt spaceToSplit, int minWidth, int maxWidth, int minHeight, int maxHeight, int stepOffset)
     {
         Queue<BoundsInt> roomsQueue = new();
         List<BoundsInt> roomsList = new();
@@ -38,11 +38,11 @@ public class PartitionGeneration : MonoBehaviour
                     // split horizontally
                     if (room.size.z >= minHeight * 2)
                     {
-                        SplitHorizontally(minHeight, roomsQueue, room, stepOffset);
+                        SplitHorizontally(minHeight, maxHeight, roomsQueue, room, stepOffset);
                     }
                     else if (room.size.x >= minWidth * 2)
                     {
-                        SplitVertically(minWidth, roomsQueue, room, stepOffset);
+                        SplitVertically(minWidth, maxWidth, roomsQueue, room, stepOffset);
                     }
                     else
                     {
@@ -53,11 +53,11 @@ public class PartitionGeneration : MonoBehaviour
                 {
                     if (room.size.x >= minWidth * 2)
                     {
-                        SplitVertically(minWidth, roomsQueue, room, stepOffset);
+                        SplitVertically(minWidth, maxWidth, roomsQueue, room, stepOffset);
                     }
                     else if (room.size.z >= minHeight * 2)
                     {
-                        SplitHorizontally(minHeight, roomsQueue, room, stepOffset);
+                        SplitHorizontally(minHeight, maxHeight, roomsQueue, room, stepOffset);
                     }
                     else
                     {
@@ -69,18 +69,20 @@ public class PartitionGeneration : MonoBehaviour
         return roomsList;
     }
 
-    private void SplitHorizontally(int minHeight, Queue<BoundsInt> roomsQueue, BoundsInt room, int stepOffset)
+    private void SplitHorizontally(int minHeight, int maxHeight, Queue<BoundsInt> roomsQueue, BoundsInt room, int stepOffset)
     {
-        var zSplit = Random.Range((int)1 / stepOffset, (int)room.size.z / stepOffset) * stepOffset;
+        // var zSplit = Random.Range((int)(1 / stepOffset), (int)(room.size.z / stepOffset)) * stepOffset;
+        var zSplit = Random.Range((int)(minHeight / stepOffset), (int)(maxHeight / stepOffset)) * stepOffset;
         var room1 = new BoundsInt(room.min, new Vector3Int(room.size.x, room.size.y, zSplit));
         var room2 = new BoundsInt(new Vector3Int(room.min.x, room.min.y, room.min.z + zSplit), new Vector3Int(room.size.x, room.size.y, room.size.z - zSplit));
         roomsQueue.Enqueue(room1);
         roomsQueue.Enqueue(room2);
     }
 
-    private void SplitVertically(int minWidth, Queue<BoundsInt> roomsQueue, BoundsInt room, int stepOffset)
+    private void SplitVertically(int minWidth, int maxWidth, Queue<BoundsInt> roomsQueue, BoundsInt room, int stepOffset)
     {
-        var xSplit = Random.Range((int)1 / stepOffset, (int)room.size.x / stepOffset) * stepOffset;
+        // var xSplit = Random.Range((int)(1 / stepOffset), (int)(room.size.x / stepOffset)) * stepOffset;
+        var xSplit = Random.Range((int)(minWidth / stepOffset), (int)(maxWidth / stepOffset)) * stepOffset;
         var room1 = new BoundsInt(room.min, new Vector3Int(xSplit, room.size.y, room.size.z));
         var room2 = new BoundsInt(new Vector3Int(room.min.x + xSplit, room.min.y, room.min.z), new Vector3Int(room.size.x - xSplit, room.size.y, room.size.z));
         roomsQueue.Enqueue(room1);

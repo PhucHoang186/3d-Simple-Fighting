@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4632814597080574918}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: Barrel Stack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9ba7c384202f16e4a8a28e5481f72869, type: 3}
       propertyPath: m_StaticEditorFlags

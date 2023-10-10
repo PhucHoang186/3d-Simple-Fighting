@@ -29,7 +29,9 @@ namespace Generation
         [SerializeField] int dungeonWidth;
         [SerializeField] int dungeonHeight;
         [SerializeField] int minWidth;
+        [SerializeField] int maxWidth;
         [SerializeField] int minHeight;
+        [SerializeField] int maxHeight;
         [SerializeField] int roomOffset;
         [SerializeField] bool randomWalkRoom;
         [SerializeField] bool showRoomData;
@@ -56,7 +58,7 @@ namespace Generation
             floorPositions.Clear();
             partitionGeneration.Init(stepOffset, roomOffset);
             BoundsInt areaBound = new(startPosition, new Vector3Int(dungeonWidth * stepOffset, 0, dungeonHeight * stepOffset));
-            var roomList = partitionGeneration.GetRoomByBinaryPartitioning(areaBound, minWidth * stepOffset, minHeight * stepOffset, stepOffset);
+            var roomList = partitionGeneration.GetRoomByBinaryPartitioning(areaBound, minWidth, maxWidth, minHeight, maxHeight, stepOffset);
 
             floorPositions = randomWalkRoom ? partitionGeneration.CreateRoomsUseRDW(roomList, randomWalkData) : partitionGeneration.CreateRoomsUseBP(roomList);
             HashSet<Vector3Int> corridorPositions = partitionGeneration.CreateCorridorsFromRoomList(roomList);
