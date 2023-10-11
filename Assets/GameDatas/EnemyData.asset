@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: 
   maxHealth: 10000
-  movementSpeed: 8
+  movementSpeed: 5
   slowSpeed: 0
   sprintSpeed: 0
