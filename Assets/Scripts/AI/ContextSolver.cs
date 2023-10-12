@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace AI
 {
+    [RequireComponent(typeof(ObstacleDetector), typeof(TargetDetector), typeof(ObstacleAvoidanceBehaviour))]
+    // , typeof(SeekTargetBehaviour))]
     public class ContextSolver : MonoBehaviour
     {
         float[] dangers = new float[8];

@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace AI
 {
+    [RequireComponent(typeof(SeekTargetBehaviour))]
     public class ObstacleAvoidanceBehaviour : MonoBehaviour, ISteering
     {
-        [SerializeField] float targetRadius;
-        [SerializeField] float checkRadius;
+        [SerializeField] float targetRadius = 0.5f;
+        [SerializeField] float checkRadius = 20f;
         [SerializeField] bool showGizmos;
         private float[] dangerTempList;
 

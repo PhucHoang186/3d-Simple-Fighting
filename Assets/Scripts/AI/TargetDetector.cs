@@ -8,9 +8,9 @@ public class TargetDetector : MonoBehaviour, IDetect
 {
     [SerializeField] LayerMask targetLayer;
     [SerializeField] LayerMask obstacleLayer;
-    [SerializeField] float detectRange;
+    [SerializeField] float detectRange = 20f;
     [SerializeField] bool showGizmos;
-    [SerializeField] float checkRepeatTime;
+    [SerializeField] float checkRepeatTime = 0.1f;
     private Collider[] colliders = new Collider[100];
     private int colliderFound;
 

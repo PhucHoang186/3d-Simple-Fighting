@@ -8,9 +8,9 @@ namespace AI
 {
     public class SeekTargetBehaviour : MonoBehaviour, ISteering
     {
-        [SerializeField] float targetReachThreshold;
+        [SerializeField] float targetReachThreshold = 0.5f;
         [SerializeField] bool showGizmos;
-        [SerializeField] bool reachTarget;
+        [SerializeField] bool reachTarget = true;
         private float[] interestsTempList;
         private Vector3 targetPositionCached;
 
